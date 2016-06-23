@@ -1,0 +1,8 @@
+dependencies {
+    compile project(":customers-command-side-backend")
+    compile project(":orders-command-side-backend")
+    compile project(":order-history-query-side-backend")
+
+    compile "junit:junit:4.11"
+
+}

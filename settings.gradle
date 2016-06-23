@@ -1,0 +1,13 @@
+include "common"
+include "customers-command-side-backend"
+include "orders-command-side-backend"
+include "order-history-query-side-backend"
+include "order-history-query-side-web"
+include "common-test"
+include "backend-integration-test"
+include "common-web"
+include "orders-command-side-web"
+include "customers-command-side-web"
+include "web-test"
+
+rootProject.name = "java-customers-and-orders"

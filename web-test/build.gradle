@@ -1,0 +1,11 @@
+dependencies {
+    testCompile project(":customers-command-side-web")
+    testCompile project(":orders-command-side-web")
+    testCompile project(":order-history-query-side-web")
+    testCompile project(":common-test")
+
+    testCompile "junit:junit:4.11"
+    testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+    testCompile "net.chrisrichardson.eventstore.client:eventstore-jdbc_2.10:$eventStoreClientVersion"
+
+}
