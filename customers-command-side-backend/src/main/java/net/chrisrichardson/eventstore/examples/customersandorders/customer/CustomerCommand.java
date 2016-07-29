@@ -1,6 +1,6 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.customer;
 
-import net.chrisrichardson.eventstore.Command;
+import io.eventuate.Command;
 
 public interface CustomerCommand extends Command {
 }

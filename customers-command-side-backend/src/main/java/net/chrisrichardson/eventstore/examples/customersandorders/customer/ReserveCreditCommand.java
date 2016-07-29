@@ -1,13 +1,12 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.customer;
 
-import net.chrisrichardson.eventstore.EntityIdentifier;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.Money;
 
 public class ReserveCreditCommand implements CustomerCommand {
   private final Money orderTotal;
-  private final EntityIdentifier orderId;
+  private final String orderId;
 
-  public ReserveCreditCommand(Money orderTotal, EntityIdentifier orderId) {
+  public ReserveCreditCommand(Money orderTotal, String orderId) {
     this.orderTotal = orderTotal;
     this.orderId = orderId;
   }
@@ -16,7 +15,7 @@ public class ReserveCreditCommand implements CustomerCommand {
     return orderTotal;
   }
 
-  public EntityIdentifier getOrderId() {
+  public String getOrderId() {
     return orderId;
   }
 }

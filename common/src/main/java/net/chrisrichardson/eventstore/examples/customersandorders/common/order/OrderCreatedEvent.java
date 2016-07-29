@@ -1,13 +1,12 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.common.order;
 
-import net.chrisrichardson.eventstore.EntityIdentifier;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.Money;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 public class OrderCreatedEvent implements OrderEvent {
   private Money orderTotal;
-  private EntityIdentifier customerId;
+  private String customerId;
 
   @Override
   public boolean equals(Object obj) {
@@ -22,7 +21,7 @@ public class OrderCreatedEvent implements OrderEvent {
   public OrderCreatedEvent() {
   }
 
-  public OrderCreatedEvent(EntityIdentifier customerId, Money orderTotal) {
+  public OrderCreatedEvent(String customerId, Money orderTotal) {
     this.customerId = customerId;
     this.orderTotal = orderTotal;
   }
@@ -31,7 +30,7 @@ public class OrderCreatedEvent implements OrderEvent {
     return orderTotal;
   }
 
-  public EntityIdentifier getCustomerId() {
+  public String getCustomerId() {
     return customerId;
   }
 }

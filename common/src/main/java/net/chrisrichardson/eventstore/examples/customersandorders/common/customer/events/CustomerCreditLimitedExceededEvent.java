@@ -1,11 +1,10 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.common.customer.events;
 
-import net.chrisrichardson.eventstore.EntityIdentifier;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 public class CustomerCreditLimitedExceededEvent implements CustomerEvent {
-  private EntityIdentifier orderId;
+  private String orderId;
 
   @Override
   public boolean equals(Object obj) {
@@ -20,11 +19,11 @@ public class CustomerCreditLimitedExceededEvent implements CustomerEvent {
   public CustomerCreditLimitedExceededEvent() {
   }
 
-  public CustomerCreditLimitedExceededEvent(EntityIdentifier orderId) {
+  public CustomerCreditLimitedExceededEvent(String orderId) {
     this.orderId = orderId;
   }
 
-  public EntityIdentifier getOrderId() {
+  public String getOrderId() {
     return orderId;
   }
 }

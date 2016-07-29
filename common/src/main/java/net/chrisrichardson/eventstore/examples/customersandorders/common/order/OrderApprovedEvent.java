@@ -1,17 +1,16 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.common.order;
 
-import net.chrisrichardson.eventstore.EntityIdentifier;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 public class OrderApprovedEvent implements OrderEvent {
 
-  private EntityIdentifier customerId;
+  private String customerId;
 
   private OrderApprovedEvent() {
   }
 
-  public OrderApprovedEvent(EntityIdentifier customerId) {
+  public OrderApprovedEvent(String customerId) {
     this.customerId = customerId;
   }
 
@@ -25,7 +24,7 @@ public class OrderApprovedEvent implements OrderEvent {
     return HashCodeBuilder.reflectionHashCode(this);
   }
 
-  public EntityIdentifier getCustomerId() {
+  public String getCustomerId() {
     return customerId;
   }
 }

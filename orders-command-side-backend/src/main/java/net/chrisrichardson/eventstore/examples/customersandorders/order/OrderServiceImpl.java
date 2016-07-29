@@ -1,10 +1,10 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.order;
 
-import net.chrisrichardson.eventstore.EntityIdentifier;
-import net.chrisrichardson.eventstore.EntityWithIdAndVersion;
+import io.eventuate.AggregateRepository;
+import io.eventuate.EntityWithIdAndVersion;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.Money;
-import net.chrisrichardson.eventstore.repository.AggregateRepository;
-import rx.Observable;
+
+import java.util.concurrent.CompletableFuture;
 
 public class OrderServiceImpl implements OrderService {
 
@@ -15,8 +15,8 @@ public class OrderServiceImpl implements OrderService {
   }
 
   @Override
-  public Observable<EntityWithIdAndVersion<Order>>
-        createOrder(EntityIdentifier customerId, Money orderTotal) {
+  public CompletableFuture<EntityWithIdAndVersion<Order>>
+        createOrder(String customerId, Money orderTotal) {
     return orderRepository.save(new CreateOrderCommand(customerId, orderTotal));
   }
 }

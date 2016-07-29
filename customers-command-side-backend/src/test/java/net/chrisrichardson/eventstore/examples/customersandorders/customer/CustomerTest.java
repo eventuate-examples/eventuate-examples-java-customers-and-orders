@@ -1,9 +1,7 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.customer;
 
-import net.chrisrichardson.eventstore.CommandProcessingAggregates;
-import net.chrisrichardson.eventstore.EntityIdentifier;
-import net.chrisrichardson.eventstore.Event;
-import net.chrisrichardson.eventstore.EventUtil;
+import io.eventuate.Event;
+import io.eventuate.EventUtil;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.events.CustomerCreatedEvent;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.events.CustomerCreditLimitedExceededEvent;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.events.CustomerCreditReservedEvent;
@@ -18,22 +16,20 @@ public class CustomerTest {
 
   Money creditLimit = new Money(56);
   String name = "Fred";
-  EntityIdentifier orderId = new EntityIdentifier("myorder");
+  String orderId = "myorder";
 
   @Test
   public void testCreate() {
     Customer customer = new Customer();
 
-    List<Event> events = CommandProcessingAggregates.processToList(customer, new CreateCustomerCommand(name, creditLimit));
+    List<Event> events = customer.process(new CreateCustomerCommand(name, creditLimit));
 
     assertEquals(EventUtil.events(new CustomerCreatedEvent(name, creditLimit)), events);
 
-    CommandProcessingAggregates.applyEventsToMutableAggregate(customer, events);
+    customer.apply((CustomerCreatedEvent) events.get(0));
 
     assertEquals(creditLimit, customer.getCreditLimit());
     assertEquals(creditLimit, customer.availableCredit());
-
-
   }
 
   @Test
@@ -42,11 +38,11 @@ public class CustomerTest {
 
     Money orderTotal = new Money(5);
 
-    List<Event> events = CommandProcessingAggregates.processToList(customer, new ReserveCreditCommand(orderTotal, orderId));
+    List<Event> events = customer.process(new ReserveCreditCommand(orderTotal, orderId));
 
     assertEquals(EventUtil.events(new CustomerCreditReservedEvent(orderId, orderTotal)), events);
 
-    CommandProcessingAggregates.applyEventsToMutableAggregate(customer, events);
+    customer.apply((CustomerCreditReservedEvent) events.get(0));
 
     assertEquals(creditLimit, customer.getCreditLimit());
     assertEquals(creditLimit.subtract(orderTotal), customer.availableCredit());
@@ -57,8 +53,7 @@ public class CustomerTest {
   private Customer createCustomer() {
     Customer customer = new Customer();
 
-    CommandProcessingAggregates.applyEventsToMutableAggregate(customer,
-            CommandProcessingAggregates.processToList(customer, new CreateCustomerCommand(name, creditLimit)));
+    customer.apply((CustomerCreatedEvent)customer.process(new CreateCustomerCommand(name, creditLimit)).get(0));
     return customer;
   }
 
@@ -68,11 +63,11 @@ public class CustomerTest {
 
     Money orderTotal = creditLimit.add(new Money(1));
 
-    List<Event> events = CommandProcessingAggregates.processToList(customer, new ReserveCreditCommand(orderTotal, orderId));
+    List<Event> events = customer.process(new ReserveCreditCommand(orderTotal, orderId));
 
     assertEquals(EventUtil.events(new CustomerCreditLimitedExceededEvent(orderId)), events);
 
-    CommandProcessingAggregates.applyEventsToMutableAggregate(customer, events);
+    customer.apply((CustomerCreditLimitedExceededEvent) events.get(0));
 
     assertEquals(creditLimit, customer.getCreditLimit());
     assertEquals(creditLimit, customer.availableCredit());

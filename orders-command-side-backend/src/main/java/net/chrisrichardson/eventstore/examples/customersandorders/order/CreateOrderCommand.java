@@ -1,18 +1,17 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.order;
 
-import net.chrisrichardson.eventstore.EntityIdentifier;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.Money;
 
 public class CreateOrderCommand implements OrderCommand {
-  private final EntityIdentifier customerId;
+  private final String customerId;
   private final Money orderTotal;
 
-  public CreateOrderCommand(EntityIdentifier customerId, Money orderTotal) {
+  public CreateOrderCommand(String customerId, Money orderTotal) {
     this.customerId = customerId;
     this.orderTotal = orderTotal;
   }
 
-  public EntityIdentifier getCustomerId() {
+  public String getCustomerId() {
     return customerId;
   }
 

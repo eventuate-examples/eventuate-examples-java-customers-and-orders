@@ -1,9 +1,8 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.order;
 
-import net.chrisrichardson.eventstore.CommandProcessingAggregates;
-import net.chrisrichardson.eventstore.EntityIdentifier;
-import net.chrisrichardson.eventstore.Event;
-import net.chrisrichardson.eventstore.EventUtil;
+
+import io.eventuate.Event;
+import io.eventuate.EventUtil;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.Money;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.order.OrderApprovedEvent;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.order.OrderCreatedEvent;
@@ -18,17 +17,17 @@ import static org.junit.Assert.assertEquals;
 public class OrderTest {
 
   Money orderTotal = new Money(10);
-  EntityIdentifier customerId = new EntityIdentifier("customerID");
+  String customerId = "customerID";
 
   @Test
   public void testCreate() {
     Order order = new Order();
 
-    List<Event> events = CommandProcessingAggregates.processToList(order, new CreateOrderCommand(customerId, orderTotal));
+    List<Event> events = order.process(new CreateOrderCommand(customerId, orderTotal));
 
     assertEquals(EventUtil.events(new OrderCreatedEvent(customerId, orderTotal)), events);
 
-    CommandProcessingAggregates.applyEventsToMutableAggregate(order, events);
+    order.apply((OrderCreatedEvent) events.get(0));
 
     assertEquals(OrderState.CREATED, order.getState());
 
@@ -38,31 +37,28 @@ public class OrderTest {
   public void testApprove() {
     Order order = new Order();
 
-    CommandProcessingAggregates.applyEventsToMutableAggregate(order,
-            CommandProcessingAggregates.processToList(order, new CreateOrderCommand(customerId, orderTotal)));
+    order.apply((OrderCreatedEvent) order.process(new CreateOrderCommand(customerId, orderTotal)).get(0));
 
-    List<Event> events = CommandProcessingAggregates.processToList(order, new ApproveOrderCommand());
+    List<Event> events = order.process(new ApproveOrderCommand());
 
     assertEquals(EventUtil.events(new OrderApprovedEvent(customerId)), events);
 
-    CommandProcessingAggregates.applyEventsToMutableAggregate(order, events);
+    order.apply((OrderApprovedEvent)events.get(0));
 
     assertEquals(OrderState.APPROVED, order.getState());
-
   }
 
   @Test
   public void testReject() {
     Order order = new Order();
 
-    CommandProcessingAggregates.applyEventsToMutableAggregate(order,
-            CommandProcessingAggregates.processToList(order, new CreateOrderCommand(customerId, orderTotal)));
+    order.apply((OrderCreatedEvent) order.process(new CreateOrderCommand(customerId, orderTotal)).get(0));
 
-    List<Event> events = CommandProcessingAggregates.processToList(order, new RejectOrderCommand());
+    List<Event> events = order.process(new RejectOrderCommand());
 
     assertEquals(EventUtil.events(new OrderRejectedEvent(customerId)), events);
 
-    CommandProcessingAggregates.applyEventsToMutableAggregate(order, events);
+    order.apply((OrderRejectedEvent) events.get(0));
 
     assertEquals(OrderState.REJECTED, order.getState());
 

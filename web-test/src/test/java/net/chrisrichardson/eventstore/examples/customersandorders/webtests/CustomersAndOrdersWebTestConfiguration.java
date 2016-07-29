@@ -1,9 +1,10 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.webtests;
 
+import io.eventuate.javaclient.spring.jdbc.EventuateJdbcEventStoreConfiguration;
 import net.chrisrichardson.eventstore.examples.customersandorders.customers.web.CustomerWebConfiguration;
 import net.chrisrichardson.eventstore.examples.customersandorders.orders.web.OrderHistoryWebConfiguration;
 import net.chrisrichardson.eventstore.examples.customersandorders.orders.web.OrderWebConfiguration;
-import net.chrisrichardson.eventstore.jdbc.config.JdbcEventStoreConfiguration;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +18,8 @@ import java.util.List;
 
 @Configuration
 @Import({CustomerWebConfiguration.class, OrderWebConfiguration.class, OrderHistoryWebConfiguration.class,
-        JdbcEventStoreConfiguration.class})
+          EventuateJdbcEventStoreConfiguration.class})
+@EnableAutoConfiguration
 public class CustomersAndOrdersWebTestConfiguration {
 
   @Bean

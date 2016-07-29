@@ -1,7 +1,6 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.integrationtest;
 
-import net.chrisrichardson.eventstore.EntityIdentifier;
-import net.chrisrichardson.eventstore.EntityWithIdAndVersion;
+import io.eventuate.EntityWithIdAndVersion;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.Money;
 import net.chrisrichardson.eventstore.examples.customersandorders.commontest.AbstractCustomerAndOrdersIntegrationTest;
 import net.chrisrichardson.eventstore.examples.customersandorders.customer.Customer;
@@ -17,7 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import rx.Observable;
+
+import static net.chrisrichardson.eventstore.examples.customersandorders.commontest.TestUtil.await;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = CustomerAndOrdersIntegrationTestConfiguration.class)
@@ -48,12 +48,12 @@ public class CustomerAndOrdersIntegrationTest extends AbstractCustomerAndOrdersI
 
   @Override
   protected String createOrder(String customerId, Money orderTotal) {
-    EntityWithIdAndVersion<Order> order = await(orderService.createOrder(new EntityIdentifier(customerId), orderTotal));
+    EntityWithIdAndVersion<Order> order = await(orderService.createOrder(customerId, orderTotal));
 
-    String orderId = order.getEntityIdentifier().getId();
+    String orderId = order.getEntityId();
 
     logger.info("OrderId={}", orderId);
-    logger.info("OrderId={}", order.entity().getState());
+    logger.info("OrderState={}", order.getAggregate().getState());
     return orderId;
   }
 
@@ -62,9 +62,9 @@ public class CustomerAndOrdersIntegrationTest extends AbstractCustomerAndOrdersI
     EntityWithIdAndVersion<Customer> customer =
             await(customerService.createCustomer("Fred", creditLimit));
 
-    String customerId = customer.getEntityIdentifier().getId();
+    String customerId = customer.getEntityId();
     logger.info("CustomerId={}", customerId);
-    return customer.getEntityIdentifier().getId();
+    return customerId;
   }
 
 }

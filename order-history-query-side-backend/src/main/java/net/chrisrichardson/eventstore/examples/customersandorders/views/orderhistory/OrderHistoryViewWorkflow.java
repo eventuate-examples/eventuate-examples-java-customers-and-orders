@@ -1,16 +1,14 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.views.orderhistory;
 
-import net.chrisrichardson.eventstore.EntityIdentifier;
+import io.eventuate.DispatchedEvent;
+import io.eventuate.EventHandlerMethod;
+import io.eventuate.EventSubscriber;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.events.CustomerCreatedEvent;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.Money;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.order.OrderApprovedEvent;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.order.OrderCreatedEvent;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.order.OrderRejectedEvent;
-import net.chrisrichardson.eventstore.subscriptions.DispatchedEvent;
-import net.chrisrichardson.eventstore.subscriptions.EventHandler;
-import net.chrisrichardson.eventstore.subscriptions.EventSubscriber;
 import org.springframework.beans.factory.annotation.Autowired;
-import rx.Observable;
 
 @EventSubscriber(id="orderHistoryWorkflow")
 public class OrderHistoryViewWorkflow {
@@ -23,36 +21,32 @@ public class OrderHistoryViewWorkflow {
     this.orderHistoryViewService = orderHistoryViewService;
   }
 
-  @EventHandler
-  public Observable<Object> createCustomer(DispatchedEvent<CustomerCreatedEvent> de) {
-    String customerId = de.getEntityIdentifier().getId();
-    orderHistoryViewService.createCustomer(customerId, de.event().getName(), de.event().getCreditLimit());
-    return Observable.just(null);
+  @EventHandlerMethod
+  public void createCustomer(DispatchedEvent<CustomerCreatedEvent> de) {
+    String customerId = de.getEntityId();
+    orderHistoryViewService.createCustomer(customerId, de.getEvent().getName(), de.getEvent().getCreditLimit());
   }
 
-  @EventHandler
-  public Observable<Object> createOrder(DispatchedEvent<OrderCreatedEvent> de) {
-    String customerId = de.event().getCustomerId().getId();
-    String orderId = de.entityId().id();
-    Money orderTotal = de.event().getOrderTotal();
+  @EventHandlerMethod
+  public void createOrder(DispatchedEvent<OrderCreatedEvent> de) {
+    String customerId = de.getEvent().getCustomerId();
+    String orderId = de.getEntityId();
+    Money orderTotal = de.getEvent().getOrderTotal();
     orderHistoryViewService.addOrder(customerId, orderId, orderTotal);
-    return Observable.just(null);
   }
 
-  @EventHandler
-  public Observable<Object> orderApproved(DispatchedEvent<OrderApprovedEvent> de) {
-    EntityIdentifier customerId = de.event().getCustomerId();
-    String orderId = de.entityId().id();
-    orderHistoryViewService.approveOrder(customerId.getId(), orderId);
-    return Observable.just(null);
+  @EventHandlerMethod
+  public void orderApproved(DispatchedEvent<OrderApprovedEvent> de) {
+    String customerId = de.getEvent().getCustomerId();
+    String orderId = de.getEntityId();
+    orderHistoryViewService.approveOrder(customerId, orderId);
   }
 
-  @EventHandler
-  public Observable<Object> orderRejected(DispatchedEvent<OrderRejectedEvent> de) {
-    EntityIdentifier customerId = de.event().getCustomerId();
-    String orderId = de.entityId().id();
-    orderHistoryViewService.rejectOrder(customerId.getId(), orderId);
-    return Observable.just(null);
+  @EventHandlerMethod
+  public void orderRejected(DispatchedEvent<OrderRejectedEvent> de) {
+    String customerId = de.getEvent().getCustomerId();
+    String orderId = de.getEntityId();
+    orderHistoryViewService.rejectOrder(customerId, orderId);
   }
 
 }

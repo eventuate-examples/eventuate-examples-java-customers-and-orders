@@ -2,14 +2,14 @@ package net.chrisrichardson.eventstore.examples.customersandorders.views.orderhi
 
 import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.Money;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.order.OrderState;
-import net.chrisrichardson.eventstore.idgeneration.BoundaryFlakeIdGenerator;
-import net.chrisrichardson.eventstore.idgeneration.IdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -26,17 +26,15 @@ public class OrderHistoryViewServiceTest {
   @Autowired
   private CustomerViewRepository customerViewRepository;
 
-  private IdGenerator idGenerator = new BoundaryFlakeIdGenerator();
-
   @Test
   public void shouldCreateCustomerAndOrdersEtc() {
-    String customerId = idGenerator.nextId().asString();
+    String customerId = UUID.randomUUID().toString();
     Money creditLimit = new Money(2000);
     String customerName = "Fred";
 
-    String orderId1 = idGenerator.nextId().asString();
+    String orderId1 = UUID.randomUUID().toString();
     Money orderTotal1 = new Money(1234);
-    String orderId2 = idGenerator.nextId().asString();
+    String orderId2 = UUID.randomUUID().toString();
     Money orderTotal2 = new Money(3000);
 
     orderHistoryViewService.createCustomer(customerId, customerName, creditLimit);

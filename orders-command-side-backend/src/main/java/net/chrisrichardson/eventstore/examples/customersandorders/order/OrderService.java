@@ -1,11 +1,11 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.order;
 
-import net.chrisrichardson.eventstore.EntityIdentifier;
-import net.chrisrichardson.eventstore.EntityWithIdAndVersion;
+import io.eventuate.EntityWithIdAndVersion;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.Money;
-import rx.Observable;
+
+import java.util.concurrent.CompletableFuture;
 
 public interface OrderService {
 
-  Observable<EntityWithIdAndVersion<Order>> createOrder(EntityIdentifier customerId, Money orderTotal);
+    CompletableFuture<EntityWithIdAndVersion<Order>> createOrder(String customerId, Money orderTotal);
 }

@@ -1,10 +1,11 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.customer;
 
-import net.chrisrichardson.eventstore.EntityWithIdAndVersion;
+import io.eventuate.EntityWithIdAndVersion;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.Money;
-import rx.Observable;
+
+import java.util.concurrent.CompletableFuture;
 
 public interface CustomerService {
 
-  Observable<EntityWithIdAndVersion<Customer>> createCustomer(String name, Money creditLimit);
+  CompletableFuture<EntityWithIdAndVersion<Customer>> createCustomer(String name, Money creditLimit);
 }

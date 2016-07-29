@@ -1,9 +1,8 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.order;
 
-import net.chrisrichardson.eventstore.EntityIdentifier;
-import net.chrisrichardson.eventstore.Event;
-import net.chrisrichardson.eventstore.EventUtil;
-import net.chrisrichardson.eventstore.ReflectiveMutableCommandProcessingAggregate;
+import io.eventuate.Event;
+import io.eventuate.EventUtil;
+import io.eventuate.ReflectiveMutableCommandProcessingAggregate;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.events.CustomerCreatedEvent;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.order.OrderApprovedEvent;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.order.OrderCreatedEvent;
@@ -16,7 +15,7 @@ import java.util.List;
 public class Order extends ReflectiveMutableCommandProcessingAggregate<Order, OrderCommand> {
 
   private OrderState state;
-  private EntityIdentifier customerId;
+  private String customerId;
 
   public OrderState getState() {
     return state;

@@ -1,9 +1,8 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.customer;
 
-import net.chrisrichardson.eventstore.EntityIdentifier;
-import net.chrisrichardson.eventstore.Event;
-import net.chrisrichardson.eventstore.EventUtil;
-import net.chrisrichardson.eventstore.ReflectiveMutableCommandProcessingAggregate;
+import io.eventuate.Event;
+import io.eventuate.EventUtil;
+import io.eventuate.ReflectiveMutableCommandProcessingAggregate;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.events.CustomerCreditLimitedExceededEvent;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.events.CustomerCreditReservedEvent;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.events.CustomerCreatedEvent;
@@ -16,7 +15,7 @@ import java.util.Map;
 public class Customer extends ReflectiveMutableCommandProcessingAggregate<Customer, CustomerCommand> {
 
   private Money creditLimit;
-  private Map<EntityIdentifier, Money> creditReservations;
+  private Map<String, Money> creditReservations;
 
   Money availableCredit() {
     return creditLimit.subtract(creditReservations.values().stream().reduce(Money.ZERO, Money::add));

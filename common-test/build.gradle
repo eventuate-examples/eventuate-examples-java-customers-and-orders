@@ -3,6 +3,7 @@ dependencies {
     compile project(":orders-command-side-backend")
     compile project(":order-history-query-side-backend")
 
+    compile "io.reactivex:rxjava:1.1.5"
     compile "junit:junit:4.11"
 
 }

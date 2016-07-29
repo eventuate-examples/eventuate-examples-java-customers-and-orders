@@ -1,5 +1,6 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.webtests;
 
+import io.eventuate.CompletableFutureUtil;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.Money;
 import net.chrisrichardson.eventstore.examples.customersandorders.commontest.AbstractCustomerAndOrdersIntegrationTest;
 import net.chrisrichardson.eventstore.examples.customersandorders.customers.web.controllers.CreateCustomerRequest;
@@ -20,6 +21,9 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import rx.Observable;
 
+import java.util.concurrent.CompletableFuture;
+
+import static net.chrisrichardson.eventstore.examples.customersandorders.commontest.TestUtil.await;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -38,15 +42,15 @@ public class CustomersAndOrdersWebTest  extends AbstractCustomerAndOrdersIntegra
   @Autowired
   RestTemplate restTemplate;
 
-  private Observable<CustomerView> getCustomer(String customerId) {
+  private CompletableFuture<CustomerView> getCustomer(String customerId) {
     try {
       ResponseEntity<CustomerView> getCustomer =
               restTemplate.getForEntity(baseUrl("customers/" + customerId), CustomerView.class);
       assertEquals(HttpStatus.OK, getCustomer.getStatusCode());
-      return Observable.just(getCustomer.getBody());
+      return CompletableFuture.completedFuture(getCustomer.getBody());
     } catch (HttpClientErrorException e) {
       if (e.getStatusCode() == HttpStatus.NOT_FOUND)
-        return Observable.empty();
+        return CompletableFutureUtil.failedFuture(e);
       else
         throw e;
     }
@@ -60,15 +64,15 @@ public class CustomersAndOrdersWebTest  extends AbstractCustomerAndOrdersIntegra
 
   @Override
   protected OrderView getOrderView(String orderId) {
-    Observable<OrderView> result;
+    CompletableFuture<OrderView> result;
     try {
       ResponseEntity<OrderView> getCustomer =
               restTemplate.getForEntity(baseUrl("orders/" + orderId), OrderView.class);
       assertEquals(HttpStatus.OK, getCustomer.getStatusCode());
-      result = Observable.just(getCustomer.getBody());
+      result = CompletableFuture.completedFuture(getCustomer.getBody());
     } catch (HttpClientErrorException e) {
       if (e.getStatusCode() == HttpStatus.NOT_FOUND)
-        result = Observable.empty();
+        result = CompletableFutureUtil.failedFuture(e);
       else
         throw e;
     }
