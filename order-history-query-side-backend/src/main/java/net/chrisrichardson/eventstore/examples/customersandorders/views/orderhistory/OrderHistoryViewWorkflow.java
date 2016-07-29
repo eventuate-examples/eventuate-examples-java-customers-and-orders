@@ -10,7 +10,7 @@ import net.chrisrichardson.eventstore.examples.customersandorders.common.order.O
 import net.chrisrichardson.eventstore.examples.customersandorders.common.order.OrderRejectedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@EventSubscriber(id="orderHistoryWorkflow")
+@EventSubscriber(id = "orderHistoryWorkflow")
 public class OrderHistoryViewWorkflow {
 
   private OrderHistoryViewService orderHistoryViewService;
@@ -39,8 +39,7 @@ public class OrderHistoryViewWorkflow {
   public void orderApproved(DispatchedEvent<OrderApprovedEvent> de) {
     String customerId = de.getEvent().getCustomerId();
     String orderId = de.getEntityId();
-    orderHistoryViewService.approveOrder(customerId, orderId);
-  }
+    orderHistoryViewService.approveOrder(customerId, orderId);  }
 
   @EventHandlerMethod
   public void orderRejected(DispatchedEvent<OrderRejectedEvent> de) {
@@ -48,5 +47,6 @@ public class OrderHistoryViewWorkflow {
     String orderId = de.getEntityId();
     orderHistoryViewService.rejectOrder(customerId, orderId);
   }
+
 
 }

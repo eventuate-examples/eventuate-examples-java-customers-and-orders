@@ -2,6 +2,7 @@ package net.chrisrichardson.eventstore.examples.customersandorders.views.orderhi
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @Configuration
@@ -10,7 +11,7 @@ public class OrderHistoryViewMongoConfiguration {
 
 
   @Bean
-  public OrderHistoryViewService orderHistoryViewService(CustomerViewRepository customerViewRepository, OrderViewRepository orderViewRepository) {
-    return new OrderHistoryViewService(customerViewRepository, orderViewRepository);
+  public OrderHistoryViewService orderHistoryViewService(CustomerViewRepository customerViewRepository, OrderViewRepository orderViewRepository, MongoTemplate mongoTemplate) {
+    return new OrderHistoryViewService(customerViewRepository, orderViewRepository, mongoTemplate);
   }
 }

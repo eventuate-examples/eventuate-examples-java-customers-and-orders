@@ -26,6 +26,9 @@ public class OrderHistoryViewServiceTest {
   @Autowired
   private CustomerViewRepository customerViewRepository;
 
+  @Autowired
+  private OrderViewRepository OrderViewRepository;
+
   @Test
   public void shouldCreateCustomerAndOrdersEtc() {
     String customerId = UUID.randomUUID().toString();
@@ -57,6 +60,13 @@ public class OrderHistoryViewServiceTest {
     assertEquals(orderTotal2, customerView.getOrders().get(orderId2).getOrderTotal());
     assertEquals(OrderState.REJECTED, customerView.getOrders().get(orderId2).getState());
 
+    OrderView orderView1 = OrderViewRepository.findOne(orderId1);
+    assertEquals(orderTotal1, orderView1.getOrderTotal());
+    assertEquals(OrderState.APPROVED, orderView1.getState());
+
+    OrderView orderView2 = OrderViewRepository.findOne(orderId2);
+    assertEquals(orderTotal2, orderView2.getOrderTotal());
+    assertEquals(OrderState.REJECTED, orderView2.getState());
   }
 
 

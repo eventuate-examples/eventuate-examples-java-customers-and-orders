@@ -14,9 +14,6 @@ public class CustomerView {
   @Id
   private String id;
 
-  @Version
-  private long version;
-
 
   private Map<String, OrderInfo> orders = new HashMap<>();
   private String name;
@@ -28,18 +25,6 @@ public class CustomerView {
 
   public String getId() {
     return id;
-  }
-
-  public void addOrder(String orderId, Money orderTotal) {
-    orders.put(orderId, new OrderInfo(orderId, orderTotal));
-  }
-
-  public void approveOrder(String orderId) {
-    orders.get(orderId).approve();
-  }
-
-  public void rejectOrder(String orderId) {
-    orders.get(orderId).reject();
   }
 
   public Map<String, OrderInfo> getOrders() {

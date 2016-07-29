@@ -12,9 +12,6 @@ public class OrderView {
   @Id
   private String id;
 
-  @Version
-  private Long version;
-
   private OrderState state;
   private Money orderTotal;
 
@@ -26,14 +23,6 @@ public class OrderView {
     this.id = id;
     this.orderTotal = orderTotal;
     this.state = OrderState.CREATED;
-  }
-
-  public void approve() {
-    state = OrderState.APPROVED;
-  }
-
-  public void reject() {
-    state = OrderState.REJECTED;
   }
 
   public Money getOrderTotal() {
