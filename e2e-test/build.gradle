@@ -1,0 +1,13 @@
+dependencies {
+    testCompile project(":common-test")
+    testCompile project(":customers-command-side-web")
+    testCompile project(":orders-command-side-web")
+
+    testCompile "junit:junit:4.11"
+    testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+    testCompile "io.eventuate.client.java:eventuate-client-java-jdbc:$eventuateClientVersion"
+}
+
+test {
+    ignoreFailures (!project.hasProperty("ignoreE2EFailures") || ignoreE2EFailures.toBoolean())
+}

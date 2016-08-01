@@ -1,0 +1,12 @@
+apply plugin: 'spring-boot'
+
+dependencies {
+    compile project(":customers-command-side-web")
+    compile project(":common-swagger")
+
+    compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+    compile "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
+
+    compile "io.eventuate.client.java:eventuate-client-java-http-stomp-spring:$eventuateClientVersion"
+    testCompile "junit:junit:4.11"
+}

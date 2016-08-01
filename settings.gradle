@@ -8,5 +8,11 @@ include "backend-integration-test"
 include "orders-command-side-web"
 include "customers-command-side-web"
 include "web-test"
+include "e2e-test"
 
 rootProject.name = "java-customers-and-orders"
+include 'common-swagger'
+include 'customers-command-side-service'
+include 'order-history-query-side-service'
+include 'orders-command-side-service'
+
