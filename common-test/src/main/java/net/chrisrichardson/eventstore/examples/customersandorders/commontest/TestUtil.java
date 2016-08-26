@@ -1,9 +1,6 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.commontest;
 
 import rx.Observable;
-import rx.Subscriber;
-import rx.functions.Func1;
-import rx.functions.Func2;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -55,19 +52,25 @@ public class TestUtil {
   }
 
   public static <T> T eventually(Supplier<T> producer, Predicate<T> predicate) {
-    return eventuallyAsync(() -> Observable.just(producer.get()), predicate);
-  }
-
-  public static <T> T eventuallyAsync(Supplier<Observable<T>> producer, Predicate<T> predicate) {
-    try {
-      return Observable.interval(1000, TimeUnit.MILLISECONDS)
-              .take(30)
-              .flatMap(idx -> producer.get())
-              .filter(predicate::test)
-              .toBlocking().first();
-    } catch (Exception e) {
-      throw new RuntimeException(e);
+    Throwable laste = null;
+    for (int i = 0; i < 30 ; i++) {
+      try {
+        T x = producer.get();
+        if (predicate.test(x))
+          return x;
+      } catch (Throwable t) {
+        laste = t;
+      }
+      try {
+        TimeUnit.SECONDS.sleep(1);
+      } catch (InterruptedException e) {
+        throw new RuntimeException(e);
+      }
     }
+    if (laste != null)
+      throw new RuntimeException("Last exception was", laste);
+    else
+      throw new RuntimeException("predicate never satisfied");
   }
 
 }
