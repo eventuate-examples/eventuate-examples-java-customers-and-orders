@@ -1,3 +1,6 @@
+apply plugin: VerifyEventStoreEnvironmentPlugin
+apply plugin: EventuateDependencyPlugin
+
 apply plugin: 'spring-boot'
 
 dependencies {
