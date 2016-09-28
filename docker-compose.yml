@@ -5,8 +5,8 @@ customercommandside:
   volumes:
     - ./customers-command-side-service/build/libs:/app
   environment:
-    EVENTUATE_API_KEY_ID:
-    EVENTUATE_API_KEY_SECRET:
+    EVENTUATE_API_KEY_ID: ${EVENTUATE_API_KEY_ID}
+    EVENTUATE_API_KEY_SECRET: ${EVENTUATE_API_KEY_SECRET}
 
 orderhistoryqueryside:
   extends:
@@ -17,8 +17,8 @@ orderhistoryqueryside:
   links:
     - mongodb
   environment:
-    EVENTUATE_API_KEY_ID:
-    EVENTUATE_API_KEY_SECRET:
+    EVENTUATE_API_KEY_ID: ${EVENTUATE_API_KEY_ID}
+    EVENTUATE_API_KEY_SECRET: ${EVENTUATE_API_KEY_SECRET}
 
 ordercommandside:
   extends:
@@ -27,8 +27,8 @@ ordercommandside:
   volumes:
     - ./orders-command-side-service/build/libs:/app
   environment:
-    EVENTUATE_API_KEY_ID:
-    EVENTUATE_API_KEY_SECRET:
+    EVENTUATE_API_KEY_ID: ${EVENTUATE_API_KEY_ID}
+    EVENTUATE_API_KEY_SECRET: ${EVENTUATE_API_KEY_SECRET}
 
 mongodb:
   extends:
