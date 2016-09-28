@@ -2,10 +2,29 @@
 
 set -e
 
-docker-compose stop
-docker-compose rm -v --force
+DOCKER_COMPOSE="docker-compose -p java-customers-and-orders"
 
-docker-compose up -d mongodb $EXTRA_INFRASTRUCTURE_SERVICES
+if [ "$1" = "-f" ] ; then
+  shift;
+  DOCKER_COMPOSE="$DOCKER_COMPOSE -f ${1?}"
+  shift
+fi
+
+if [ "$1" = "--use-existing" ] ; then
+  shift;
+else
+  ${DOCKER_COMPOSE?} stop
+  ${DOCKER_COMPOSE?} rm -v --force
+fi
+
+NO_RM=false
+
+if [ "$1" = "--no-rm" ] ; then
+  NO_RM=true
+  shift
+fi
+
+${DOCKER_COMPOSE?} up -d mongodb $EXTRA_INFRASTRUCTURE_SERVICES
 
 if [ -z "$DOCKER_HOST_IP" ] ; then
   if which docker-machine >/dev/null; then
@@ -28,7 +47,7 @@ if [ -z "$EVENTUATE_API_KEY_ID" -o -z "$EVENTUATE_API_KEY_SECRET" ] ; then
   exit -1
 fi
 
-docker-compose up -d
+${DOCKER_COMPOSE?} up -d
 
 ./wait-for-services.sh $DOCKER_HOST_IP 8081 8082 8083
 
@@ -36,9 +55,10 @@ set -e
 
 ./gradlew -a $* :e2e-test:cleanTest :e2e-test:test -P ignoreE2EFailures=false
 
-
-docker-compose stop
-docker-compose rm -v --force
+if [ $NO_RM = false ] ; then
+  ${DOCKER_COMPOSE?} stop
+  ${DOCKER_COMPOSE?} rm -v --force
+fi
 
 
 
