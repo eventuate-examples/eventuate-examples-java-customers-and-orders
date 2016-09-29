@@ -57,7 +57,7 @@ public class CustomersAndOrdersE2ETest extends AbstractCustomerAndOrdersIntegrat
       return CompletableFuture.completedFuture(getCustomer.getBody());
     } catch (HttpClientErrorException e) {
       if (e.getStatusCode() == HttpStatus.NOT_FOUND)
-        return CompletableFutureUtil.failedFuture(e);
+        return CompletableFutureUtil.failedFuture(new RuntimeException("Cannot find customer "+ customerId, e));
       else
         throw e;
     }
@@ -79,7 +79,7 @@ public class CustomersAndOrdersE2ETest extends AbstractCustomerAndOrdersIntegrat
       result = CompletableFuture.completedFuture(getCustomer.getBody());
     } catch (HttpClientErrorException e) {
       if (e.getStatusCode() == HttpStatus.NOT_FOUND)
-        result = CompletableFutureUtil.failedFuture(e);
+        result = CompletableFutureUtil.failedFuture(new RuntimeException("Cannot find order "+ orderId, e));
       else
         throw e;
     }

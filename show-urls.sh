@@ -1,7 +1,8 @@
-#!/bin/bash -e
+#! /bin/bash -e
 
-IP=$(docker-machine ip default)
+echo The services are running
+echo You can visit these URLS
 
-echo Accounts command-side service = http://${IP}:8080/swagger-ui.html
-echo Money Transfers command-side service = http://${IP}:8082/swagger-ui.html
-echo Accounts query-side service = http://${IP}:8081/swagger-ui.html
+echo http://${DOCKER_HOST_IP?}:8081/swagger-ui.html - Customers command side
+echo http://${DOCKER_HOST_IP?}:8083/swagger-ui.html - Orders command side
+echo http://${DOCKER_HOST_IP?}:8082/swagger-ui.html - Order History view

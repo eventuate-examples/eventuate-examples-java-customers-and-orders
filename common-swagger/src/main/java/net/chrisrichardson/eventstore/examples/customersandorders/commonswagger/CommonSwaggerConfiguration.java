@@ -24,7 +24,7 @@ public class CommonSwaggerConfiguration {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("net.chrisrichardson.eventstore.examples.kanban"))
+                .apis(RequestHandlerSelectors.basePackage("net.chrisrichardson.eventstore.examples.customersandorders"))
                 .build()
                 .pathMapping("/")
                 .genericModelSubstitutes(ResponseEntity.class, CompletableFuture.class)
