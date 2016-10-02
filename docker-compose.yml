@@ -1,45 +1,36 @@
 customercommandside:
-  image: java:openjdk-8u91-jdk
-  working_dir: /app
+  extends:
+    file: docker-compose-common.yml
+    service: customercommandside
   volumes:
     - ./customers-command-side-service/build/libs:/app
-  command: java -jar /app/customers-command-side-service.jar
-  ports:
-    - "8081:8080"
   environment:
-    EVENTUATE_API_KEY_ID:
-    EVENTUATE_API_KEY_SECRET:
+    EVENTUATE_API_KEY_ID: ${EVENTUATE_API_KEY_ID}
+    EVENTUATE_API_KEY_SECRET: ${EVENTUATE_API_KEY_SECRET}
 
 orderhistoryqueryside:
-  image: java:openjdk-8u91-jdk
-  working_dir: /app
+  extends:
+    file: docker-compose-common.yml
+    service: orderhistoryqueryside
   volumes:
     - ./order-history-query-side-service/build/libs:/app
-  command: java -jar /app/order-history-query-side-service.jar
   links:
     - mongodb
-  ports:
-    - "8082:8080"
   environment:
-    EVENTUATE_API_KEY_ID:
-    EVENTUATE_API_KEY_SECRET:
-    SPRING_DATA_MONGODB_URI: mongodb://mongodb/clients_and_orders
+    EVENTUATE_API_KEY_ID: ${EVENTUATE_API_KEY_ID}
+    EVENTUATE_API_KEY_SECRET: ${EVENTUATE_API_KEY_SECRET}
 
 ordercommandside:
-  image: java:openjdk-8u91-jdk
-  working_dir: /app
+  extends:
+    file: docker-compose-common.yml
+    service: ordercommandside
   volumes:
     - ./orders-command-side-service/build/libs:/app
-  command: java -jar /app/orders-command-side-service.jar
-  ports:
-    - "8083:8080"
   environment:
-    EVENTUATE_API_KEY_ID:
-    EVENTUATE_API_KEY_SECRET:
+    EVENTUATE_API_KEY_ID: ${EVENTUATE_API_KEY_ID}
+    EVENTUATE_API_KEY_SECRET: ${EVENTUATE_API_KEY_SECRET}
 
 mongodb:
-  image: mongo:3.0.4
-  hostname: mongodb
-  command: mongod --smallfiles
-  ports:
-    - "27017:27017"
+  extends:
+    file: docker-compose-common.yml
+    service: mongodb
