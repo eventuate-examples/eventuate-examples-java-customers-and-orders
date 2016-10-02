@@ -8,7 +8,7 @@ For more information, see this [presentation from Gluecon 2016](http://www.slide
 
 ![](http://eventuate.io/i/logo.gif)
 
-[Eventuate](http://eventuate.io/) is a application platform for writing transaction microservices.
+[Eventuate](http://eventuate.io/) is an application platform for writing transactional microservices.
 It provides a simple yet powerful event-driven programming model that is based on event sourcing and Command Query Responsibility Segregation (CQRS).
 Eventuate solves the distributed data management problems inherent in a microservice architecture.
 It consists of a scalable, distributed event store and client libraries for various languages and frameworks including Java, Scala, and the Spring framework. [Learn more.](http://eventuate.io/)
