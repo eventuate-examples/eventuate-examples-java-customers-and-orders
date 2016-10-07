@@ -19,7 +19,7 @@
     <logger name="org.springframework.web.filter.CommonsRequestLoggingFilter" level='debug'>
     </logger>
 
-    <logger name="io.eventuate" level='info'>
+    <logger name="io.eventuate.activity" level='info'>
     </logger>
 
 </configuration>
