@@ -2,6 +2,22 @@
 
 set -e
 
+if [ -z "$DOCKER_HOST_IP" ] ; then
+  if [ -z "$DOCKER_HOST" ] ; then
+    export DOCKER_HOST_IP=`hostname`
+  else
+    echo using ${DOCKER_HOST?}
+    XX=${DOCKER_HOST%\:*}
+    export DOCKER_HOST_IP=${XX#tcp\:\/\/}
+  fi
+  echo set DOCKER_HOST_IP $DOCKER_HOST_IP
+fi
+
+if [ -z "$SPRING_DATA_MONGODB_URI" ] ; then
+  export SPRING_DATA_MONGODB_URI=mongodb://${DOCKER_HOST_IP?}/customers_orders
+  echo Set SPRING_DATA_MONGODB_URI $SPRING_DATA_MONGODB_URI
+fi
+
 DOCKER_COMPOSE="docker-compose -p java-customers-and-orders"
 
 if [ "$1" = "-f" ] ; then
@@ -26,26 +42,14 @@ fi
 
 ${DOCKER_COMPOSE?} up -d mongodb $EXTRA_INFRASTRUCTURE_SERVICES
 
-if [ -z "$DOCKER_HOST_IP" ] ; then
-  if which docker-machine >/dev/null; then
-    export DOCKER_HOST_IP=$(docker-machine ip default)
-  else
-    export DOCKER_HOST_IP=localhost
- fi
- echo set DOCKER_HOST_IP $DOCKER_HOST_IP
-fi
-
-if [ -z "$SPRING_DATA_MONGODB_URI" ] ; then
-  export SPRING_DATA_MONGODB_URI=mongodb://${DOCKER_HOST_IP?}/customers_orders
-  echo Set SPRING_DATA_MONGODB_URI $SPRING_DATA_MONGODB_URI
-fi
-
 ./gradlew --stacktrace $* build -x :e2e-test:test
 
 if [ -z "$EVENTUATE_LOCAL" ] && [ -z "$EVENTUATE_API_KEY_ID" -o -z "$EVENTUATE_API_KEY_SECRET" ] ; then
   echo You must set EVENTUATE_API_KEY_ID and  EVENTUATE_API_KEY_SECRET
   exit -1
 fi
+
+${DOCKER_COMPOSE?} build
 
 ${DOCKER_COMPOSE?} up -d
 
