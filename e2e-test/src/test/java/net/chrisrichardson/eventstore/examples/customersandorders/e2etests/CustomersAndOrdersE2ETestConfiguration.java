@@ -1,11 +1,9 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.e2etests;
 
-import io.eventuate.javaclient.spring.jdbc.EventuateJdbcEventStoreConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
@@ -15,7 +13,6 @@ import java.util.List;
 
 @Configuration
 @EnableAutoConfiguration
-@Import({EventuateJdbcEventStoreConfiguration.class})
 public class CustomersAndOrdersE2ETestConfiguration {
 
   @Bean
