@@ -1,9 +1,9 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.webtests;
 
-import io.eventuate.javaclient.spring.jdbc.EventuateJdbcEventStoreConfiguration;
-import net.chrisrichardson.eventstore.examples.customersandorders.customers.web.CustomerWebConfiguration;
-import net.chrisrichardson.eventstore.examples.customersandorders.orders.web.OrderHistoryWebConfiguration;
-import net.chrisrichardson.eventstore.examples.customersandorders.orders.web.OrderWebConfiguration;
+import io.eventuate.javaclient.spring.jdbc.EmbeddedTestAggregateStoreConfiguration;
+import net.chrisrichardson.eventstore.examples.customersandorders.customersservice.web.CustomerWebConfiguration;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordershistoryviewservice.web.OrderHistoryViewWebConfiguration;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.web.OrderWebConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
@@ -17,8 +17,8 @@ import java.util.Arrays;
 import java.util.List;
 
 @Configuration
-@Import({CustomerWebConfiguration.class, OrderWebConfiguration.class, OrderHistoryWebConfiguration.class,
-          EventuateJdbcEventStoreConfiguration.class})
+@Import({CustomerWebConfiguration.class, OrderWebConfiguration.class, OrderHistoryViewWebConfiguration.class,
+        EmbeddedTestAggregateStoreConfiguration.class})
 @EnableAutoConfiguration
 public class CustomersAndOrdersWebTestConfiguration {
 

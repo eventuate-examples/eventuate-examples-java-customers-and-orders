@@ -1,9 +1,7 @@
 dependencies {
-    compile project(":customers-command-side-backend")
-    compile project(":orders-command-side-backend")
-    compile project(":order-history-query-side-backend")
+    compile project(":common")
+    compile project(":orders-history-common")
 
     compile "io.reactivex:rxjava:1.1.5"
     compile "junit:junit:4.11"
-
 }
