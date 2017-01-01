@@ -3,7 +3,7 @@ package net.chrisrichardson.eventstore.examples.customersandorders.common.custom
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-public class CustomerCreditLimitedExceededEvent implements CustomerEvent {
+public class CustomerCreditLimitExceededEvent implements CustomerEvent {
   private String orderId;
 
   @Override
@@ -16,10 +16,10 @@ public class CustomerCreditLimitedExceededEvent implements CustomerEvent {
     return HashCodeBuilder.reflectionHashCode(this);
   }
 
-  public CustomerCreditLimitedExceededEvent() {
+  public CustomerCreditLimitExceededEvent() {
   }
 
-  public CustomerCreditLimitedExceededEvent(String orderId) {
+  public CustomerCreditLimitExceededEvent(String orderId) {
     this.orderId = orderId;
   }
 
