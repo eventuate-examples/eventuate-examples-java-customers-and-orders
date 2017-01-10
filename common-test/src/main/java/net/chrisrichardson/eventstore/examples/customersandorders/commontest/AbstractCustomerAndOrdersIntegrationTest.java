@@ -1,6 +1,5 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.commontest;
 
-
 import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.Money;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.order.OrderState;
 import net.chrisrichardson.eventstore.examples.customersandorders.ordershistorycommon.CustomerView;

@@ -1,4 +1,4 @@
-package net.chrisrichardson.eventstore.examples.customersandorders.common.customer.events;
+package net.chrisrichardson.eventstore.examples.customersandorders.common.customer;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;

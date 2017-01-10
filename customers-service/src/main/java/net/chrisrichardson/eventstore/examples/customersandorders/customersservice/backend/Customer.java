@@ -3,9 +3,9 @@ package net.chrisrichardson.eventstore.examples.customersandorders.customersserv
 import io.eventuate.Event;
 import io.eventuate.EventUtil;
 import io.eventuate.ReflectiveMutableCommandProcessingAggregate;
-import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.events.CustomerCreditLimitExceededEvent;
-import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.events.CustomerCreditReservedEvent;
-import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.events.CustomerCreatedEvent;
+import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.CustomerCreditLimitExceededEvent;
+import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.CustomerCreditReservedEvent;
+import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.CustomerCreatedEvent;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.Money;
 
 import java.util.HashMap;
