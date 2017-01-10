@@ -3,9 +3,9 @@ package net.chrisrichardson.eventstore.examples.customersandorders.customersserv
 import io.eventuate.Event;
 import io.eventuate.EventUtil;
 import io.eventuate.ReflectiveMutableCommandProcessingAggregate;
-import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.CustomerCreatedEvent;
-import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.CustomerCreditLimitedExceededEvent;
-import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.CustomerCreditReservedEvent;
+import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.events.CustomerCreditLimitExceededEvent;
+import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.events.CustomerCreditReservedEvent;
+import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.events.CustomerCreatedEvent;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.Money;
 
 import java.util.HashMap;
@@ -33,7 +33,7 @@ public class Customer extends ReflectiveMutableCommandProcessingAggregate<Custom
     if (availableCredit().isGreaterThanOrEqual(cmd.getOrderTotal()))
       return EventUtil.events(new CustomerCreditReservedEvent(cmd.getOrderId(), cmd.getOrderTotal()));
     else
-      return EventUtil.events(new CustomerCreditLimitedExceededEvent(cmd.getOrderId()));
+      return EventUtil.events(new CustomerCreditLimitExceededEvent(cmd.getOrderId()));
   }
 
 
@@ -46,7 +46,7 @@ public class Customer extends ReflectiveMutableCommandProcessingAggregate<Custom
     this.creditReservations.put(event.getOrderId(), event.getOrderTotal());
   }
 
-  public void apply(CustomerCreditLimitedExceededEvent event) {
+  public void apply(CustomerCreditLimitExceededEvent event) {
     // Do nothing
   }
 

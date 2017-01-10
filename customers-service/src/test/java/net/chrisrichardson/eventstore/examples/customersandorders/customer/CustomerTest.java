@@ -2,9 +2,9 @@ package net.chrisrichardson.eventstore.examples.customersandorders.customer;
 
 import io.eventuate.Event;
 import io.eventuate.EventUtil;
-import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.CustomerCreatedEvent;
-import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.CustomerCreditLimitedExceededEvent;
-import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.CustomerCreditReservedEvent;
+import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.events.CustomerCreatedEvent;
+import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.events.CustomerCreditLimitExceededEvent;
+import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.events.CustomerCreditReservedEvent;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.Money;
 import net.chrisrichardson.eventstore.examples.customersandorders.customersservice.backend.CreateCustomerCommand;
 import net.chrisrichardson.eventstore.examples.customersandorders.customersservice.backend.Customer;
@@ -68,9 +68,9 @@ public class CustomerTest {
 
     List<Event> events = customer.process(new ReserveCreditCommand(orderTotal, orderId));
 
-    assertEquals(EventUtil.events(new CustomerCreditLimitedExceededEvent(orderId)), events);
+    assertEquals(EventUtil.events(new CustomerCreditLimitExceededEvent(orderId)), events);
 
-    customer.apply((CustomerCreditLimitedExceededEvent) events.get(0));
+    customer.apply((CustomerCreditLimitExceededEvent) events.get(0));
 
     assertEquals(creditLimit, customer.getCreditLimit());
     assertEquals(creditLimit, customer.availableCredit());
