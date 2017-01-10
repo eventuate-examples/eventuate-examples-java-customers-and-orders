@@ -1,10 +1,11 @@
 dependencies {
-    testCompile project(":customers-command-side-web")
-    testCompile project(":orders-command-side-web")
-    testCompile project(":order-history-query-side-web")
     testCompile project(":common-test")
+    testCompile project(":customers-service")
+    testCompile project(":orders-history-view-service")
+    testCompile project(":orders-service")
 
     testCompile "junit:junit:4.11"
+    testCompile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
     testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
     testCompile "io.eventuate.client.java:eventuate-client-java-jdbc:$eventuateClientVersion"
 }

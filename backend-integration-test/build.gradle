@@ -1,4 +1,7 @@
 dependencies {
+    testCompile project(":customers-service")
+    testCompile project(":orders-history-view-service")
+    testCompile project(":orders-service")
     testCompile project(":common-test")
 
     testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"

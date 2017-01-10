@@ -1,18 +1,16 @@
 include "common"
-include "customers-command-side-backend"
-include "orders-command-side-backend"
-include "order-history-query-side-backend"
-include "order-history-query-side-web"
 include "common-test"
+include 'common-swagger'
+include 'orders-history-common'
+include 'customers-common'
+include 'orders-common'
+include 'customers-service'
+include 'orders-history-view-service'
+include 'orders-service'
+
 include "backend-integration-test"
-include "orders-command-side-web"
-include "customers-command-side-web"
 include "web-test"
 include "e2e-test"
 
 rootProject.name = "java-customers-and-orders"
-include 'common-swagger'
-include 'customers-command-side-service'
-include 'order-history-query-side-service'
-include 'orders-command-side-service'
 
