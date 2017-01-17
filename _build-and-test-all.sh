@@ -20,11 +20,11 @@ fi
 
 DOCKER_COMPOSE="docker-compose -p java-customers-and-orders"
 
-if [ "$1" = "-f" ] ; then
+while [ "$1" = "-f" ] ; do
   shift;
   DOCKER_COMPOSE="$DOCKER_COMPOSE -f ${1?}"
   shift
-fi
+done
 
 if [ "$1" = "--use-existing" ] ; then
   shift;
@@ -42,7 +42,7 @@ fi
 
 ${DOCKER_COMPOSE?} up -d mongodb $EXTRA_INFRASTRUCTURE_SERVICES
 
-./gradlew --stacktrace $* build -x :e2e-test:test
+./gradlew --stacktrace $BUILD_AND_TEST_ALL_EXTRA_GRADLE_ARGS $* build -x :e2e-test:test
 
 if [ -z "$EVENTUATE_LOCAL" ] && [ -z "$EVENTUATE_API_KEY_ID" -o -z "$EVENTUATE_API_KEY_SECRET" ] ; then
   echo You must set EVENTUATE_API_KEY_ID and  EVENTUATE_API_KEY_SECRET
@@ -57,12 +57,9 @@ ${DOCKER_COMPOSE?} up -d
 
 set -e
 
-./gradlew -a $* :e2e-test:cleanTest :e2e-test:test -P ignoreE2EFailures=false
+./gradlew -a $BUILD_AND_TEST_ALL_EXTRA_GRADLE_ARGS $* :e2e-test:cleanTest :e2e-test:test -P ignoreE2EFailures=false
 
 if [ $NO_RM = false ] ; then
   ${DOCKER_COMPOSE?} stop
   ${DOCKER_COMPOSE?} rm -v --force
 fi
-
-
-
