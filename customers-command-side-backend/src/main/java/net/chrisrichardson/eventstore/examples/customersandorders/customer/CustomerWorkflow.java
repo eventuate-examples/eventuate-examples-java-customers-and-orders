@@ -9,11 +9,12 @@ import net.chrisrichardson.eventstore.examples.customersandorders.common.order.O
 
 import java.util.concurrent.CompletableFuture;
 
-@EventSubscriber(id="customerWorkflow")
+@EventSubscriber(id = "customerWorkflow")
 public class CustomerWorkflow {
 
   @EventHandlerMethod
-  public CompletableFuture<EntityWithIdAndVersion<Customer>> reserveCredit(EventHandlerContext<OrderCreatedEvent> ctx) {
+  public CompletableFuture<EntityWithIdAndVersion<Customer>> reserveCredit(
+          EventHandlerContext<OrderCreatedEvent> ctx) {
     OrderCreatedEvent event = ctx.getEvent();
     Money orderTotal = event.getOrderTotal();
     String customerId = event.getCustomerId();
