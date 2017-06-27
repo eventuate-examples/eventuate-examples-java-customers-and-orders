@@ -13,6 +13,11 @@ if [ -z "$DOCKER_HOST_IP" ] ; then
   echo set DOCKER_HOST_IP $DOCKER_HOST_IP
 fi
 
+if [ -z "$EVENTUATE_LOCAL" ] && [ -z "$EVENTUATE_API_KEY_ID" -o -z "$EVENTUATE_API_KEY_SECRET" ] ; then
+  echo You must set EVENTUATE_API_KEY_ID and  EVENTUATE_API_KEY_SECRET
+  exit -1
+fi
+
 if [ -z "$SPRING_DATA_MONGODB_URI" ] ; then
   export SPRING_DATA_MONGODB_URI=mongodb://${DOCKER_HOST_IP?}/customers_orders
   echo Set SPRING_DATA_MONGODB_URI $SPRING_DATA_MONGODB_URI
@@ -44,10 +49,6 @@ ${DOCKER_COMPOSE?} up -d mongodb $EXTRA_INFRASTRUCTURE_SERVICES
 
 ./gradlew --stacktrace $BUILD_AND_TEST_ALL_EXTRA_GRADLE_ARGS $* build -x :e2e-test:test
 
-if [ -z "$EVENTUATE_LOCAL" ] && [ -z "$EVENTUATE_API_KEY_ID" -o -z "$EVENTUATE_API_KEY_SECRET" ] ; then
-  echo You must set EVENTUATE_API_KEY_ID and  EVENTUATE_API_KEY_SECRET
-  exit -1
-fi
 
 ${DOCKER_COMPOSE?} build
 
