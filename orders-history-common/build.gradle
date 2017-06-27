@@ -2,5 +2,5 @@ dependencies {
     compile project(":common")
     compile "org.springframework.boot:spring-boot-starter-data-mongodb:$springBootVersion"
 
-    testCompile "junit:junit:4.11"
+    testCompile "junit:junit:4.12"
 }

@@ -3,6 +3,8 @@ package net.chrisrichardson.eventstore.examples.customersandorders.common.domain
 
 import org.junit.Test;
 
+import java.math.BigDecimal;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -10,6 +12,11 @@ public class MoneyTest {
 
   private Money m1 = new Money(10);
   private Money m2 = new Money(15);
+
+  @Test
+  public void shouldReturnAmount() {
+    assertEquals(new BigDecimal(10), new Money(10).getAmount());
+  }
 
   @Test
   public void shouldCompare() {

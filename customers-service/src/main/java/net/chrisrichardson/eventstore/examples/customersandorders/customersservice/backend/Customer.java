@@ -3,22 +3,21 @@ package net.chrisrichardson.eventstore.examples.customersandorders.customersserv
 import io.eventuate.Event;
 import io.eventuate.EventUtil;
 import io.eventuate.ReflectiveMutableCommandProcessingAggregate;
+import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.CustomerCreatedEvent;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.CustomerCreditLimitExceededEvent;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.CustomerCreditReservedEvent;
-import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.CustomerCreatedEvent;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.Money;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Customer extends ReflectiveMutableCommandProcessingAggregate<Customer, CustomerCommand> {
 
+  private ReservedCreditTracker reservedCreditTracker;
+
   private Money creditLimit;
-  private Map<String, Money> creditReservations;
 
   public Money availableCredit() {
-    return creditLimit.subtract(creditReservations.values().stream().reduce(Money.ZERO, Money::add));
+    return creditLimit.subtract(reservedCreditTracker.reservedCredit());
   }
 
   public Money getCreditLimit() {
@@ -39,11 +38,11 @@ public class Customer extends ReflectiveMutableCommandProcessingAggregate<Custom
 
   public void apply(CustomerCreatedEvent event) {
     this.creditLimit = event.getCreditLimit();
-    this.creditReservations = new HashMap<>();
+    this.reservedCreditTracker = new ReservedCreditTracker();
   }
 
   public void apply(CustomerCreditReservedEvent event) {
-    this.creditReservations.put(event.getOrderId(), event.getOrderTotal());
+    reservedCreditTracker.addReservation(event.getOrderId(), event.getOrderTotal());
   }
 
   public void apply(CustomerCreditLimitExceededEvent event) {

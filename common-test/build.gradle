@@ -3,6 +3,6 @@ dependencies {
     compile project(":orders-history-common")
 
     compile "io.reactivex:rxjava:1.1.5"
-    compile "junit:junit:4.11"
+    compile "junit:junit:4.12"
 
 }
