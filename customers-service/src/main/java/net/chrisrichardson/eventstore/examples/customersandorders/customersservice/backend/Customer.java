@@ -15,6 +15,7 @@ public class Customer extends ReflectiveMutableCommandProcessingAggregate<Custom
   private ReservedCreditTracker reservedCreditTracker;
 
   private Money creditLimit;
+  private Object name;
 
   public Money availableCredit() {
     return creditLimit.subtract(reservedCreditTracker.reservedCredit());
@@ -50,6 +51,9 @@ public class Customer extends ReflectiveMutableCommandProcessingAggregate<Custom
   }
 
 
+  public Object getName() {
+    return name;
+  }
 }
 
 

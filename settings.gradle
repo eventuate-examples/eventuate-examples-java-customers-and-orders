@@ -8,7 +8,5 @@ include 'customers-service'
 include 'orders-history-view-service'
 include 'orders-service'
 
-include "backend-integration-test"
-include "web-test"
 include "e2e-test"
 

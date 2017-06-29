@@ -1,16 +1,62 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath "io.spring.gradle:dependency-management-plugin:0.6.0.RELEASE"
+        // if using Stub Runner (consumer side) only remove this dependency
+        classpath "org.springframework.cloud:spring-cloud-contract-gradle-plugin:1.1.1.RELEASE"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "com.avast.gradle:docker-compose-gradle-plugin:$dockerComposePluginVersion"
+    }
+}
+
+
+
+apply plugin: "io.spring.dependency-management"
+// apply plugin: 'spring-cloud-contract'
+
+dependencyManagement {
+    imports {
+            mavenBom 'org.springframework.cloud:spring-cloud-contract-dependencies:1.1.1.RELEASE'
+    }
+}
+
 apply plugin: VerifyEventStoreEnvironmentPlugin
 apply plugin: EventuateDependencyPlugin
-
 apply plugin: 'spring-boot'
+
+apply plugin: 'docker-compose'
+
+dockerCompose.isRequiredBy(test)
+
+dockerCompose {
+    if (System.getenv("EVENTUATE_LOCAL"))
+        useComposeFiles = ['docker-compose-integration-tests-eventuate-local.yml']
+    else
+        useComposeFiles = ['docker-compose-integration-tests.yml']
+}
 
 dependencies {
     compile project(":orders-common")
     compile project(":common-swagger")
 
+    compile "org.springframework.boot:spring-boot-starter:$springBootVersion"
     compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
     compile "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
 
+
+    testCompile "net.chrisrichardson.eventstore.examples.customersandorders:common-contracts:1.0-SNAPSHOT:stubs"
+
+    testCompile "io.eventuate.client.java:eventuate-client-java-jdbc:$eventuateClientVersion"
+    testCompile project(":customers-common")
+    testCompile "org.springframework.cloud:spring-cloud-contract-wiremock"
+    testCompile "org.springframework.cloud:spring-cloud-starter-contract-stub-runner"
     testCompile "junit:junit:4.12"
     testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
     testCompile "io.eventuate.client.java:eventuate-client-java-jdbc:$eventuateClientVersion"
+    testCompile 'com.jayway.restassured:rest-assured:2.3.0'
+    testCompile "com.jayway.jsonpath:json-path:2.3.0"
 }
+

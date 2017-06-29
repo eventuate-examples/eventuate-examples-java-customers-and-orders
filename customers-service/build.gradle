@@ -1,3 +1,32 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "io.spring.gradle:dependency-management-plugin:0.6.0.RELEASE"
+        // if using Stub Runner (consumer side) only remove this dependency
+        classpath "org.springframework.cloud:spring-cloud-contract-gradle-plugin:1.1.1.RELEASE"
+    }
+}
+
+apply plugin: "io.spring.dependency-management"
+apply plugin: 'spring-cloud-contract'
+
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.cloud:spring-cloud-contract-dependencies:1.1.1.RELEASE'
+    }
+}
+
+dependencies {
+    testCompile 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
+}
+
+contracts {
+    contractsDslDir = new File("../common-contracts/src/main/resources/contracts")
+    baseClassForTests = 'net.chrisrichardson.eventstore.examples.customersandorders.customersservice.web.AbstractCustomerServiceContractTest'
+}
+
 apply plugin: VerifyEventStoreEnvironmentPlugin
 apply plugin: EventuateDependencyPlugin
 
@@ -7,9 +36,13 @@ dependencies {
     compile project(":customers-common")
     compile project(":common-swagger")
 
+    testCompile 'com.jayway.restassured:rest-assured:2.9.0'
+    testCompile 'com.jayway.restassured:spring-mock-mvc:2.9.0'
+
     compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
     compile "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
 
+    testCompile "net.chrisrichardson.eventstore.examples.customersandorders:common-contracts:1.0-SNAPSHOT"
     testCompile 'com.pholser:junit-quickcheck-core:0.7'
     testCompile 'com.pholser:junit-quickcheck-generators:0.7'
     testCompile "junit:junit:4.12"

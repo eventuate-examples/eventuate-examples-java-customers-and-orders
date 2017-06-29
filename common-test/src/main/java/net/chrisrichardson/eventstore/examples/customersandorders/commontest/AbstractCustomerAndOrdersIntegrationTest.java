@@ -10,11 +10,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import static org.junit.Assert.assertEquals;
 import static net.chrisrichardson.eventstore.examples.customersandorders.commontest.TestUtil.eventually;
+import static org.junit.Assert.fail;
 
 public abstract class AbstractCustomerAndOrdersIntegrationTest {
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
     private final Money creditLimit = new Money(1000);
+
+    protected class IntegrationTestCustomerNotFoundException extends RuntimeException {
+        public IntegrationTestCustomerNotFoundException(Throwable cause) {
+            super(cause);
+        }
+    }
 
     @Test
     public void shouldCreateAndApproveOrder() {
@@ -56,6 +63,19 @@ public abstract class AbstractCustomerAndOrdersIntegrationTest {
         assertEquals(creditLimit, customerView.getCreditLimit());
         assertEquals(orderTotal, customerView.getOrders().get(orderId).getOrderTotal());
 
+    }
+
+    @Test
+    public void shouldRejectOrderWithInvalidCustomerId() {
+
+        Money orderTotal = new Money(720);
+
+        try {
+            createOrder("unknown-customer-id", orderTotal);
+            fail();
+        } catch (IntegrationTestCustomerNotFoundException e) {
+            // Expected
+        }
     }
 
     protected abstract CustomerView getCustomerView(String customerId);

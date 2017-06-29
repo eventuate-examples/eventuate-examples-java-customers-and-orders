@@ -1,8 +1,27 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "com.avast.gradle:docker-compose-gradle-plugin:$dockerComposePluginVersion"
+    }
+}
+
 apply plugin: VerifyMongoDBConfigurationPlugin
 apply plugin: VerifyEventStoreEnvironmentPlugin
 apply plugin: EventuateDependencyPlugin
 
 apply plugin: 'spring-boot'
+
+apply plugin: 'docker-compose'
+
+dockerCompose.isRequiredBy(test)
+
+dockerCompose {
+    useComposeFiles = ['docker-compose-integration-tests.yml']
+}
 
 dependencies {
     compile project(":orders-history-common")

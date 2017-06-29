@@ -12,8 +12,7 @@ import net.chrisrichardson.eventstore.examples.customersandorders.ordershistoryc
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -26,8 +25,7 @@ import static net.chrisrichardson.eventstore.examples.customersandorders.commont
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = CustomersAndOrdersE2ETestConfiguration.class)
-@WebIntegrationTest
+@SpringBootTest(classes = CustomersAndOrdersE2ETestConfiguration.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class CustomersAndOrdersE2ETest extends AbstractCustomerAndOrdersIntegrationTest {
 
   @Value("#{systemEnvironment['DOCKER_HOST_IP']}")
@@ -88,10 +86,19 @@ public class CustomersAndOrdersE2ETest extends AbstractCustomerAndOrdersIntegrat
 
   @Override
   protected String createOrder(String customerId, Money orderTotal) {
-    ResponseEntity<CreateOrderResponse> orderResponse =
-            restTemplate.postForEntity(baseUrlOrders("orders"), new CreateOrderRequest(customerId, orderTotal), CreateOrderResponse.class);
-    assertEquals(HttpStatus.OK, orderResponse.getStatusCode());
-    return orderResponse.getBody().getOrderId();
+    try {
+      ResponseEntity<CreateOrderResponse> orderResponse =
+              restTemplate.postForEntity(baseUrlOrders("orders"), new CreateOrderRequest(customerId, orderTotal), CreateOrderResponse.class);
+      assertEquals(HttpStatus.OK, orderResponse.getStatusCode());
+      return orderResponse.getBody().getOrderId();
+    } catch (HttpClientErrorException e) {
+      switch (e.getStatusCode()) {
+        case BAD_REQUEST:
+          throw new IntegrationTestCustomerNotFoundException(e);
+        default:
+          throw e;
+      }
+    }
   }
 
   @Override

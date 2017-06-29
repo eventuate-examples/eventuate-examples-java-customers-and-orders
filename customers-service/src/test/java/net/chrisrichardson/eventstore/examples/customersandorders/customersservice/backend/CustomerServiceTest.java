@@ -1,12 +1,10 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.customersservice.backend;
 
-import io.eventuate.AggregateRepository;
 import io.eventuate.EntityWithIdAndVersion;
+import io.eventuate.sync.AggregateRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-
-import java.util.concurrent.CompletableFuture;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
@@ -29,11 +27,12 @@ public class CustomerServiceTest {
 
   @Test
   public void shouldCreateCustomer() {
-    CompletableFuture<EntityWithIdAndVersion<Customer>> returned = new CompletableFuture<>();
+
+    EntityWithIdAndVersion<Customer> returned = new EntityWithIdAndVersion<>(null, null);
 
     when(aggregateRepository.save(any(CreateCustomerCommand.class))).thenReturn(returned);
 
-    CompletableFuture<EntityWithIdAndVersion<Customer>> result =
+    EntityWithIdAndVersion<Customer> result =
             customerService.createCustomer(CustomerMother.name, CustomerMother.creditLimit);
 
     assertSame(returned, result);

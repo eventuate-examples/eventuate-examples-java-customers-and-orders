@@ -54,8 +54,6 @@ customercommandside:
   extends:
     file: docker-compose-common.yml
     service: customercommandside
-  volumes:
-    - ./customers-command-side-service/build/libs:/app
   links:
     - mysql
     - kafka
@@ -74,8 +72,6 @@ orderhistoryqueryside:
   extends:
     file: docker-compose-common.yml
     service: orderhistoryqueryside
-  volumes:
-    - ./order-history-query-side-service/build/libs:/app
   links:
     - mongodb
     - mysql
@@ -96,12 +92,11 @@ ordercommandside:
   extends:
     file: docker-compose-common.yml
     service: ordercommandside
-  volumes:
-    - ./orders-command-side-service/build/libs:/app
   links:
     - mysql
     - kafka
     - zookeeper
+    - customercommandside
   environment:
     SPRING_DATASOURCE_URL: jdbc:mysql://mysql/eventuate
     SPRING_DATASOURCE_USERNAME: mysqluser

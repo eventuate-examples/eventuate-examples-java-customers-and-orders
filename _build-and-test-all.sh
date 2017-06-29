@@ -2,17 +2,6 @@
 
 set -e
 
-if [ -z "$DOCKER_HOST_IP" ] ; then
-  if [ -z "$DOCKER_HOST" ] ; then
-    export DOCKER_HOST_IP=`hostname`
-  else
-    echo using ${DOCKER_HOST?}
-    XX=${DOCKER_HOST%\:*}
-    export DOCKER_HOST_IP=${XX#tcp\:\/\/}
-  fi
-  echo set DOCKER_HOST_IP $DOCKER_HOST_IP
-fi
-
 if [ -z "$EVENTUATE_LOCAL" ] && [ -z "$EVENTUATE_API_KEY_ID" -o -z "$EVENTUATE_API_KEY_SECRET" ] ; then
   echo You must set EVENTUATE_API_KEY_ID and  EVENTUATE_API_KEY_SECRET
   exit -1
@@ -23,7 +12,7 @@ if [ -z "$SPRING_DATA_MONGODB_URI" ] ; then
   echo Set SPRING_DATA_MONGODB_URI $SPRING_DATA_MONGODB_URI
 fi
 
-DOCKER_COMPOSE="docker-compose -p java-customers-and-orders"
+DOCKER_COMPOSE="docker-compose"
 
 while [ "$1" = "-f" ] ; do
   shift;
@@ -45,10 +34,15 @@ if [ "$1" = "--no-rm" ] ; then
   shift
 fi
 
-${DOCKER_COMPOSE?} up -d mongodb $EXTRA_INFRASTRUCTURE_SERVICES
+(cd common-contracts ; ./mvnw install)
+
+./gradlew --stacktrace $BUILD_AND_TEST_ALL_EXTRA_GRADLE_ARGS $* testClasses
+
+if [ ! -z "$EXTRA_INFRASTRUCTURE_SERVICES" ]; then
+   ${DOCKER_COMPOSE?} up -d $EXTRA_INFRASTRUCTURE_SERVICES
+fi
 
 ./gradlew --stacktrace $BUILD_AND_TEST_ALL_EXTRA_GRADLE_ARGS $* build -x :e2e-test:test
-
 
 ${DOCKER_COMPOSE?} build
 

@@ -1,10 +1,9 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.customersservice.backend;
 
-import io.eventuate.AggregateRepository;
+import io.eventuate.sync.AggregateRepository;
 import io.eventuate.EntityWithIdAndVersion;
+import io.eventuate.EntityWithMetadata;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.Money;
-
-import java.util.concurrent.CompletableFuture;
 
 public class CustomerServiceImpl implements CustomerService {
 
@@ -15,7 +14,12 @@ public class CustomerServiceImpl implements CustomerService {
   }
 
   @Override
-  public CompletableFuture<EntityWithIdAndVersion<Customer>> createCustomer(String name, Money creditLimit) {
+  public EntityWithIdAndVersion<Customer> createCustomer(String name, Money creditLimit) {
     return customerRepository.save(new CreateCustomerCommand(name, creditLimit));
+  }
+
+  @Override
+  public EntityWithMetadata<Customer> findById(String customerId) {
+    return customerRepository.find(customerId);
   }
 }

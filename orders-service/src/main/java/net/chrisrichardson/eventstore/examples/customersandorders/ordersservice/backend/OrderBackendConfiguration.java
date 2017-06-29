@@ -1,13 +1,16 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.backend;
 
-import io.eventuate.AggregateRepository;
-import io.eventuate.EventuateAggregateStore;
 import io.eventuate.javaclient.spring.EnableEventHandlers;
+import io.eventuate.sync.AggregateRepository;
+import io.eventuate.sync.EventuateAggregateStore;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
 @EnableEventHandlers
+@Import(CustomerServiceProxyConfiguration.class)
 public class OrderBackendConfiguration {
 
   @Bean
@@ -15,10 +18,10 @@ public class OrderBackendConfiguration {
     return new OrderWorkflow();
   }
 
-
   @Bean
-  public OrderService orderService(AggregateRepository<Order, OrderCommand> orderRepository) {
-    return new OrderServiceImpl(orderRepository);
+  public OrderService orderService(AggregateRepository<Order, OrderCommand> orderRepository,
+                                   CustomerService customerServiceProxy) {
+    return new OrderServiceImpl(orderRepository, customerServiceProxy);
   }
 
   @Bean

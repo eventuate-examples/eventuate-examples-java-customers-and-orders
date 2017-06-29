@@ -2,8 +2,6 @@ customercommandside:
   extends:
     file: docker-compose-common.yml
     service: customercommandside
-  volumes:
-    - ./customers-command-side-service/build/libs:/app
   environment:
     EVENTUATE_API_KEY_ID: ${EVENTUATE_API_KEY_ID}
     EVENTUATE_API_KEY_SECRET: ${EVENTUATE_API_KEY_SECRET}
@@ -12,8 +10,6 @@ orderhistoryqueryside:
   extends:
     file: docker-compose-common.yml
     service: orderhistoryqueryside
-  volumes:
-    - ./order-history-query-side-service/build/libs:/app
   links:
     - mongodb
   environment:
@@ -24,8 +20,8 @@ ordercommandside:
   extends:
     file: docker-compose-common.yml
     service: ordercommandside
-  volumes:
-    - ./orders-command-side-service/build/libs:/app
+  links:
+      - customercommandside
   environment:
     EVENTUATE_API_KEY_ID: ${EVENTUATE_API_KEY_ID}
     EVENTUATE_API_KEY_SECRET: ${EVENTUATE_API_KEY_SECRET}
