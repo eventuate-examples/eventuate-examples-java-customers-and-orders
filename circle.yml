@@ -6,6 +6,7 @@ machine:
 
 dependencies:
   override:
+    - cd common-contracts ; ./mvnw install
     - ./gradlew testClasses
 
 test:
