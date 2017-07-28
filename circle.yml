@@ -11,7 +11,7 @@ dependencies:
 
 test:
   override:
-    - TERM=dumb sudo service mongodb stop
+    - TERM=dumb sudo service mongod stop
     - TERM=dumb ./build-and-test-all.sh
   post:
     - mkdir -p $CIRCLE_TEST_REPORTS/junit/
