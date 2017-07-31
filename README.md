@@ -79,3 +79,23 @@ Finally, you can use the Swagger UI provided by the services to create customers
 * `http://${DOCKER_HOST_IP?}:8082/swagger-ui.html` - View the customer and the order
 
 (Hint: best to open these URLs in separate tabs)
+
+## Deploying using Docker Stack/Swarm
+
+You can also deploy the application using Docker Stack/Swarm mode.
+
+Eventuate SaaS version:
+
+```
+./gradlew assemble
+docker-compose build
+docker stack deploy -c docker-stack.yml customers-and-orders
+```
+
+Eventuate Local version:
+
+```
+./gradlew assemble -P eventuateDriver=local
+docker-compose -f docker-compose-eventuate-local.yml build
+docker stack deploy -c docker-stack-eventuate-local.yml customers-and-orders
+```

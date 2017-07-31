@@ -2,7 +2,7 @@ version: '3'
 
 services:
   customercommandside:
-    build: ./customers-service/
+    image: eventuateexamplesjavacustomersandorders_customercommandside
     ports:
       - "8081:8080"
     environment:
@@ -10,10 +10,10 @@ services:
       EVENTUATE_API_KEY_SECRET: ${EVENTUATE_API_KEY_SECRET}
 
   orderhistoryqueryside:
-    build: ./orders-history-view-service/
+    image: eventuateexamplesjavacustomersandorders_orderhistoryqueryside
     ports:
       - "8082:8080"
-    links:
+    depends_on:
       - mongodb
     environment:
       SPRING_DATA_MONGODB_URI: mongodb://mongodb/clients_and_orders
@@ -21,10 +21,10 @@ services:
       EVENTUATE_API_KEY_SECRET: ${EVENTUATE_API_KEY_SECRET}
 
   ordercommandside:
-    build: ./orders-service/
+    image: eventuateexamplesjavacustomersandorders_ordercommandside
     ports:
       - "8083:8080"
-    links:
+    depends_on:
         - customercommandside
     environment:
       CUSTOMER_SERVICE_URL: http://customercommandside:8080/customers/{customerId}
