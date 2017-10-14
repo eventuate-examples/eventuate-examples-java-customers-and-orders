@@ -2,6 +2,7 @@ package net.chrisrichardson.eventstore.examples.customersandorders.customersserv
 
 import com.jayway.restassured.module.mockmvc.RestAssuredMockMvc;
 import io.eventuate.Aggregates;
+import io.eventuate.DefaultMissingApplyEventMethodStrategy;
 import io.eventuate.EntityIdAndVersion;
 import io.eventuate.EntityNotFoundException;
 import io.eventuate.EntityWithMetadata;
@@ -13,6 +14,7 @@ import net.chrisrichardson.eventstore.examples.customersandorders.customersservi
 import org.junit.Before;
 
 import java.util.Collections;
+import java.util.Optional;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -28,10 +30,10 @@ public abstract class AbstractCustomerServiceContractTest {
     when(customerService.findById("1223232-none")).thenThrow(new EntityNotFoundException());
 
     Customer customer = Aggregates.recreateAggregate(Customer.class,
-            Collections.singletonList(new CustomerCreatedEvent("Fred", new Money(4566))));
+            Collections.singletonList(new CustomerCreatedEvent("Fred", new Money(4566))), DefaultMissingApplyEventMethodStrategy.INSTANCE);
 
     EntityWithMetadata<Customer> result =
-            new EntityWithMetadata<>(new EntityIdAndVersion("1223232", new Int128(1, 2)),
+            new EntityWithMetadata<>(new EntityIdAndVersion("1223232", new Int128(1, 2)), Optional.empty(),
             Collections.emptyList(), customer);
     when(customerService.findById("1223232"))
             .thenReturn(result);

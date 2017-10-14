@@ -4,6 +4,7 @@ import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import io.eventuate.Aggregates;
+import io.eventuate.DefaultMissingApplyEventMethodStrategy;
 import io.eventuate.Event;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.CustomerCreatedEvent;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.CustomerCreditLimitExceededEvent;
@@ -22,7 +23,7 @@ public class CustomerPropertyTest {
   @Property
   public void reserveCredit(@InRange(minInt = 1) int orderTotal) {
     Customer customer = Aggregates.recreateAggregate(Customer.class,
-            singletonList(new CustomerCreatedEvent(CustomerMother.name, CustomerMother.creditLimit)));
+            singletonList(new CustomerCreatedEvent(CustomerMother.name, CustomerMother.creditLimit)), DefaultMissingApplyEventMethodStrategy.INSTANCE);
 
     List<Event> events = customer.process(new ReserveCreditCommand(new Money(orderTotal), CustomerMother.orderId));
 

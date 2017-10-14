@@ -15,7 +15,7 @@ public class Customer extends ReflectiveMutableCommandProcessingAggregate<Custom
   private ReservedCreditTracker reservedCreditTracker;
 
   private Money creditLimit;
-  private Object name;
+  private String name;
 
   public Money availableCredit() {
     return creditLimit.subtract(reservedCreditTracker.reservedCredit());
@@ -38,6 +38,7 @@ public class Customer extends ReflectiveMutableCommandProcessingAggregate<Custom
 
 
   public void apply(CustomerCreatedEvent event) {
+    this.name = name;
     this.creditLimit = event.getCreditLimit();
     this.reservedCreditTracker = new ReservedCreditTracker();
   }
@@ -51,7 +52,7 @@ public class Customer extends ReflectiveMutableCommandProcessingAggregate<Custom
   }
 
 
-  public Object getName() {
+  public String getName() {
     return name;
   }
 }

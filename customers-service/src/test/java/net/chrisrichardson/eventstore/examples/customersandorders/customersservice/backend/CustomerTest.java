@@ -1,5 +1,7 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.customersservice.backend;
 
+import io.eventuate.Aggregates;
+import io.eventuate.DefaultMissingApplyEventMethodStrategy;
 import io.eventuate.Event;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.CustomerCreatedEvent;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.CustomerCreditLimitExceededEvent;
@@ -9,7 +11,6 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static io.eventuate.Aggregates.applyEventsToMutableAggregate;
 import static io.eventuate.EventUtil.events;
 import static org.junit.Assert.assertEquals;
 
@@ -30,10 +31,14 @@ public class CustomerTest {
 
     assertEventEquals(new CustomerCreatedEvent(CustomerMother.name, CustomerMother.creditLimit));
 
-    applyEventsToMutableAggregate(customer, events);
+    applyEventsToMutableAggregate();
 
     assertEquals(CustomerMother.creditLimit, customer.getCreditLimit());
     assertEquals(CustomerMother.creditLimit, customer.availableCredit());
+  }
+
+  private void applyEventsToMutableAggregate() {
+    Aggregates.applyEventsToMutableAggregate(customer, events, DefaultMissingApplyEventMethodStrategy.INSTANCE);
   }
 
 
@@ -45,7 +50,7 @@ public class CustomerTest {
 
     assertEventEquals(new CustomerCreditReservedEvent(CustomerMother.orderId, CustomerMother.orderTotalWithinCreditLimit));
 
-    applyEventsToMutableAggregate(customer, events);
+    applyEventsToMutableAggregate();
 
     assertEquals(CustomerMother.creditLimit, customer.getCreditLimit());
     assertEquals(CustomerMother.creditLimit.subtract(CustomerMother.orderTotalWithinCreditLimit), customer.availableCredit());
@@ -61,7 +66,7 @@ public class CustomerTest {
 
     assertEventEquals(new CustomerCreditLimitExceededEvent(CustomerMother.orderId));
 
-    applyEventsToMutableAggregate(customer, events);
+    applyEventsToMutableAggregate();
 
     assertEquals(CustomerMother.creditLimit, customer.getCreditLimit());
     assertEquals(CustomerMother.creditLimit, customer.availableCredit());
@@ -78,7 +83,7 @@ public class CustomerTest {
 
   private void initializeCustomer() {
     process(new CreateCustomerCommand(CustomerMother.name, CustomerMother.creditLimit));
-    applyEventsToMutableAggregate(customer, events);
+    applyEventsToMutableAggregate();
   }
 
 }
