@@ -8,12 +8,12 @@ jobs:
       - restore_cache:
           key: eventuate-examples-java-customers-and-orders-{{ checksum "build.gradle" }}
       - run:
-        command: |
-          export TERM=dumb
-          cd common-contracts
-          ./mvnw install
-          cd ..
-          ./gradlew testClasses
+          command: |
+            export TERM=dumb
+            cd common-contracts
+            ./mvnw install
+            cd ..
+            ./gradlew testClasses
       - save_cache:
           paths:
             - ~/.gradle
