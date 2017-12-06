@@ -7,10 +7,12 @@ jobs:
       - checkout
       - restore_cache:
           key: eventuate-examples-java-customers-and-orders-{{ checksum "build.gradle" }}
+      - run: TERM=dumb (cd common-contracts ; ./mvnw install)
       - run: TERM=dumb ./gradlew testClasses
       - save_cache:
           paths:
             - ~/.gradle
+            - ~/.m2
           key: eventuate-examples-java-customers-and-orders-{{ checksum "build.gradle" }}
       - run: TERM=dumb ./build-and-test-all-eventuate-local.sh
       - run: TERM=dumb ./build-and-test-all.sh
