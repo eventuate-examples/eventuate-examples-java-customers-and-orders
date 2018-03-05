@@ -2,6 +2,9 @@ buildscript {
     repositories {
         mavenCentral()
         jcenter()
+        maven {
+            url 'http://repo.spring.io/milestone'
+        }
     }
     dependencies {
         classpath "io.spring.gradle:dependency-management-plugin:0.6.0.RELEASE"
@@ -12,20 +15,26 @@ buildscript {
     }
 }
 
-
-
 apply plugin: "io.spring.dependency-management"
 // apply plugin: 'spring-cloud-contract'
 
 dependencyManagement {
     imports {
-            mavenBom 'org.springframework.cloud:spring-cloud-contract-dependencies:1.1.1.RELEASE'
+            mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Finchley.M7'
+    }
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven {
+        url 'http://repo.spring.io/milestone'
     }
 }
 
 apply plugin: VerifyEventStoreEnvironmentPlugin
 apply plugin: EventuateDependencyPlugin
-apply plugin: 'spring-boot'
+apply plugin: 'org.springframework.boot'
 
 apply plugin: 'docker-compose'
 
@@ -45,6 +54,7 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter:$springBootVersion"
     compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
     compile "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
+    compile "org.springframework.boot:spring-boot-starter-hateoas:$springBootVersion"
 
 
     testCompile "net.chrisrichardson.eventstore.examples.customersandorders:common-contracts:1.0-SNAPSHOT:stubs"

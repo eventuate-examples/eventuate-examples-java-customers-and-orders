@@ -21,8 +21,7 @@ import static junit.framework.TestCase.assertNotNull;
         webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT,
       properties = "customer.service.url=http://localhost:8888/customers/{customerId}")
 @AutoConfigureStubRunner(ids =
-        {"net.chrisrichardson.eventstore.examples.customersandorders:common-contracts:+:stubs:8080"},
-        workOffline = false)
+        {"net.chrisrichardson.eventstore.examples.customersandorders:common-contracts:+:stubs:8080"})
 @DirtiesContext
 public class OrderServiceOutOfProcessComponentTest {
 

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 public class OrderViewController {
 
@@ -23,13 +25,10 @@ public class OrderViewController {
 
   @RequestMapping(value="/orders/{orderId}", method= RequestMethod.GET)
   public ResponseEntity<OrderView> getOrder(@PathVariable String orderId) {
-
-    OrderView ov = orderViewRepository.findOne(orderId);
-    if (ov == null) {
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    } else {
-      return new ResponseEntity<>(ov, HttpStatus.OK);
-    }
+    return orderViewRepository
+            .findById(orderId)
+            .map(o -> new ResponseEntity<>(o, HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }
 
 

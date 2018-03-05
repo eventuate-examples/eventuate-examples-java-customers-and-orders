@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 public class CustomerOrderHistoryController {
 
@@ -22,12 +24,9 @@ public class CustomerOrderHistoryController {
 
   @RequestMapping(value="/customers/{customerId}", method= RequestMethod.GET)
   public ResponseEntity<CustomerView> getCustomer(@PathVariable String customerId) {
-    CustomerView customer = customerViewRepository.findOne(customerId);
+    Optional<CustomerView> customer = customerViewRepository.findById(customerId);
     System.out.println("Found customer=" + customer + " for " + customerId);
-    if (customer == null)
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    else
-      return new ResponseEntity<>(customer, HttpStatus.OK);
+    return customer.map(c -> new ResponseEntity<>(c, HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }
 
 

@@ -14,9 +14,9 @@ import org.springframework.test.context.junit4.SpringRunner;
         properties={"customer.service.url=http://localhost:8080"}
 )
 @AutoConfigureStubRunner(ids =
-        {"net.chrisrichardson.eventstore.examples.customersandorders:common-contracts:+:stubs:8080"},
-//        repositoryRoot = "file:///Users/cer/.m2/repository",
-        workOffline = false)
+        {"net.chrisrichardson.eventstore.examples.customersandorders:common-contracts:+:stubs:8080"}
+//        repositoryRoot = "file:///Users/cer/.m2/repository"
+)
 @DirtiesContext
 public class CustomerServiceProxyWireMockBasedIntegrationTest {
 

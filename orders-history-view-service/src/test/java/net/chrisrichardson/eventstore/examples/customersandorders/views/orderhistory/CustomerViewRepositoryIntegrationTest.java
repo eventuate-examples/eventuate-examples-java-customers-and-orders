@@ -9,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OrderHistoryViewServiceTestConfiguration.class,
@@ -29,7 +31,9 @@ public class CustomerViewRepositoryIntegrationTest {
     String customerName = "Fred";
 
     customerViewRepository.addCustomer(customerId, customerName, creditLimit);
-    CustomerView customerView = customerViewRepository.findOne(customerId);
+    Optional<CustomerView> customerViewOptional = customerViewRepository.findById(customerId);
+    assertTrue(customerViewOptional.isPresent());
+    CustomerView customerView = customerViewOptional.get();
 
     assertEquals(customerId, customerView.getId());
     assertEquals(customerName, customerView.getName());
