@@ -19,7 +19,7 @@ jobs:
             - ~/.gradle
             - ~/.m2
           key: eventuate-examples-java-customers-and-orders-{{ checksum "build.gradle" }}
-      - run: TERM=dumb ./build-and-test-all-eventuate-local.sh
+      - run: TERM=dumb ./build-and-test-all-eventuate-local-mysql.sh
       - run: TERM=dumb ./build-and-test-all.sh
       - run:
           name: Save test results

@@ -30,7 +30,7 @@ services:
 
 
   cdcservice:
-    image: test-eventuate-local-java-new-cdc-mysql-service
+    image: eventuateio/eventuateio-local-new-cdc-service:0.18.0.RELEASE
     ports:
       - "8099:8080"
     links:
