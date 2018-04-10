@@ -32,8 +32,14 @@ apply plugin: 'docker-compose'
 dockerCompose.isRequiredBy(test)
 
 dockerCompose {
-    if (System.getenv("EVENTUATE_LOCAL"))
-        useComposeFiles = ['docker-compose-integration-tests-eventuate-local.yml']
+    if (System.getenv("EVENTUATE_LOCAL")) {
+        if ("EventuatePolling".equals(System.getenv("SPRING_PROFILES_ACTIVE")))
+            useComposeFiles = ['docker-compose-integration-tests-eventuate-local-postgres-polling.yml']
+        else if ("PostgresWal".equals(System.getenv("SPRING_PROFILES_ACTIVE")))
+            useComposeFiles = ['docker-compose-integration-tests-eventuate-local-postgres-wal.yml']
+        else
+            useComposeFiles = ['docker-compose-integration-tests-eventuate-local-mysql.yml']
+    }
     else
         useComposeFiles = ['docker-compose-integration-tests.yml']
 }

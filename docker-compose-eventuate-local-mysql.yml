@@ -1,7 +1,7 @@
 version: '3'
 services:
   zookeeper:
-    image: eventuateio/eventuateio-local-zookeeper:0.17.0.RELEASE
+    image: eventuateio/eventuateio-local-zookeeper:0.18.0.RELEASE
     ports:
       - 2181:2181
       - 2888:2888
@@ -9,10 +9,10 @@ services:
 
 
   kafka:
-    image: eventuateio/eventuateio-local-kafka:0.17.0.RELEASE
+    image: eventuateio/eventuateio-local-kafka:0.18.0.RELEASE
     ports:
       - 9092:9092
-    depends_on:
+    links:
       - zookeeper
     environment:
       - ADVERTISED_HOST_NAME=${DOCKER_HOST_IP}
@@ -20,7 +20,7 @@ services:
       - ZOOKEEPER_SERVERS=zookeeper:2181
 
   mysql:
-    image: eventuateio/eventuateio-local-mysql:0.17.0.RELEASE
+    image: eventuateio/eventuateio-local-mysql:0.18.0.RELEASE
     ports:
       - 3306:3306
     environment:
@@ -30,10 +30,10 @@ services:
 
 
   cdcservice:
-    image: eventuateio/eventuateio-local-cdc-service:0.17.0.RELEASE
+    image: eventuateio/eventuateio-local-new-cdc-service:0.18.0.RELEASE
     ports:
       - "8099:8080"
-    depends_on:
+    links:
       - mysql
       - kafka
       - zookeeper
@@ -55,10 +55,10 @@ services:
       - "27017:27017"
 
   customercommandside:
-    image: eventuateexamplesjavacustomersandorders_customercommandside
+    build: ./customers-service/
     ports:
       - "8081:8080"
-    depends_on:
+    links:
       - mysql
       - kafka
       - zookeeper
@@ -73,10 +73,10 @@ services:
       EVENTUATELOCAL_CDC_DB_PASSWORD: rootpassword
 
   orderhistoryqueryside:
-    image: eventuateexamplesjavacustomersandorders_orderhistoryqueryside
+    build: ./orders-history-view-service/
     ports:
       - "8082:8080"
-    depends_on:
+    links:
       - mongodb
       - mysql
       - kafka
@@ -94,10 +94,10 @@ services:
       SPRING_DATA_MONGODB_URI: mongodb://mongodb/clients_and_orders
 
   ordercommandside:
-    image: eventuateexamplesjavacustomersandorders_ordercommandside
+    build: ./orders-service/
     ports:
       - "8083:8080"
-    depends_on:
+    links:
       - mysql
       - kafka
       - zookeeper

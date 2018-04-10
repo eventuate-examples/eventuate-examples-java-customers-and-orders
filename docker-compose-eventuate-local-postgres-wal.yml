@@ -1,0 +1,109 @@
+version: '3'
+services:
+  zookeeper:
+    image: eventuateio/eventuateio-local-zookeeper:0.18.0.RELEASE
+    ports:
+      - 2181:2181
+      - 2888:2888
+      - 3888:3888
+
+
+  kafka:
+    image: eventuateio/eventuateio-local-kafka:0.18.0.RELEASE
+    ports:
+      - 9092:9092
+    links:
+      - zookeeper
+    environment:
+      - ADVERTISED_HOST_NAME=${DOCKER_HOST_IP}
+      - KAFKA_HEAP_OPTS=-Xmx320m -Xms320m
+      - ZOOKEEPER_SERVERS=zookeeper:2181
+
+  postgres:
+    image: eventuateio/eventuateio-local-postgres:0.18.0.RELEASE
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: eventuate
+      POSTGRES_PASSWORD: eventuate
+
+
+  cdcservice:
+    image: eventuateio/eventuateio-local-new-cdc-service:0.18.0.RELEASE
+    ports:
+      - "8099:8080"
+    links:
+      - postgres
+      - kafka
+      - zookeeper
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres/eventuate
+      SPRING_DATASOURCE_USERNAME: eventuate
+      SPRING_DATASOURCE_PASSWORD: eventuate
+      SPRING_DATASOURCE_TEST_ON_BORROW: "true"
+      SPRING_DATASOURCE_VALIDATION_QUERY: SELECT 1
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
+      SPRING_PROFILES_ACTIVE: PostgresWal
+
+  mongodb:
+    image: mongo:3.0.4
+    hostname: mongodb
+    command: mongod --smallfiles
+    ports:
+      - "27017:27017"
+
+  customercommandside:
+    build: ./customers-service/
+    ports:
+      - "8081:8080"
+    links:
+      - postgres
+      - kafka
+      - zookeeper
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres/eventuate
+      SPRING_DATASOURCE_USERNAME: eventuate
+      SPRING_DATASOURCE_PASSWORD: eventuate
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
+
+  orderhistoryqueryside:
+    build: ./orders-history-view-service/
+    ports:
+      - "8082:8080"
+    links:
+      - mongodb
+      - postgres
+      - kafka
+      - zookeeper
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://mongodb/clients_and_orders
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres/eventuate
+      SPRING_DATASOURCE_USERNAME: eventuate
+      SPRING_DATASOURCE_PASSWORD: eventuate
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
+      SPRING_DATA_MONGODB_URI: mongodb://mongodb/clients_and_orders
+
+  ordercommandside:
+    build: ./orders-service/
+    ports:
+      - "8083:8080"
+    links:
+      - postgres
+      - kafka
+      - zookeeper
+      - customercommandside
+    environment:
+      CUSTOMER_SERVICE_URL: http://customercommandside:8080/customers/{customerId}
+      ENDPOINTS_SENSITIVE: "false"
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres/eventuate
+      SPRING_DATASOURCE_USERNAME: eventuate
+      SPRING_DATASOURCE_PASSWORD: eventuate
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
