@@ -14,6 +14,7 @@ jobs:
             ./mvnw install
             cd ..
             ./gradlew testClasses
+            ./gradlew -P eventuateDriver=local testClasses
       - save_cache:
           paths:
             - ~/.gradle
