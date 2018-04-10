@@ -34,7 +34,8 @@ if [ "$1" = "--no-rm" ] ; then
   shift
 fi
 
-(cd common-contracts ; ./mvnw install)
+./compile-contracts.sh
+
 
 ./gradlew --stacktrace $BUILD_AND_TEST_ALL_EXTRA_GRADLE_ARGS $* testClasses
 
