@@ -22,7 +22,7 @@ public class OrderViewRepositoryImpl implements OrderViewRepositoryCustom {
   @Override
   public void addOrder(String orderId, Money orderTotal) {
     mongoTemplate.upsert(new Query(where("id").is(orderId)),
-            new Update().set("orderTotal", orderTotal), OrderView.class);
+            new Update().set("state", OrderState.CREATED).set("orderTotal", orderTotal), OrderView.class);
   }
 
   @Override

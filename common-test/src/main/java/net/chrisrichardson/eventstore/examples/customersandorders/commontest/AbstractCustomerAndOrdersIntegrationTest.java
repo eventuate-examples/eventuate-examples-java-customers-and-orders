@@ -9,6 +9,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.TimeUnit;
+
 import static io.eventuate.util.test.async.Eventually.eventually;
 import static io.eventuate.util.test.async.Eventually.eventuallyReturning;
 import static org.junit.Assert.assertEquals;
@@ -35,7 +37,7 @@ public abstract class AbstractCustomerAndOrdersIntegrationTest {
 
         String orderId = createOrder(customerId, orderTotal);
 
-        eventually(() -> {
+        eventually(40, 500, TimeUnit.MILLISECONDS, () -> {
                 OrderView o = getOrderView(orderId);
                 assertNotNull(o);
                 assertEquals(OrderState.APPROVED, o.getState());
@@ -64,7 +66,7 @@ public abstract class AbstractCustomerAndOrdersIntegrationTest {
 
         String orderId = createOrder(customerId, orderTotal);
 
-        eventually(() -> {
+        eventually(40, 500, TimeUnit.MILLISECONDS, () -> {
           OrderView o = getOrderView(orderId);
           assertNotNull(o);
           assertEquals(OrderState.REJECTED, o.getState());
