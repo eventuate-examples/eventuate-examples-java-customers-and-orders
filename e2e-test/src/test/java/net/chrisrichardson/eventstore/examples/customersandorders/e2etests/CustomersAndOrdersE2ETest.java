@@ -21,7 +21,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.CompletableFuture;
 
-import static net.chrisrichardson.eventstore.examples.customersandorders.commontest.TestUtil.await;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -47,15 +46,15 @@ public class CustomersAndOrdersE2ETest extends AbstractCustomerAndOrdersIntegrat
   @Autowired
   RestTemplate restTemplate;
 
-  private CompletableFuture<CustomerView> getCustomer(String customerId) {
+  private CustomerView getCustomer(String customerId) {
     try {
       ResponseEntity<CustomerView> getCustomer =
               restTemplate.getForEntity(baseUrlOrderHistory("customers/" + customerId), CustomerView.class);
       assertEquals(HttpStatus.OK, getCustomer.getStatusCode());
-      return CompletableFuture.completedFuture(getCustomer.getBody());
+      return getCustomer.getBody();
     } catch (HttpClientErrorException e) {
       if (e.getStatusCode() == HttpStatus.NOT_FOUND)
-        return CompletableFutureUtil.failedFuture(new RuntimeException("Cannot find customer "+ customerId, e));
+        throw new RuntimeException("Cannot find customer "+ customerId, e);
       else
         throw e;
     }
@@ -64,24 +63,22 @@ public class CustomersAndOrdersE2ETest extends AbstractCustomerAndOrdersIntegrat
 
   @Override
   protected CustomerView getCustomerView(String customerId) {
-    return await(getCustomer(customerId));
+    return getCustomer(customerId);
   }
 
   @Override
   protected OrderView getOrderView(String orderId) {
-    CompletableFuture<OrderView> result;
     try {
       ResponseEntity<OrderView> getCustomer =
               restTemplate.getForEntity(baseUrlOrderHistory("orders/" + orderId), OrderView.class);
       assertEquals(HttpStatus.OK, getCustomer.getStatusCode());
-      result = CompletableFuture.completedFuture(getCustomer.getBody());
+      return getCustomer.getBody();
     } catch (HttpClientErrorException e) {
       if (e.getStatusCode() == HttpStatus.NOT_FOUND)
-        result = CompletableFutureUtil.failedFuture(new RuntimeException("Cannot find order "+ orderId, e));
+        throw new RuntimeException("Cannot find order "+ orderId, e);
       else
         throw e;
     }
-    return await(result);
   }
 
   @Override

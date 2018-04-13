@@ -8,8 +8,11 @@ import net.chrisrichardson.eventstore.examples.customersandorders.ordershistoryc
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static io.eventuate.util.test.async.Eventually.eventually;
+import static io.eventuate.util.test.async.Eventually.eventuallyReturning;
 import static org.junit.Assert.assertEquals;
-import static net.chrisrichardson.eventstore.examples.customersandorders.commontest.TestUtil.eventually;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 public abstract class AbstractCustomerAndOrdersIntegrationTest {
@@ -32,11 +35,19 @@ public abstract class AbstractCustomerAndOrdersIntegrationTest {
 
         String orderId = createOrder(customerId, orderTotal);
 
-        eventually(() -> getOrderView(orderId), o -> o != null && o.getState() == OrderState.APPROVED);
+        eventually(() -> {
+                OrderView o = getOrderView(orderId);
+                assertNotNull(o);
+                assertEquals(OrderState.APPROVED, o.getState());
+        });
 
-        CustomerView customerView = eventually(() -> getCustomerView(customerId), cv -> {
-            OrderInfo orderInfo = cv.getOrders().get(orderId);
-            return orderInfo != null && orderInfo.getState() == OrderState.APPROVED;
+        CustomerView customerView = eventuallyReturning(() -> {
+          CustomerView cv = getCustomerView(customerId);
+          assertNotNull(cv);
+          OrderInfo orderInfo = cv.getOrders().get(orderId);
+          assertNotNull(orderInfo);
+          assertEquals(OrderState.APPROVED, orderInfo.getState());
+          return cv;
         });
 
         assertEquals(creditLimit, customerView.getCreditLimit());
@@ -53,11 +64,19 @@ public abstract class AbstractCustomerAndOrdersIntegrationTest {
 
         String orderId = createOrder(customerId, orderTotal);
 
-        eventually(() -> getOrderView(orderId), o -> o != null && o.getState() == OrderState.REJECTED);
+        eventually(() -> {
+          OrderView o = getOrderView(orderId);
+          assertNotNull(o);
+          assertEquals(OrderState.REJECTED, o.getState());
+        });
 
-        CustomerView customerView = eventually(() -> getCustomerView(customerId), cv -> {
-            OrderInfo orderInfo = cv.getOrders().get(orderId);
-            return orderInfo != null && orderInfo.getState() == OrderState.REJECTED;
+        CustomerView customerView = eventuallyReturning(() -> {
+          CustomerView cv = getCustomerView(customerId);
+          assertNotNull(cv);
+          OrderInfo orderInfo = cv.getOrders().get(orderId);
+          assertNotNull(orderInfo);
+          assertEquals(OrderState.REJECTED, orderInfo.getState());
+          return cv;
         });
 
         assertEquals(creditLimit, customerView.getCreditLimit());
