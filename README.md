@@ -63,8 +63,14 @@ Next, you can launch the application using [Docker Compose](https://docs.docker.
 
 ```
 export DOCKER_HOST_IP=...
-docker-compose -f docker-compose-eventuate-local.yml up -d
+docker-compose -f docker-compose-eventuate-local-<db-type>.yml up -d
 ```
+
+Where `db-type` is one of:
+
+* `mysql` - use MySQL with Binlog-based event publishing
+* `postgres-wal` - use Postgres with Postgres WAL-based event publishing
+* `postgres-polling` - use Postgres with generic JDBC polling-based event publishing
 
 Note: You need to set `DOCKER_HOST_IP` before running Docker Compose.
 `DOCKER_HOST_IP` is the IP address of the machine running the Docker daemon.
@@ -99,5 +105,5 @@ Eventuate Local version:
 ```
 ./gradlew assemble -P eventuateDriver=local
 docker-compose -f docker-compose-eventuate-local.yml build
-docker stack deploy -c docker-stack-eventuate-local.yml customers-and-orders
+docker stack deploy -c docker-stack-eventuate-local-<db-type>.yml customers-and-orders
 ```
