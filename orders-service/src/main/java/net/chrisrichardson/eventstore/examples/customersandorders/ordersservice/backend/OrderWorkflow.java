@@ -14,14 +14,16 @@ import java.util.concurrent.CompletableFuture;
 public class OrderWorkflow {
 
   @EventHandlerMethod
-  public CompletableFuture<EntityWithIdAndVersion<Order>> creditLimitReserved(EventHandlerContext<CustomerCreditReservedEvent> ctx) {
+  public CompletableFuture<EntityWithIdAndVersion<Order>>
+        creditLimitReserved(EventHandlerContext<CustomerCreditReservedEvent> ctx) {
     String orderId = ctx.getEvent().getOrderId();
 
     return ctx.update(Order.class, orderId, new ApproveOrderCommand());
   }
 
   @EventHandlerMethod
-  public CompletableFuture<EntityWithIdAndVersion<Order>> creditLimitExceeded(EventHandlerContext<CustomerCreditLimitExceededEvent> ctx) {
+  public CompletableFuture<EntityWithIdAndVersion<Order>>
+        creditLimitExceeded(EventHandlerContext<CustomerCreditLimitExceededEvent> ctx) {
     String orderId = ctx.getEvent().getOrderId();
 
     return ctx.update(Order.class, orderId, new RejectOrderCommand());
