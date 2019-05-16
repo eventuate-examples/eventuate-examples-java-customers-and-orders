@@ -1,7 +1,7 @@
 version: '3'
 services:
   zookeeper:
-    image: eventuateio/eventuateio-local-zookeeper:0.22.1.RELEASE
+    image: eventuateio/eventuateio-local-zookeeper:0.30.1.RELEASE
     ports:
       - 2181:2181
       - 2888:2888
@@ -9,7 +9,7 @@ services:
 
 
   kafka:
-    image: eventuateio/eventuateio-local-kafka:0.22.1.RELEASE
+    image: eventuateio/eventuateio-local-kafka:0.30.1.RELEASE
     ports:
       - 9092:9092
     depends_on:
@@ -20,7 +20,7 @@ services:
       - ZOOKEEPER_SERVERS=zookeeper:2181
 
   mysql:
-    image: eventuateio/eventuateio-local-mysql:0.22.1.RELEASE
+    image: eventuateio/eventuateio-local-mysql:0.30.1.RELEASE
     ports:
       - 3306:3306
     environment:
@@ -30,7 +30,7 @@ services:
 
 
   cdcservice:
-    image: eventuateio/eventuateio-local-new-cdc-service:0.22.1.RELEASE
+    image: eventuateio/eventuateio-local-cdc-service:0.30.1.RELEASE
     ports:
       - "8099:8080"
     depends_on:
@@ -46,6 +46,10 @@ services:
       EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
       EVENTUATELOCAL_CDC_DB_USER_NAME: root
       EVENTUATELOCAL_CDC_DB_PASSWORD: rootpassword
+      EVENTUATELOCAL_CDC_READ_OLD_DEBEZIUM_DB_OFFSET_STORAGE_TOPIC: "false"
+      EVENTUATELOCAL_CDC_READER_NAME: MySqlReader
+      EVENTUATELOCAL_CDC_OFFSET_STORE_KEY: MySqlBinlog
+      EVENTUATELOCAL_CDC_MYSQL_BINLOG_CLIENT_UNIQUE_ID: 1234567890
 
   mongodb:
     image: mongo:3.0.4
@@ -87,7 +91,6 @@ services:
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.jdbc.Driver
       EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
-      SPRING_DATA_MONGODB_URI: mongodb://mongodb/customers_and_orders
 
   ordercommandside:
     build: ./orders-service/

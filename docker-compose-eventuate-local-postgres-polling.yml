@@ -1,7 +1,7 @@
 version: '3'
 services:
   zookeeper:
-    image: eventuateio/eventuateio-local-zookeeper:0.22.1.RELEASE
+    image: eventuateio/eventuateio-local-zookeeper:0.30.1.RELEASE
     ports:
       - 2181:2181
       - 2888:2888
@@ -9,7 +9,7 @@ services:
 
 
   kafka:
-    image: eventuateio/eventuateio-local-kafka:0.22.1.RELEASE
+    image: eventuateio/eventuateio-local-kafka:0.30.1.RELEASE
     ports:
       - 9092:9092
     depends_on:
@@ -20,7 +20,7 @@ services:
       - ZOOKEEPER_SERVERS=zookeeper:2181
 
   postgres:
-    image: eventuateio/eventuateio-local-postgres:0.22.1.RELEASE
+    image: eventuateio/eventuateio-local-postgres:0.30.1.RELEASE
     ports:
       - 5432:5432
     environment:
@@ -29,7 +29,7 @@ services:
 
 
   cdcservice:
-    image: eventuateio/eventuateio-local-new-cdc-service:0.22.1.RELEASE
+    image: eventuateio/eventuateio-local-cdc-service:0.30.1.RELEASE
     ports:
       - "8099:8080"
     depends_on:
@@ -50,6 +50,7 @@ services:
       EVENTUATELOCAL_CDC_MAX_ATTEMPTS_FOR_POLLING: 100
       EVENTUATELOCAL_CDC_POLLING_RETRY_INTERVAL_IN_MILLISECONDS: 500
       SPRING_PROFILES_ACTIVE: EventuatePolling
+      EVENTUATELOCAL_CDC_READER_NAME: PostgresPollingReader
 
   mongodb:
     image: mongo:3.0.4
@@ -73,6 +74,8 @@ services:
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
       EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
+      SPRING_PROFILES_ACTIVE: EventuatePolling
+      EVENTUATELOCAL_CDC_READER_NAME: PostgresPollingReader
 
   orderhistoryqueryside:
     build: ./orders-history-view-service/
@@ -91,7 +94,6 @@ services:
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
       EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
-      SPRING_DATA_MONGODB_URI: mongodb://mongodb/customers_and_orders
 
   ordercommandside:
     build: ./orders-service/
