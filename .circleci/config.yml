@@ -6,7 +6,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: eventuate-examples-java-customers-and-orders-{{ checksum "build.gradle" }}
+          key: eventuate-examples-java-customers-and-orders-{{ checksum "gradle.properties" }}
       - run:
           command: |
             export TERM=dumb
@@ -19,11 +19,11 @@ jobs:
           paths:
             - ~/.gradle
             - ~/.m2
-          key: eventuate-examples-java-customers-and-orders-{{ checksum "build.gradle" }}
-      - run:
-          command: |
-            . ./setenv-circle-ci.sh
-            ./build-and-test-all.sh
+          key: eventuate-examples-java-customers-and-orders-{{ checksum "gradle.properties" }}
+#      - run:
+#          command: |
+#            . ./setenv-circle-ci.sh
+#            ./build-and-test-all.sh
       - run:
           command: |
             . ./setenv-circle-ci.sh

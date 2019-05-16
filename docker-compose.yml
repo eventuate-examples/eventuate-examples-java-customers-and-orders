@@ -16,7 +16,7 @@ services:
     depends_on:
       - mongodb
     environment:
-      SPRING_DATA_MONGODB_URI: mongodb://mongodb/clients_and_orders
+      SPRING_DATA_MONGODB_URI: mongodb://mongodb/customers_and_orders
       EVENTUATE_API_KEY_ID: ${EVENTUATE_API_KEY_ID}
       EVENTUATE_API_KEY_SECRET: ${EVENTUATE_API_KEY_SECRET}
 

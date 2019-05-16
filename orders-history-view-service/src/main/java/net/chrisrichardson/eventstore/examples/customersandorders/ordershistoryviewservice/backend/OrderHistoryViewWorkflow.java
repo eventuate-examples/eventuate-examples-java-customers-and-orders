@@ -24,7 +24,8 @@ public class OrderHistoryViewWorkflow {
   @EventHandlerMethod
   public void createCustomer(DispatchedEvent<CustomerCreatedEvent> de) {
     String customerId = de.getEntityId();
-    orderHistoryViewService.createCustomer(customerId, de.getEvent().getName(), de.getEvent().getCreditLimit());
+    orderHistoryViewService.createCustomer(customerId, de.getEvent().getName(),
+            de.getEvent().getCreditLimit());
   }
 
   @EventHandlerMethod
