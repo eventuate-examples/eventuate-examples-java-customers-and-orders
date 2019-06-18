@@ -1,7 +1,7 @@
 version: '3'
 services:
   zookeeper:
-    image: eventuateio/eventuateio-local-zookeeper:0.18.0.RELEASE
+    image: eventuateio/eventuate-zookeeper:0.4.0.RELEASE
     ports:
       - 2181:2181
       - 2888:2888
@@ -9,10 +9,10 @@ services:
 
 
   kafka:
-    image: eventuateio/eventuateio-local-kafka:0.18.0.RELEASE
+    image: eventuateio/eventuate-kafka:0.3.0.RELEASE
     ports:
       - 9092:9092
-    links:
+    depends_on:
       - zookeeper
     environment:
       - ADVERTISED_HOST_NAME=${DOCKER_HOST_IP}
@@ -20,7 +20,7 @@ services:
       - ZOOKEEPER_SERVERS=zookeeper:2181
 
   mysql:
-    image: eventuateio/eventuateio-local-mysql:0.18.0.RELEASE
+    image: eventuateio/eventuate-mysql:0.5.0.RELEASE
     ports:
       - 3306:3306
     environment:
@@ -28,12 +28,11 @@ services:
       - MYSQL_USER=mysqluser
       - MYSQL_PASSWORD=mysqlpw
 
-
   cdcservice:
-    image: eventuateio/eventuateio-local-new-cdc-service:0.18.0.RELEASE
+    image: eventuateio/eventuate-cdc-service:0.3.0.RELEASE
     ports:
       - "8099:8080"
-    links:
+    depends_on:
       - mysql
       - kafka
       - zookeeper
@@ -46,6 +45,11 @@ services:
       EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
       EVENTUATELOCAL_CDC_DB_USER_NAME: root
       EVENTUATELOCAL_CDC_DB_PASSWORD: rootpassword
+      EVENTUATELOCAL_CDC_READER_NAME: MySqlReader
+      EVENTUATELOCAL_CDC_OFFSET_STORE_KEY: MySqlBinlog
+      EVENTUATELOCAL_CDC_MYSQL_BINLOG_CLIENT_UNIQUE_ID: 1234567890
+      EVENTUATELOCAL_CDC_READ_OLD_DEBEZIUM_DB_OFFSET_STORAGE_TOPIC: "false"
+      EVENTUATE_CDC_TYPE: "EventuateLocal"
 
   mongodb:
     image: mongo:3.0.4
@@ -58,7 +62,7 @@ services:
     build: ./customers-service/
     ports:
       - "8081:8080"
-    links:
+    depends_on:
       - mysql
       - kafka
       - zookeeper
@@ -74,7 +78,7 @@ services:
     build: ./orders-history-view-service/
     ports:
       - "8082:8080"
-    links:
+    depends_on:
       - mongodb
       - mysql
       - kafka
@@ -87,13 +91,12 @@ services:
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.jdbc.Driver
       EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
-      SPRING_DATA_MONGODB_URI: mongodb://mongodb/customers_and_orders
 
   ordercommandside:
     build: ./orders-service/
     ports:
       - "8083:8080"
-    links:
+    depends_on:
       - mysql
       - kafka
       - zookeeper

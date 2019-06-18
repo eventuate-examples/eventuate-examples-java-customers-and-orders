@@ -1,7 +1,7 @@
 version: '3'
 services:
   zookeeper:
-    image: eventuateio/eventuateio-local-zookeeper:0.18.0.RELEASE
+    image: eventuateio/eventuate-zookeeper:0.4.0.RELEASE
     ports:
       - 2181:2181
       - 2888:2888
@@ -9,10 +9,10 @@ services:
 
 
   kafka:
-    image: eventuateio/eventuateio-local-kafka:0.18.0.RELEASE
+    image: eventuateio/eventuate-kafka:0.3.0.RELEASE
     ports:
       - 9092:9092
-    links:
+    depends_on:
       - zookeeper
     environment:
       - ADVERTISED_HOST_NAME=${DOCKER_HOST_IP}
@@ -20,7 +20,7 @@ services:
       - ZOOKEEPER_SERVERS=zookeeper:2181
 
   postgres:
-    image: eventuateio/eventuateio-local-postgres:0.18.0.RELEASE
+    image: eventuateio/eventuate-postgres:0.5.0.RELEASE
     ports:
       - 5432:5432
     environment:
@@ -29,10 +29,10 @@ services:
 
 
   cdcservice:
-    image: eventuateio/eventuateio-local-new-cdc-service:0.18.0.RELEASE
+    image: eventuateio/eventuate-cdc-service:0.3.0.RELEASE
     ports:
       - "8099:8080"
-    links:
+    depends_on:
       - postgres
       - kafka
       - zookeeper
@@ -46,6 +46,8 @@ services:
       EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
       SPRING_PROFILES_ACTIVE: PostgresWal
+      EVENTUATELOCAL_CDC_READER_NAME: PostgresWalReader
+      EVENTUATE_CDC_TYPE: "EventuateLocal"
 
   mongodb:
     image: mongo:3.0.4
@@ -58,7 +60,7 @@ services:
     build: ./customers-service/
     ports:
       - "8081:8080"
-    links:
+    depends_on:
       - postgres
       - kafka
       - zookeeper
@@ -74,7 +76,7 @@ services:
     build: ./orders-history-view-service/
     ports:
       - "8082:8080"
-    links:
+    depends_on:
       - mongodb
       - postgres
       - kafka
@@ -87,13 +89,12 @@ services:
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
       EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
-      SPRING_DATA_MONGODB_URI: mongodb://mongodb/customers_and_orders
 
   ordercommandside:
     build: ./orders-service/
     ports:
       - "8083:8080"
-    links:
+    depends_on:
       - postgres
       - kafka
       - zookeeper

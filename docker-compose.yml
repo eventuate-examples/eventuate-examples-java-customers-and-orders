@@ -13,7 +13,7 @@ services:
     build: ./orders-history-view-service/
     ports:
       - "8082:8080"
-    links:
+    depends_on:
       - mongodb
     environment:
       SPRING_DATA_MONGODB_URI: mongodb://mongodb/customers_and_orders
@@ -24,7 +24,7 @@ services:
     build: ./orders-service/
     ports:
       - "8083:8080"
-    links:
+    depends_on:
         - customercommandside
     environment:
       CUSTOMER_SERVICE_URL: http://customercommandside:8080/customers/{customerId}

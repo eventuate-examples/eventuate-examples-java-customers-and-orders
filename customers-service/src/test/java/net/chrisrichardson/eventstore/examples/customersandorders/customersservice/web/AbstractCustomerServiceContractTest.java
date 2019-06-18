@@ -6,7 +6,7 @@ import io.eventuate.DefaultMissingApplyEventMethodStrategy;
 import io.eventuate.EntityIdAndVersion;
 import io.eventuate.EntityNotFoundException;
 import io.eventuate.EntityWithMetadata;
-import io.eventuate.Int128;
+import io.eventuate.common.id.Int128;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.CustomerCreatedEvent;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.Money;
 import net.chrisrichardson.eventstore.examples.customersandorders.customersservice.backend.Customer;

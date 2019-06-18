@@ -1,6 +1,6 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.web;
 
-import io.eventuate.javaclient.commonimpl.JSonMapper;
+import io.eventuate.common.json.mapper.JSonMapper;
 import net.chrisrichardson.eventstore.examples.customersandorders.orderscommmon.CreateOrderRequest;
 import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.backend.OrderService;
 import org.junit.Before;
