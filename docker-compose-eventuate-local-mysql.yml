@@ -1,7 +1,7 @@
 version: '3'
 services:
   zookeeper:
-    image: eventuateio/eventuate-zookeeper:0.4.0.RELEASE
+    image: eventuateio/eventuate-zookeeper:0.8.0.RELEASE
     ports:
       - 2181:2181
       - 2888:2888
@@ -20,7 +20,7 @@ services:
       - ZOOKEEPER_SERVERS=zookeeper:2181
 
   mysql:
-    image: eventuateio/eventuate-mysql:0.5.0.RELEASE
+    image: eventuateio/eventuate-mysql:0.8.0.RELEASE
     ports:
       - 3306:3306
     environment:
@@ -29,7 +29,7 @@ services:
       - MYSQL_PASSWORD=mysqlpw
 
   cdcservice:
-    image: eventuateio/eventuate-cdc-service:0.3.0.RELEASE
+    image: eventuateio/eventuate-cdc-service:0.5.0.RELEASE
     ports:
       - "8099:8080"
     depends_on:
