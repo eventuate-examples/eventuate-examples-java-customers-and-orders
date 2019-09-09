@@ -1,11 +1,15 @@
 buildscript {
     repositories {
         mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
+        classpath "com.avast.gradle:gradle-docker-compose-plugin:0.9.2"
     }
 }
+
+apply plugin: 'docker-compose'
 
 allprojects {
     group = "net.chrisrichardson.eventstore.javacustomersandorders"
@@ -28,5 +32,44 @@ subprojects {
 
         eventuateMavenRepoUrl.split(',').each { repoUrl -> maven { url repoUrl } }
         mavenLocal()
+    }
+}
+
+dockerCompose {
+    environment.put "EVENTUATE_COMMON_VERSION", eventuateCommonImageVersion
+    environment.put "EVENTUATE_KAFKA_VERSION", eventuateMessagingKafkaImageVersion
+    environment.put "EVENTUATE_CDC_VERSION", eventuateCdcImageVersion
+
+    mysqlbinlog {
+        projectName = null
+        useComposeFiles = ["docker-compose-eventuate-local-mysql.yml"]
+    }
+
+    mysqlbinlogcdc {
+        projectName = null
+        useComposeFiles = ["docker-compose-eventuate-local-mysql.yml"]
+        startedServices = ["cdcservice"]
+    }
+
+    postgrespolling {
+        projectName = null
+        useComposeFiles = ["docker-compose-eventuate-local-postgres-polling.yml"]
+    }
+
+    postgrespollingcdc {
+        projectName = null
+        useComposeFiles = ["docker-compose-eventuate-local-postgres-polling.yml"]
+        startedServices = ["cdcservice"]
+    }
+
+    postgreswal {
+        projectName = null
+        useComposeFiles = ["docker-compose-eventuate-local-postgres-wal.yml"]
+    }
+
+    postgreswalcdc {
+        projectName = null
+        useComposeFiles = ["docker-compose-eventuate-local-postgres-wal.yml"]
+        startedServices = ["cdcservice"]
     }
 }
