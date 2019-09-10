@@ -2,6 +2,8 @@
 
 set -e
 
+docker="./gradlew ${database}${mode}Compose"
+
 if [ -z "$EVENTUATE_LOCAL" ] && [ -z "$EVENTUATE_API_KEY_ID" -o -z "$EVENTUATE_API_KEY_SECRET" ] ; then
   echo You must set EVENTUATE_API_KEY_ID and  EVENTUATE_API_KEY_SECRET
   exit -1
@@ -16,7 +18,7 @@ fi
 if [ "$1" = "--use-existing" ] ; then
   shift;
 else
-  ./gradlew ${database}${mode}ComposeDown
+  ${docker}Down
 fi
 
 NO_RM=false
@@ -37,8 +39,8 @@ fi
 ./gradlew --stacktrace $BUILD_AND_TEST_ALL_EXTRA_GRADLE_ARGS $* testClasses
 ./gradlew --stacktrace $BUILD_AND_TEST_ALL_EXTRA_GRADLE_ARGS $* build -x :e2e-test:test
 
-./gradlew ${database}${mode}ComposeBuild
-./gradlew ${database}${mode}ComposeUp
+${docker}Build
+${docker}Up
 
 ./wait-for-services.sh $DOCKER_HOST_IP 8081 8082 8083
 
@@ -47,5 +49,5 @@ set -e
 ./gradlew -a $BUILD_AND_TEST_ALL_EXTRA_GRADLE_ARGS $* :e2e-test:cleanTest :e2e-test:test -P ignoreE2EFailures=false
 
 if [ $NO_RM = false ] ; then
-  ./gradlew ${database}${mode}ComposeDown
+  ${docker}Down
 fi
