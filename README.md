@@ -64,6 +64,7 @@ Next, you can launch the application using [Docker Compose](https://docs.docker.
 ```
 export DOCKER_HOST_IP=...
 ./gradlew <database-mode>ComposeBuild
+./gradlew <database-mode>ComposeUp
 ```
 
 Where `database-mode` is one of:
