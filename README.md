@@ -63,14 +63,15 @@ Next, you can launch the application using [Docker Compose](https://docs.docker.
 
 ```
 export DOCKER_HOST_IP=...
-docker-compose -f docker-compose-eventuate-local-<db-type>.yml up -d
+./gradlew <database-mode>ComposeBuild
+./gradlew <database-mode>ComposeUp
 ```
 
-Where `db-type` is one of:
+Where `database-mode` is one of:
 
-* `mysql` - use MySQL with Binlog-based event publishing
-* `postgres-wal` - use Postgres with Postgres WAL-based event publishing
-* `postgres-polling` - use Postgres with generic JDBC polling-based event publishing
+* `mysqlbinlog` - use MySQL with Binlog-based event publishing
+* `postgreswal` - use Postgres with Postgres WAL-based event publishing
+* `postgrespolling` - use Postgres with generic JDBC polling-based event publishing
 
 Note: You need to set `DOCKER_HOST_IP` before running Docker Compose.
 `DOCKER_HOST_IP` is the IP address of the machine running the Docker daemon.
