@@ -1,6 +1,6 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.customersservice;
 
-import io.eventuate.javaclient.driver.EventuateDriverConfiguration;
+import io.eventuate.local.java.spring.javaclient.driver.EventuateDriverConfiguration;
 import net.chrisrichardson.eventstore.examples.customersandorders.commonswagger.CommonSwaggerConfiguration;
 import net.chrisrichardson.eventstore.examples.customersandorders.customersservice.web.CustomerWebConfiguration;
 import org.springframework.boot.SpringApplication;
