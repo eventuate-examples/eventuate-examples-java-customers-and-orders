@@ -8,4 +8,4 @@ export EXTRA_INFRASTRUCTURE_SERVICES=postgreswalcdc
 export database=postgres
 export mode=wal
 
-./_build-and-test-all.sh $* -P eventuateDriver=local
+./_build-and-test-all.sh

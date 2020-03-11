@@ -3,8 +3,7 @@
 set -e
 set -o pipefail
 
-SCRIPTS="./build-and-test-all.sh
-./build-and-test-all-eventuate-local-mysql.sh
+SCRIPTS="./build-and-test-all-eventuate-local-mysql.sh
 ./build-and-test-all-eventuate-local-postgres-polling.sh
 ./build-and-test-all-eventuate-local-postgres-wal.sh
 "

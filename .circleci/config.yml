@@ -20,10 +20,6 @@ jobs:
             - ~/.gradle
             - ~/.m2
           key: eventuate-examples-java-customers-and-orders-{{ checksum "gradle.properties" }}
-#      - run:
-#          command: |
-#            . ./setenv-circle-ci.sh
-#            ./build-and-test-all.sh
       - run:
           command: |
             . ./setenv-circle-ci.sh

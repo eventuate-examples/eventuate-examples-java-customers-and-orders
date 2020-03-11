@@ -8,4 +8,4 @@ export EXTRA_INFRASTRUCTURE_SERVICES=postgrespollingcdc
 export database=postgres
 export mode=polling
 
-./_build-and-test-all.sh $* -P eventuateDriver=local
+./_build-and-test-all.sh
