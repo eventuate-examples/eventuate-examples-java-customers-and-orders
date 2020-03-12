@@ -28,7 +28,6 @@ contracts {
 }
 
 apply plugin: VerifyEventStoreEnvironmentPlugin
-apply plugin: EventuateDependencyPlugin
 
 apply plugin: 'spring-boot'
 
@@ -41,6 +40,7 @@ dependencies {
 
     compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
     compile "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
+    compile "io.eventuate.local.java:eventuate-local-java-spring-jdbc:${project.eventuateLocalVersion}"
 
     testCompile "net.chrisrichardson.eventstore.examples.customersandorders:common-contracts:1.0-SNAPSHOT"
     testCompile 'com.pholser:junit-quickcheck-core:0.7'

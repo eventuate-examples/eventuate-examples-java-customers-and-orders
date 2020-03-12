@@ -4,10 +4,6 @@ set -e
 
 docker="./gradlew ${database}${mode}Compose"
 
-if [ -z "$EVENTUATE_LOCAL" ] && [ -z "$EVENTUATE_API_KEY_ID" -o -z "$EVENTUATE_API_KEY_SECRET" ] ; then
-  echo You must set EVENTUATE_API_KEY_ID and  EVENTUATE_API_KEY_SECRET
-  exit -1
-fi
 
 if [ -z "$SPRING_DATA_MONGODB_URI" ] ; then
   export SPRING_DATA_MONGODB_URI=mongodb://${DOCKER_HOST_IP?}/customers_orders

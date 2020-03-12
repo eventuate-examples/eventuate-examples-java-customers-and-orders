@@ -8,4 +8,4 @@ export EXTRA_INFRASTRUCTURE_SERVICES=mysqlbinlogcdc
 export database=mysql
 export mode=binlog
 
-./_build-and-test-all.sh $* -P eventuateDriver=local
+./_build-and-test-all.sh
