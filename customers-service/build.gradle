@@ -27,7 +27,6 @@ contracts {
     baseClassForTests = 'net.chrisrichardson.eventstore.examples.customersandorders.customersservice.web.AbstractCustomerServiceContractTest'
 }
 
-apply plugin: VerifyEventStoreEnvironmentPlugin
 
 apply plugin: 'org.springframework.boot'
 

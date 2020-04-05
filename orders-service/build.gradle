@@ -23,7 +23,6 @@ dependencyManagement {
     }
 }
 
-apply plugin: VerifyEventStoreEnvironmentPlugin
 apply plugin: 'org.springframework.boot'
 
 apply plugin: 'docker-compose'
