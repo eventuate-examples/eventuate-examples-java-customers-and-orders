@@ -1,11 +1,11 @@
 
 dependencies {
     compile 'commons-lang:commons-lang:2.6'
-    compile "io.eventuate.client.java:eventuate-client-java:$eventuateClientVersion"
+    compile "io.eventuate.local.java:eventuate-client-java:$eventuateLocalVersion"
 
     testCompile 'com.pholser:junit-quickcheck-core:0.7'
     testCompile 'com.pholser:junit-quickcheck-generators:0.7'
     testCompile "junit:junit:4.12"
     testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
-    testCompile "io.eventuate.client.java:eventuate-client-java-spring-jdbc:$eventuateClientVersion"
+    testCompile "io.eventuate.local.java:eventuate-client-java-spring-jdbc:$eventuateLocalVersion"
 }
