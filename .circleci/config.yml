@@ -6,7 +6,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: eventuate-examples-java-customers-and-orders-{{ checksum "gradle.properties" }}
+          keys:
+            - eventuate-examples-java-customers-and-orders-{{ checksum "gradle.properties" }}
+            - eventuate-examples-java-customers-and-orders-
       - run:
           command: |
             export TERM=dumb
@@ -14,7 +16,6 @@ jobs:
             ./mvnw install
             cd ..
             ./gradlew testClasses
-            ./gradlew -P eventuateDriver=local testClasses
       - save_cache:
           paths:
             - ~/.gradle
