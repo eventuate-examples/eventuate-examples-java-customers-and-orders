@@ -8,14 +8,12 @@ buildscript {
         // if using Stub Runner (consumer side) only remove this dependency
         classpath "org.springframework.cloud:spring-cloud-contract-gradle-plugin:1.1.1.RELEASE"
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
-        classpath "com.avast.gradle:docker-compose-gradle-plugin:$dockerComposePluginVersion"
     }
 }
 
 
 
 apply plugin: "io.spring.dependency-management"
-// apply plugin: 'spring-cloud-contract'
 
 dependencyManagement {
     imports {
@@ -24,23 +22,6 @@ dependencyManagement {
 }
 
 apply plugin: 'org.springframework.boot'
-
-apply plugin: 'docker-compose'
-
-dockerCompose.isRequiredBy(test)
-
-dockerCompose {
-    if (System.getenv("EVENTUATE_LOCAL")) {
-        if ("EventuatePolling".equals(System.getenv("SPRING_PROFILES_ACTIVE")))
-            useComposeFiles = ['docker-compose-integration-tests-eventuate-local-postgres-polling.yml']
-        else if ("PostgresWal".equals(System.getenv("SPRING_PROFILES_ACTIVE")))
-            useComposeFiles = ['docker-compose-integration-tests-eventuate-local-postgres-wal.yml']
-        else
-            useComposeFiles = ['docker-compose-integration-tests-eventuate-local-mysql.yml']
-    }
-    else
-        useComposeFiles = ['docker-compose-integration-tests.yml']
-}
 
 dependencies {
     compile project(":orders-common")

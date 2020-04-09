@@ -1,3 +1,3 @@
 #! /bin/bash
 
-docker run --network eventuateexamplesjavacustomersandorders_default --link eventuateexamplesjavacustomersandorders_mongodb_1:mongodb -i -t mongo:3.0.4 /usr/bin/mongo --host mongodb
+docker run  $* --network=${PWD##*/}_default --rm  mongo:3.0.4 sh -c "exec /usr/bin/mongo --host mongodb customers_and_orders"

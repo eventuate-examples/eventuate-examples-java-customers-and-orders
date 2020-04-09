@@ -1,6 +1,7 @@
 #! /bin/bash -e
 
-docker run $*  \
-   --network eventuateexamplesjavacustomersandorders_default \
-   --name mysqlterm  --rm mysql:5.7.13 \
-   sh -c 'exec mysql -hmysql -P3306 -uroot -prootpassword eventuate'
+docker run $* \
+   --name mysqlterm --network=${PWD##*/}_default --rm \
+   -e MYSQL_HOST=mysql \
+   mysql:5.7.13 \
+   sh -c 'exec mysql -h"$MYSQL_HOST"  -uroot -prootpassword -o eventuate'
