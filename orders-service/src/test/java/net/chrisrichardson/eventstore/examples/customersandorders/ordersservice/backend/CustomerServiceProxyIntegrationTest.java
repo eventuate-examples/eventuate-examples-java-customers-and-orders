@@ -19,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes=CustomerServiceProxyIntegrationTestConfiguration.class,
         webEnvironment= SpringBootTest.WebEnvironment.NONE,
-        properties={"customer.service.url=http://${DOCKER_HOST_IP}:8081/customers/{customerId}"}
+        properties={"customer.service.url=http://localhost:8081/customers/{customerId}"}
 )
 @DirtiesContext
 public class CustomerServiceProxyIntegrationTest {
@@ -30,7 +30,7 @@ public class CustomerServiceProxyIntegrationTest {
   @Autowired
   private RestTemplate restTemplate;
 
-  @Value("http://${DOCKER_HOST_IP}:8081/customers")
+  @Value("http://localhost:8081/customers")
   private String customerServiceRootUrl;
 
   @Test

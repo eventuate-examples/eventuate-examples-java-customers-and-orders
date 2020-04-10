@@ -2,11 +2,12 @@
 
 set -e
 
+export COMPOSE_HTTP_TIMEOUT=240
+
 docker="./gradlew ${database}${mode}Compose"
 
-
 if [ -z "$SPRING_DATA_MONGODB_URI" ] ; then
-  export SPRING_DATA_MONGODB_URI=mongodb://${DOCKER_HOST_IP?}/customers_orders
+  export SPRING_DATA_MONGODB_URI=mongodb://localhost/customers_orders
   echo Set SPRING_DATA_MONGODB_URI $SPRING_DATA_MONGODB_URI
 fi
 
@@ -26,19 +27,25 @@ fi
 
 ./compile-contracts.sh
 
-if [ ! -z "$EXTRA_INFRASTRUCTURE_SERVICES" ]; then
-    ./gradlew ${EXTRA_INFRASTRUCTURE_SERVICES}ComposeBuild
-    ./gradlew ${EXTRA_INFRASTRUCTURE_SERVICES}ComposeUp
-fi
-
-
 ./gradlew --stacktrace $BUILD_AND_TEST_ALL_EXTRA_GRADLE_ARGS $* testClasses
 ./gradlew --stacktrace $BUILD_AND_TEST_ALL_EXTRA_GRADLE_ARGS $* build -x :e2e-test:test
 
-${docker}Build
 ${docker}Up
 
-./wait-for-services.sh $DOCKER_HOST_IP 8081 8082 8083
+#Testing db cli
+if [ "${database}" == "mysql" ]; then
+  echo 'show databases;' | ./mysql-cli.sh -i
+elif [ "${database}" == "postgres" ]; then
+  echo '\l' | ./postgres-cli.sh -i
+else
+  echo "Unknown Database"
+  exit 99
+fi
+
+#Testing mongo cli
+echo 'show dbs' |  ./mongodb-cli.sh -i
+
+./wait-for-services.sh localhost 8081 8082 8083
 
 set -e
 

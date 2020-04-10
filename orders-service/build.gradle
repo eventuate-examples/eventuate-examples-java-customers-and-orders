@@ -15,7 +15,9 @@ buildscript {
 
 
 apply plugin: "io.spring.dependency-management"
-// apply plugin: 'spring-cloud-contract'
+apply plugin: 'docker-compose'
+
+dockerCompose.isRequiredBy(test)
 
 dependencyManagement {
     imports {
@@ -25,21 +27,20 @@ dependencyManagement {
 
 apply plugin: 'org.springframework.boot'
 
-apply plugin: 'docker-compose'
-
-dockerCompose.isRequiredBy(test)
-
 dockerCompose {
-    if (System.getenv("EVENTUATE_LOCAL")) {
-        if ("EventuatePolling".equals(System.getenv("SPRING_PROFILES_ACTIVE")))
-            useComposeFiles = ['docker-compose-integration-tests-eventuate-local-postgres-polling.yml']
-        else if ("PostgresWal".equals(System.getenv("SPRING_PROFILES_ACTIVE")))
-            useComposeFiles = ['docker-compose-integration-tests-eventuate-local-postgres-wal.yml']
-        else
-            useComposeFiles = ['docker-compose-integration-tests-eventuate-local-mysql.yml']
-    }
-    else
-        useComposeFiles = ['docker-compose-integration-tests.yml']
+    environment.put "EVENTUATE_COMMON_VERSION", eventuateCommonImageVersion
+    environment.put "EVENTUATE_CDC_VERSION", eventuateCdcImageVersion
+
+    projectName = null
+
+    if ("postgres,EventuatePolling".equals(System.getenv("SPRING_PROFILES_ACTIVE")))
+        useComposeFiles = ['../docker-compose-eventuate-local-postgres-polling.yml']
+    else if ("postgres,PostgresWal".equals(System.getenv("SPRING_PROFILES_ACTIVE")))
+        useComposeFiles = ['../docker-compose-eventuate-local-postgres-wal.yml']
+    else useComposeFiles = ['../docker-compose-eventuate-local-mysql.yml']
+
+
+    startedServices = ['customercommandside']
 }
 
 dependencies {

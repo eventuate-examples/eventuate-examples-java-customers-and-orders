@@ -37,7 +37,6 @@ subprojects {
 
 dockerCompose {
     environment.put "EVENTUATE_COMMON_VERSION", eventuateCommonImageVersion
-    environment.put "EVENTUATE_KAFKA_VERSION", eventuateMessagingKafkaImageVersion
     environment.put "EVENTUATE_CDC_VERSION", eventuateCdcImageVersion
 
     mysqlbinlog {
@@ -45,31 +44,13 @@ dockerCompose {
         useComposeFiles = ["docker-compose-eventuate-local-mysql.yml"]
     }
 
-    mysqlbinlogcdc {
-        projectName = null
-        useComposeFiles = ["docker-compose-eventuate-local-mysql.yml"]
-        startedServices = ["cdcservice"]
-    }
-
     postgrespolling {
         projectName = null
         useComposeFiles = ["docker-compose-eventuate-local-postgres-polling.yml"]
     }
 
-    postgrespollingcdc {
-        projectName = null
-        useComposeFiles = ["docker-compose-eventuate-local-postgres-polling.yml"]
-        startedServices = ["cdcservice"]
-    }
-
     postgreswal {
         projectName = null
         useComposeFiles = ["docker-compose-eventuate-local-postgres-wal.yml"]
-    }
-
-    postgreswalcdc {
-        projectName = null
-        useComposeFiles = ["docker-compose-eventuate-local-postgres-wal.yml"]
-        startedServices = ["cdcservice"]
     }
 }

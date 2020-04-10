@@ -29,7 +29,6 @@ First, build the application:
 Next, you can launch the application using [Docker Compose](https://docs.docker.com/compose/)
 
 ```
-export DOCKER_HOST_IP=...
 ./gradlew <database-mode>ComposeBuild
 ./gradlew <database-mode>ComposeUp
 ```
@@ -40,28 +39,12 @@ Where `database-mode` is one of:
 * `postgreswal` - use Postgres with Postgres WAL-based event publishing
 * `postgrespolling` - use Postgres with generic JDBC polling-based event publishing
 
-Note: You need to set `DOCKER_HOST_IP` before running Docker Compose.
-`DOCKER_HOST_IP` is the IP address of the machine running the Docker daemon.
-It must be an IP address or resolvable hostname.
-It cannot be `localhost`.
-See this [guide to setting `DOCKER_HOST_IP`](http://eventuate.io/docs/usingdocker.html) for more information.
-
 Finally, you can use the Swagger UI provided by the services to create customers and orders, and view the order history:
 
-* `http://${DOCKER_HOST_IP?}:8081/swagger-ui.html` - Create a customer
-* `http://${DOCKER_HOST_IP?}:8083/swagger-ui.html` - Create an order
-* `http://${DOCKER_HOST_IP?}:8082/swagger-ui.html` - View the customer and the order
+* `http://localhost:8081/swagger-ui.html` - Create a customer
+* `http://localhost:8083/swagger-ui.html` - Create an order
+* `http://localhost:8082/swagger-ui.html` - View the customer and the order
 
 (Hint: best to open these URLs in separate tabs)
 
 The script `./show-urls.sh` will display the URLs.
-
-## Deploying using Docker Stack/Swarm
-
-You can also deploy the application using Docker Stack/Swarm mode.
-
-```
-./gradlew assemble
-docker-compose -f docker-compose-eventuate-local.yml build
-docker stack deploy -c docker-stack-eventuate-local-<db-type>.yml customers-and-orders
-```

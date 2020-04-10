@@ -23,7 +23,8 @@ jobs:
           key: eventuate-examples-java-customers-and-orders-{{ checksum "gradle.properties" }}
       - run:
           command: |
-            . ./setenv-circle-ci.sh
+            ./.circleci/upgrade-docker-compose.sh
+            . ./.circleci/setenv-circle-ci.sh
             ./build-and-test-all-eventuate-local-mysql.sh
       - run:
           command: |
