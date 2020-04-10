@@ -5,7 +5,6 @@ set -e
 export COMPOSE_HTTP_TIMEOUT=240
 
 docker="./gradlew ${database}${mode}Compose"
-dockercusomerservice="./gradlew ${database}${mode}cusomerserviceCompose"
 
 if [ -z "$SPRING_DATA_MONGODB_URI" ] ; then
   export SPRING_DATA_MONGODB_URI=mongodb://localhost/customers_orders
@@ -28,17 +27,8 @@ fi
 
 ./compile-contracts.sh
 
-if [ ! -z "$EXTRA_INFRASTRUCTURE_SERVICES" ]; then
-    ./gradlew ${EXTRA_INFRASTRUCTURE_SERVICES}ComposeBuild
-    ./gradlew ${EXTRA_INFRASTRUCTURE_SERVICES}ComposeUp
-fi
-
 ./gradlew --stacktrace $BUILD_AND_TEST_ALL_EXTRA_GRADLE_ARGS $* testClasses
-./gradlew --stacktrace $BUILD_AND_TEST_ALL_EXTRA_GRADLE_ARGS $* build -x :e2e-test:test -x :order-service:test
-
-${dockercusomerservice}Up
-
-./gradlew $BUILD_AND_TEST_ALL_EXTRA_GRADLE_ARGS $* :order-service:cleanTest :order-service:test
+./gradlew --stacktrace $BUILD_AND_TEST_ALL_EXTRA_GRADLE_ARGS $* build -x :e2e-test:test
 
 ${docker}Up
 

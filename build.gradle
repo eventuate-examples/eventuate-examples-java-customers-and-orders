@@ -44,49 +44,13 @@ dockerCompose {
         useComposeFiles = ["docker-compose-eventuate-local-mysql.yml"]
     }
 
-    mysqlbinlogcdc {
-        projectName = null
-        useComposeFiles = ["docker-compose-eventuate-local-mysql.yml"]
-        startedServices = ["cdcservice"]
-    }
-
-    mysqlbinlogcusomerservice {
-        projectName = null
-        useComposeFiles = ["docker-compose-eventuate-local-mysql.yml"]
-        startedServices = ["customercommandside"]
-    }
-
     postgrespolling {
         projectName = null
         useComposeFiles = ["docker-compose-eventuate-local-postgres-polling.yml"]
     }
 
-    postgrespollingcdc {
-        projectName = null
-        useComposeFiles = ["docker-compose-eventuate-local-postgres-polling.yml"]
-        startedServices = ["cdcservice"]
-    }
-
-    postgrespollingcusomerservice {
-        projectName = null
-        useComposeFiles = ["docker-compose-eventuate-local-postgres-polling.yml"]
-        startedServices = ["customercommandside"]
-    }
-
     postgreswal {
         projectName = null
         useComposeFiles = ["docker-compose-eventuate-local-postgres-wal.yml"]
-    }
-
-    postgreswalcdc {
-        projectName = null
-        useComposeFiles = ["docker-compose-eventuate-local-postgres-wal.yml"]
-        startedServices = ["cdcservice"]
-    }
-
-    postgreswalcusomerservice {
-        projectName = null
-        useComposeFiles = ["docker-compose-eventuate-local-postgres-wal.yml"]
-        startedServices = ["customercommandside"]
     }
 }

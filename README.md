@@ -48,13 +48,3 @@ Finally, you can use the Swagger UI provided by the services to create customers
 (Hint: best to open these URLs in separate tabs)
 
 The script `./show-urls.sh` will display the URLs.
-
-## Deploying using Docker Stack/Swarm
-
-You can also deploy the application using Docker Stack/Swarm mode.
-
-```
-./gradlew assemble
-docker-compose -f docker-compose-eventuate-local-mysql.yml build
-docker stack deploy -c docker-stack-eventuate-local.yml customers-and-orders
-```
