@@ -28,11 +28,11 @@ jobs:
             ./build-and-test-all-eventuate-local-mysql.sh
       - run:
           command: |
-            . ./setenv-circle-ci.sh
+            . ./.circleci/setenv-circle-ci.sh
             ./build-and-test-all-eventuate-local-postgres-polling.sh
       - run:
           command: |
-            . ./setenv-circle-ci.sh
+            . ./.circleci/setenv-circle-ci.sh
             ./build-and-test-all-eventuate-local-postgres-wal.sh
       - run:
           name: Save test results
