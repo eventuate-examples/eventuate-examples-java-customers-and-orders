@@ -21,11 +21,14 @@ import static org.mockito.Mockito.when;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes= OrderServiceInProcessComponentTestConfiguration.class,
         webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT,
-      properties = "customer.service.url=http://localhost:8888/customers/{customerId}")
+      properties = "customer.service.url=http://${DOCKER_HOST_IP:localhost}:8888/customers/{customerId}")
 public class OrderServiceInProcessComponentTest {
 
   @Value("${local.server.port}")
   private int port;
+
+  @Value("${DOCKER_HOST_IP:localhost}")
+  private String host;
 
   @Autowired
   private RestTemplate restTemplate;
@@ -34,14 +37,14 @@ public class OrderServiceInProcessComponentTest {
   private EventuateAggregateStore aggregateStore;
 
   private String baseUrl(String path) {
-    return "http://localhost:" + port + path;
+    return "http://" + host + ":" + port + path;
   }
 
   @Test
   public void shouldCreateOrder() {
     String postUrl = baseUrl("/orders");
 
-    when(restTemplate.getForEntity("http://localhost:8888/customers/{customerId}",
+    when(restTemplate.getForEntity(String.format("http://%s:8888/customers/{customerId}", host),
             Customer.class, TestData.customerId))
             .thenReturn(new ResponseEntity<>(HttpStatus.OK));
 
@@ -55,7 +58,7 @@ public class OrderServiceInProcessComponentTest {
     extract().
         path("orderId");
 
-    verify(restTemplate).getForEntity("http://localhost:8888/customers/{customerId}",
+    verify(restTemplate).getForEntity(String.format("http://%s:8888/customers/{customerId}", host),
             Customer.class, TestData.customerId);
 
     assertNotNull(orderId);

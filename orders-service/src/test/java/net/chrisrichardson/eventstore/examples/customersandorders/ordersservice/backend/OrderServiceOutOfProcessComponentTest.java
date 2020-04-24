@@ -19,7 +19,7 @@ import static junit.framework.TestCase.assertNotNull;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes= OrderServiceOutOfProcessComponentTestConfiguration.class,
         webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT,
-      properties = "customer.service.url=http://localhost:8888/customers/{customerId}")
+      properties = "customer.service.url=http://${DOCKER_HOST_IP:localhost}:8888/customers/{customerId}")
 @AutoConfigureStubRunner(ids =
         {"net.chrisrichardson.eventstore.examples.customersandorders:common-contracts:+:stubs:8080"},
         workOffline = false)
@@ -29,11 +29,14 @@ public class OrderServiceOutOfProcessComponentTest {
   @Value("${local.server.port}")
   private int port;
 
+  @Value("${DOCKER_HOST_IP:localhost}")
+  private String host;
+
   @Autowired
   private EventuateAggregateStore aggregateStore;
 
   private String baseUrl(String path) {
-    return "http://localhost:" + port + path;
+    return "http://"+ host +":" + port + path;
   }
 
   @Autowired
@@ -41,7 +44,7 @@ public class OrderServiceOutOfProcessComponentTest {
 
   @Before
   public void setup() {
-    customerServiceProxy.setCustomerServiceUrl("http://localhost:8080/customers/{customerId}");
+    customerServiceProxy.setCustomerServiceUrl(String.format("http://%s:8080/customers/{customerId}", host));
   }
 
   @Test

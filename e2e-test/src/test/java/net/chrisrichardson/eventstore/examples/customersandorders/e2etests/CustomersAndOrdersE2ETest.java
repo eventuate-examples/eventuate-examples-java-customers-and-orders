@@ -27,7 +27,7 @@ import static org.junit.Assert.assertEquals;
 @SpringBootTest(classes = CustomersAndOrdersE2ETestConfiguration.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class CustomersAndOrdersE2ETest extends AbstractCustomerAndOrdersIntegrationTest {
 
-  @Value("localhost")
+  @Value("${DOCKER_HOST_IP:localhost}")
   private String hostName;
 
   private String baseUrlCustomers(String path) {

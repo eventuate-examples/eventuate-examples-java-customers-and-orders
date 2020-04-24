@@ -28,6 +28,11 @@ First, build the application:
 
 Next, you can launch the application using [Docker Compose](https://docs.docker.com/compose/)
 
+Note:
+
+If the containers aren't accessible via `localhost` - e.g. you are using Docker Toolbox, you will have to use `${DOCKER_HOST_IP}` instead of localhost.
+See this http://eventuate.io/docs/usingdocker.html[guide to setting `DOCKER_HOST_IP`] for more information.
+
 ```
 ./gradlew <database-mode>ComposeBuild
 ./gradlew <database-mode>ComposeUp
