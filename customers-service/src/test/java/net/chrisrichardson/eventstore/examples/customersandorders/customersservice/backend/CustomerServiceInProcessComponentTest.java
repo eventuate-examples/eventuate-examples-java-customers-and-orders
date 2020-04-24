@@ -20,8 +20,11 @@ public class CustomerServiceInProcessComponentTest {
   @Value("${local.server.port}")
   private int port;
 
+  @Value("${DOCKER_HOST_IP:localhost}")
+  private String host;
+
   private String baseUrl(String path) {
-    return "http://localhost:" + port + path;
+    return "http://" + host + ":" + port + path;
   }
 
   @Test
