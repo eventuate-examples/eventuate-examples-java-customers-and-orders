@@ -50,18 +50,18 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter:$springBootVersion"
     compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
     compile "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
-    compile "io.eventuate.local.java:eventuate-local-java-spring-jdbc:$eventuateLocalVersion"
+    compile "io.eventuate.local.java:eventuate-local-java-spring-jdbc"
 
 
     testCompile "net.chrisrichardson.eventstore.examples.customersandorders:common-contracts:1.0-SNAPSHOT:stubs"
 
-    testCompile "io.eventuate.local.java:eventuate-client-java-spring-jdbc:$eventuateLocalVersion"
+    testCompile "io.eventuate.local.java:eventuate-client-java-spring-jdbc"
     testCompile project(":customers-common")
     testCompile "org.springframework.cloud:spring-cloud-contract-wiremock"
     testCompile "org.springframework.cloud:spring-cloud-starter-contract-stub-runner"
     testCompile "junit:junit:4.12"
     testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
-    testCompile "io.eventuate.local.java:eventuate-client-java-spring-jdbc:$eventuateLocalVersion"
+    testCompile "io.eventuate.local.java:eventuate-client-java-spring-jdbc"
     testCompile 'com.jayway.restassured:rest-assured:2.3.0'
     testCompile "com.jayway.jsonpath:json-path:2.3.0"
 }

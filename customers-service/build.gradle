@@ -39,13 +39,13 @@ dependencies {
 
     compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
     compile "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
-    compile "io.eventuate.local.java:eventuate-local-java-spring-jdbc:$eventuateLocalVersion"
+    compile "io.eventuate.local.java:eventuate-local-java-spring-jdbc"
 
     testCompile "net.chrisrichardson.eventstore.examples.customersandorders:common-contracts:1.0-SNAPSHOT"
     testCompile 'com.pholser:junit-quickcheck-core:0.7'
     testCompile 'com.pholser:junit-quickcheck-generators:0.7'
     testCompile "junit:junit:4.12"
     testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
-    testCompile "io.eventuate.local.java:eventuate-client-java-spring-jdbc:$eventuateLocalVersion"
+    testCompile "io.eventuate.local.java:eventuate-client-java-spring-jdbc"
 
 }
