@@ -1,11 +1,13 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.customersservice.backend;
 
 import io.eventuate.EntityWithIdAndVersion;
+import io.eventuate.local.java.spring.autoconfigure.EventuateDriverAutoConfiguration;
 import io.eventuate.sync.AggregateRepository;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.Money;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 

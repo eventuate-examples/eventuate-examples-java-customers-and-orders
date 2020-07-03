@@ -1,6 +1,5 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.customersservice;
 
-import io.eventuate.local.java.spring.javaclient.driver.EventuateDriverConfiguration;
 import net.chrisrichardson.eventstore.examples.customersandorders.commonswagger.CommonSwaggerConfiguration;
 import net.chrisrichardson.eventstore.examples.customersandorders.customersservice.web.CustomerWebConfiguration;
 import org.springframework.boot.SpringApplication;
@@ -10,9 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import({CustomerWebConfiguration.class,
-        EventuateDriverConfiguration.class,
-        CommonSwaggerConfiguration.class})
+@Import({CustomerWebConfiguration.class, CommonSwaggerConfiguration.class})
 @EnableAutoConfiguration
 @ComponentScan
 public class CustomersServiceMain {
