@@ -50,7 +50,6 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter:$springBootVersion"
     compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
     compile "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
-    compile "io.eventuate.local.java:eventuate-local-java-spring-jdbc"
     compile "io.eventuate.local.java:eventuate-local-java-spring-jdbc-starter:0.34.0.BUILD-SNAPSHOT" //TODO: remove when BOM is updated
 
 
