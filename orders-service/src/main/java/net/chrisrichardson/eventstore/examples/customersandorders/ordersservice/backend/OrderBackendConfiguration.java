@@ -1,15 +1,12 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.backend;
 
-import io.eventuate.javaclient.spring.EnableEventHandlers;
 import io.eventuate.sync.AggregateRepository;
 import io.eventuate.sync.EventuateAggregateStore;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.web.client.RestTemplate;
 
 @Configuration
-@EnableEventHandlers
 @Import(CustomerServiceProxyConfiguration.class)
 public class OrderBackendConfiguration {
 

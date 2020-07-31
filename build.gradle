@@ -15,11 +15,6 @@ allprojects {
     group = "net.chrisrichardson.eventstore.javacustomersandorders"
 }
 
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.0'
-}
-
 subprojects {
     apply plugin: 'java'
     sourceCompatibility = 1.8
@@ -32,6 +27,10 @@ subprojects {
 
         eventuateMavenRepoUrl.split(',').each { repoUrl -> maven { url repoUrl } }
         mavenLocal()
+    }
+
+    dependencies {
+        implementation(platform("io.eventuate.platform:platform-dependencies:$eventuateBomVersion"))
     }
 }
 

@@ -27,9 +27,9 @@ dependencies {
 
     compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
     compile "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
-    compile "io.eventuate.local.java:eventuate-client-java-spring:$eventuateLocalVersion"
     compile "org.springframework.boot:spring-boot-starter-data-mongodb:$springBootVersion"
-    compile "io.eventuate.local.java:eventuate-local-java-spring-jdbc:$eventuateLocalVersion"
+
+    compile "io.eventuate.local.java:eventuate-local-java-spring-events-starter"
 
     testCompile "junit:junit:4.12"
     testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
