@@ -52,7 +52,7 @@ services:
       EVENTUATE_CDC_TYPE: "EventuateLocal"
 
   mongodb:
-    image: mongo:3.0.4
+    image: mongo:3.6
     hostname: mongodb
     command: mongod --smallfiles
     ports:
