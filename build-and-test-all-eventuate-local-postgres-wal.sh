@@ -1,6 +1,7 @@
 #! /bin/bash
 
 export EVENTUATE_LOCAL=yes
+export READER=PostgresWalReader
 
 export database=postgres
 export mode=wal

@@ -30,13 +30,17 @@ subprojects {
     }
 
     dependencies {
-        implementation(platform("io.eventuate.platform:platform-dependencies:$eventuateBomVersion"))
+        implementation(platform("io.eventuate.platform:eventuate-platform-dependencies:$eventuatePlatformVersion"))
     }
 }
 
 dockerCompose {
     environment.put "EVENTUATE_COMMON_VERSION", eventuateCommonImageVersion
     environment.put "EVENTUATE_CDC_VERSION", eventuateCdcImageVersion
+
+    if (project.ext.has("envFile")) {
+        environment.put "ENV_FILE", project.ext.envFile
+    }
 
     mysqlbinlog {
         projectName = null

@@ -52,6 +52,7 @@ services:
       SPRING_PROFILES_ACTIVE: PostgresWal
       EVENTUATELOCAL_CDC_READER_NAME: PostgresWalReader
       EVENTUATE_CDC_TYPE: "EventuateLocal"
+      EVENTUATE_OUTBOX_ID: 1
       JAVA_OPTS: -Xmx64m
 
   mongodb:
@@ -62,6 +63,8 @@ services:
       - "27017:27017"
 
   customercommandside:
+    env_file:
+      - ${ENV_FILE:-docker-compose-env-files/empty.env}
     build: ./customers-service/
     ports:
       - "8081:8080"
@@ -79,6 +82,8 @@ services:
       JAVA_OPTS: -Xmx64m
 
   orderhistoryqueryside:
+    env_file:
+      - ${ENV_FILE:-docker-compose-env-files/empty.env}
     build: ./orders-history-view-service/
     ports:
       - "8082:8080"
@@ -94,6 +99,8 @@ services:
       JAVA_OPTS: -Xmx64m
 
   ordercommandside:
+    env_file:
+      - ${ENV_FILE:-docker-compose-env-files/empty.env}
     build: ./orders-service/
     ports:
       - "8083:8080"

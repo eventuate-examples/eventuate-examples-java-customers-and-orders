@@ -9,4 +9,5 @@ include 'orders-history-view-service'
 include 'orders-service'
 
 include "e2e-test"
+include "migration-tests"
 

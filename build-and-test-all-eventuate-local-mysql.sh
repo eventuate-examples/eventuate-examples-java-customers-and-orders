@@ -1,6 +1,7 @@
 #! /bin/bash
 
 export EVENTUATE_LOCAL=yes
+export READER=MySqlReader
 
 export database=mysql
 export mode=binlog

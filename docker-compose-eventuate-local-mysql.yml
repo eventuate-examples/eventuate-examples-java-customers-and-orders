@@ -53,6 +53,7 @@ services:
       EVENTUATELOCAL_CDC_OFFSET_STORE_KEY: MySqlBinlog
       EVENTUATELOCAL_CDC_MYSQL_BINLOG_CLIENT_UNIQUE_ID: 1234567890
       EVENTUATELOCAL_CDC_READ_OLD_DEBEZIUM_DB_OFFSET_STORAGE_TOPIC: "false"
+      EVENTUATE_OUTBOX_ID: 1
       EVENTUATE_CDC_TYPE: "EventuateLocal"
       JAVA_OPTS: -Xmx64m
 
@@ -64,6 +65,8 @@ services:
       - "27017:27017"
 
   customercommandside:
+    env_file:
+      - ${ENV_FILE:-docker-compose-env-files/empty.env}
     build:
       context: ./customers-service/
     image: eventuateexamples/eventuate-examples-java-customers-and-orders-customer-service
@@ -83,6 +86,8 @@ services:
       JAVA_OPTS: -Xmx64m
 
   orderhistoryqueryside:
+    env_file:
+      - ${ENV_FILE:-docker-compose-env-files/empty.env}
     build:
       ./orders-history-view-service/
     image: eventuateexamples/eventuate-examples-java-customers-and-orders-order-history-service
@@ -101,6 +106,8 @@ services:
       JAVA_OPTS: -Xmx64m
 
   ordercommandside:
+    env_file:
+      - ${ENV_FILE:-docker-compose-env-files/empty.env}
     build:
       ./orders-service/
     image: eventuateexamples/eventuate-examples-java-customers-and-orders-order-service

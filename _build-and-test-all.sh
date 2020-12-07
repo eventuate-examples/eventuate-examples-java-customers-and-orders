@@ -45,11 +45,36 @@ fi
 #Testing mongo cli
 echo 'show dbs' |  ./mongodb-cli.sh -i
 
-./wait-for-services.sh ${DOCKER_HOST_IP:-localhost} 8081 8082 8083
+./wait-for-services.sh ${DOCKER_HOST_IP:-localhost} health 8081 8082 8083
 
 set -e
 
 ./gradlew -a $BUILD_AND_TEST_ALL_EXTRA_GRADLE_ARGS $* :e2e-test:cleanTest :e2e-test:test -P ignoreE2EFailures=false
+
+./wait-for-services.sh ${DOCKER_HOST_IP:-localhost} readers/${READER}/finished 8099
+
+migration_file="migration_scripts/${database}/migration.sql"
+
+rm -f $migration_file
+if [ "${database}" == "mysql" ]; then
+  curl https://raw.githubusercontent.com/eventuate-foundation/eventuate-common/wip-db-id-gen/mysql/4.initialize-database-db-id.sql --output $migration_file --create-dirs
+  cat $migration_file | ./mysql-cli.sh -i
+elif [ "${database}" == "postgres" ]; then
+  curl https://raw.githubusercontent.com/eventuate-foundation/eventuate-common/wip-db-id-gen/postgres/5.initialize-database-db-id.sql --output $migration_file --create-dirs
+  cat $migration_file | ./postgres-cli.sh -i
+else
+  echo "Unknown Database"
+  exit 99
+fi
+rm -f $migration_file
+
+${docker}Up -P envFile=docker-compose-env-files/db-id-gen.env
+
+./wait-for-services.sh ${DOCKER_HOST_IP:-localhost} health 8081 8082 8083
+
+./gradlew -a $BUILD_AND_TEST_ALL_EXTRA_GRADLE_ARGS $* :e2e-test:cleanTest :e2e-test:test -P ignoreE2EFailures=false
+
+./gradlew -P verifyDbIdMigration=true :migration-tests:cleanTest migration-tests:test
 
 if [ $NO_RM = false ] ; then
   ${docker}Down
