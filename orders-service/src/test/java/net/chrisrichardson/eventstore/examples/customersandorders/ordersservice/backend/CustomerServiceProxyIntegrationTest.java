@@ -1,8 +1,10 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.backend;
 
 import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.Money;
-import net.chrisrichardson.eventstore.examples.customersandorders.customerscommon.CreateCustomerRequest;
-import net.chrisrichardson.eventstore.examples.customersandorders.customerscommon.CreateCustomerResponse;
+import net.chrisrichardson.eventstore.examples.customersandorders.customers.webapi.CreateCustomerRequest;
+import net.chrisrichardson.eventstore.examples.customersandorders.customers.webapi.CreateCustomerResponse;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.service.CustomerNotFoundException;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.service.CustomerServiceProxy;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;

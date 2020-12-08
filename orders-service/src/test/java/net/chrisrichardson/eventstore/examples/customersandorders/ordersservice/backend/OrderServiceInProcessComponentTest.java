@@ -2,7 +2,9 @@ package net.chrisrichardson.eventstore.examples.customersandorders.ordersservice
 
 import io.eventuate.EntityWithMetadata;
 import io.eventuate.sync.EventuateAggregateStore;
-import net.chrisrichardson.eventstore.examples.customersandorders.orderscommmon.CreateOrderRequest;
+import net.chrisrichardson.eventstore.examples.customersandorders.orders.webapi.CreateOrderRequest;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.domain.Customer;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.domain.Order;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,8 @@ import static org.mockito.Mockito.when;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes= OrderServiceInProcessComponentTestConfiguration.class,
         webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT,
-      properties = "customer.service.url=http://${DOCKER_HOST_IP:localhost}:8888/customers/{customerId}")
+      properties = {"customer.service.url=http://${DOCKER_HOST_IP:localhost}:8888/customers/{customerId}",
+      "spring.main.allow-bean-definition-overriding=true"})
 public class OrderServiceInProcessComponentTest {
 
   @Value("${local.server.port}")

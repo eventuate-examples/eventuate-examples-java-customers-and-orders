@@ -46,12 +46,12 @@ public class DbIdMigrationVerificationTest {
   private void verifyEvents(List<Map<String, Object>> events) {
     final Map<String, List<String>> eventTypeRequiredFields = new HashMap<>();
 
-    eventTypeRequiredFields.put("net.chrisrichardson.eventstore.examples.customersandorders.common.customer.CustomerCreatedEvent", Arrays.asList("name", "creditLimit"));
-    eventTypeRequiredFields.put("net.chrisrichardson.eventstore.examples.customersandorders.common.order.OrderCreatedEvent", Arrays.asList("orderTotal", "customerId"));
-    eventTypeRequiredFields.put("net.chrisrichardson.eventstore.examples.customersandorders.common.customer.CustomerCreditReservedEvent", Arrays.asList("orderTotal", "orderId"));
-    eventTypeRequiredFields.put("net.chrisrichardson.eventstore.examples.customersandorders.common.order.OrderApprovedEvent", Arrays.asList("customerId"));
-    eventTypeRequiredFields.put("net.chrisrichardson.eventstore.examples.customersandorders.common.order.OrderRejectedEvent", Arrays.asList("customerId"));
-    eventTypeRequiredFields.put("net.chrisrichardson.eventstore.examples.customersandorders.common.customer.CustomerCreditLimitExceededEvent", Arrays.asList("orderId"));
+    eventTypeRequiredFields.put("net.chrisrichardson.eventstore.examples.customersandorders.customers.events.CustomerCreatedEvent", Arrays.asList("name", "creditLimit"));
+    eventTypeRequiredFields.put("net.chrisrichardson.eventstore.examples.customersandorders.orders.events.OrderCreatedEvent", Arrays.asList("orderTotal", "customerId"));
+    eventTypeRequiredFields.put("net.chrisrichardson.eventstore.examples.customersandorders.customers.events.CustomerCreditReservedEvent", Arrays.asList("orderTotal", "orderId"));
+    eventTypeRequiredFields.put("net.chrisrichardson.eventstore.examples.customersandorders.orders.events.OrderApprovedEvent", Arrays.asList("customerId"));
+    eventTypeRequiredFields.put("net.chrisrichardson.eventstore.examples.customersandorders.orders.events.OrderRejectedEvent", Arrays.asList("customerId"));
+    eventTypeRequiredFields.put("net.chrisrichardson.eventstore.examples.customersandorders.customers.events.CustomerCreditLimitExceededEvent", Arrays.asList("orderId"));
 
     eventTypeRequiredFields.forEach((event, fields) -> verifyEvent(events, event, fields));
   }

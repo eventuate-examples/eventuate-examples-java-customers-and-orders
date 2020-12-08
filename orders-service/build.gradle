@@ -21,7 +21,7 @@ dockerCompose.isRequiredBy(test)
 
 dependencyManagement {
     imports {
-            mavenBom 'org.springframework.cloud:spring-cloud-contract-dependencies:1.1.1.RELEASE'
+            mavenBom 'org.springframework.cloud:spring-cloud-contract-dependencies:2.2.5.RELEASE'
     }
 }
 
@@ -30,6 +30,7 @@ apply plugin: 'org.springframework.boot'
 dockerCompose {
     environment.put "EVENTUATE_COMMON_VERSION", eventuateCommonImageVersion
     environment.put "EVENTUATE_CDC_VERSION", eventuateCdcImageVersion
+    environment.put "EVENTUATE_JAVA_BASE_IMAGE_VERSION", eventuateExamplesBaseImageVersion
 
     projectName = null
 
@@ -39,12 +40,13 @@ dockerCompose {
         useComposeFiles = ['../docker-compose-eventuate-local-postgres-wal.yml']
     else useComposeFiles = ['../docker-compose-eventuate-local-mysql.yml']
 
-
-    startedServices = ['customercommandside']
+    startedServices = ['customers-service']
 }
 
 dependencies {
-    compile project(":orders-common")
+    compile project(":orders-service-api-web")
+    compile project(":customers-service-api-messaging")
+    compile project(":orders-service-api-messaging")
     compile project(":common-swagger")
 
     compile "org.springframework.boot:spring-boot-starter:$springBootVersion"
@@ -56,7 +58,7 @@ dependencies {
     testCompile "net.chrisrichardson.eventstore.examples.customersandorders:common-contracts:1.0-SNAPSHOT:stubs"
 
     testCompile "io.eventuate.local.java:eventuate-client-java-spring-jdbc"
-    testCompile project(":customers-common")
+    testCompile project(":customers-service-api-web")
     testCompile "org.springframework.cloud:spring-cloud-contract-wiremock"
     testCompile "org.springframework.cloud:spring-cloud-starter-contract-stub-runner"
     testCompile "junit:junit:4.12"

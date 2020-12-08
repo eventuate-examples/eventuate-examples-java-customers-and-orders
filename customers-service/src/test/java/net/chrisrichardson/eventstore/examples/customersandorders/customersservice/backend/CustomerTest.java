@@ -3,9 +3,13 @@ package net.chrisrichardson.eventstore.examples.customersandorders.customersserv
 import io.eventuate.Aggregates;
 import io.eventuate.DefaultMissingApplyEventMethodStrategy;
 import io.eventuate.Event;
-import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.CustomerCreatedEvent;
-import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.CustomerCreditLimitExceededEvent;
-import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.CustomerCreditReservedEvent;
+import net.chrisrichardson.eventstore.examples.customersandorders.customers.events.CustomerCreatedEvent;
+import net.chrisrichardson.eventstore.examples.customersandorders.customers.events.CustomerCreditLimitExceededEvent;
+import net.chrisrichardson.eventstore.examples.customersandorders.customers.events.CustomerCreditReservedEvent;
+import net.chrisrichardson.eventstore.examples.customersandorders.customersservice.domain.CreateCustomerCommand;
+import net.chrisrichardson.eventstore.examples.customersandorders.customersservice.domain.Customer;
+import net.chrisrichardson.eventstore.examples.customersandorders.customersservice.domain.CustomerCommand;
+import net.chrisrichardson.eventstore.examples.customersandorders.customersservice.domain.ReserveCreditCommand;
 import org.junit.Before;
 import org.junit.Test;
 

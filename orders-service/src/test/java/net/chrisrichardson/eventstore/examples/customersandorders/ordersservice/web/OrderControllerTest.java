@@ -1,8 +1,8 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.web;
 
 import io.eventuate.common.json.mapper.JSonMapper;
-import net.chrisrichardson.eventstore.examples.customersandorders.orderscommmon.CreateOrderRequest;
-import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.backend.OrderService;
+import net.chrisrichardson.eventstore.examples.customersandorders.orders.webapi.CreateOrderRequest;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.service.OrderService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.web.servlet.MockMvc;

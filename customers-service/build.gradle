@@ -31,7 +31,9 @@ contracts {
 apply plugin: 'org.springframework.boot'
 
 dependencies {
-    compile project(":customers-common")
+    compile project(":customers-service-api-web")
+    compile project(":customers-service-api-messaging")
+    compile project(":orders-service-api-messaging")
     compile project(":common-swagger")
 
     testCompile 'com.jayway.restassured:rest-assured:2.9.0'

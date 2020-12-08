@@ -45,8 +45,6 @@ fi
 #Testing mongo cli
 echo 'show dbs' |  ./mongodb-cli.sh -i
 
-./wait-for-services.sh ${DOCKER_HOST_IP:-localhost} health 8081 8082 8083
-
 set -e
 
 ./gradlew -a $BUILD_AND_TEST_ALL_EXTRA_GRADLE_ARGS $* :e2e-test:cleanTest :e2e-test:test -P ignoreE2EFailures=false
@@ -69,8 +67,6 @@ fi
 rm -f $migration_file
 
 ${docker}Up -P envFile=docker-compose-env-files/db-id-gen.env
-
-./wait-for-services.sh ${DOCKER_HOST_IP:-localhost} health 8081 8082 8083
 
 ./gradlew -a $BUILD_AND_TEST_ALL_EXTRA_GRADLE_ARGS $* :e2e-test:cleanTest :e2e-test:test -P ignoreE2EFailures=false
 

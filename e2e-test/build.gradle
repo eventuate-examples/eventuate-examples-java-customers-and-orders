@@ -1,7 +1,7 @@
 dependencies {
     testCompile project(":common-test")
-    testCompile project(":customers-common")
-    testCompile project(":orders-common")
+    testCompile project(":customers-service-api-web")
+    testCompile project(":orders-service-api-web")
 
     testCompile "junit:junit:4.12"
     testCompile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"

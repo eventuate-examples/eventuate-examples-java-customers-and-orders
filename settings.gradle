@@ -1,9 +1,11 @@
 include "common"
 include "common-test"
 include 'common-swagger'
-include 'orders-history-common'
-include 'customers-common'
-include 'orders-common'
+include 'orders-history-view-service-api-web'
+include 'customers-service-api-web'
+include 'customers-service-api-messaging'
+include 'orders-service-api-web'
+include 'orders-service-api-messaging'
 include 'customers-service'
 include 'orders-history-view-service'
 include 'orders-service'

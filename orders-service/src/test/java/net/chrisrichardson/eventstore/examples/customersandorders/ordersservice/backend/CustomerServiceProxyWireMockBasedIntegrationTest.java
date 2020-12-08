@@ -1,5 +1,7 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.backend;
 
+import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.service.CustomerNotFoundException;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.service.CustomerServiceProxy;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +17,9 @@ import org.springframework.test.context.junit4.SpringRunner;
         properties={"customer.service.url=http://${DOCKER_HOST_IP:localhost}:8080"}
 )
 @AutoConfigureStubRunner(ids =
-        {"net.chrisrichardson.eventstore.examples.customersandorders:common-contracts:+:stubs:8080"},
+        {"net.chrisrichardson.eventstore.examples.customersandorders:common-contracts:+:stubs:8080"}
 //        repositoryRoot = "file:///Users/cer/.m2/repository",
-        workOffline = false)
+)
 @DirtiesContext
 public class CustomerServiceProxyWireMockBasedIntegrationTest {
 

@@ -2,7 +2,9 @@ package net.chrisrichardson.eventstore.examples.customersandorders.ordersservice
 
 import io.eventuate.EntityWithMetadata;
 import io.eventuate.sync.EventuateAggregateStore;
-import net.chrisrichardson.eventstore.examples.customersandorders.orderscommmon.CreateOrderRequest;
+import net.chrisrichardson.eventstore.examples.customersandorders.orders.webapi.CreateOrderRequest;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.domain.Order;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.service.CustomerServiceProxy;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,8 +23,7 @@ import static junit.framework.TestCase.assertNotNull;
         webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT,
       properties = "customer.service.url=http://${DOCKER_HOST_IP:localhost}:8888/customers/{customerId}")
 @AutoConfigureStubRunner(ids =
-        {"net.chrisrichardson.eventstore.examples.customersandorders:common-contracts:+:stubs:8080"},
-        workOffline = false)
+        {"net.chrisrichardson.eventstore.examples.customersandorders:common-contracts:+:stubs:8080"})
 @DirtiesContext
 public class OrderServiceOutOfProcessComponentTest {
 

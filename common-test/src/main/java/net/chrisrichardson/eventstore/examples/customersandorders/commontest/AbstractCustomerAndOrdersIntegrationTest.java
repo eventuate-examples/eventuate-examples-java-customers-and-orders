@@ -1,10 +1,10 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.commontest;
 
 import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.Money;
-import net.chrisrichardson.eventstore.examples.customersandorders.common.order.OrderState;
-import net.chrisrichardson.eventstore.examples.customersandorders.ordershistorycommon.CustomerView;
-import net.chrisrichardson.eventstore.examples.customersandorders.ordershistorycommon.OrderInfo;
-import net.chrisrichardson.eventstore.examples.customersandorders.ordershistorycommon.OrderView;
+import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.OrderState;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordershistory.webapi.CustomerView;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordershistory.webapi.OrderInfo;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordershistory.webapi.OrderView;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

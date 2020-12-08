@@ -1,8 +1,8 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.views.orderhistory;
 
 import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.Money;
-import net.chrisrichardson.eventstore.examples.customersandorders.ordershistorycommon.CustomerView;
-import net.chrisrichardson.eventstore.examples.customersandorders.ordershistoryviewservice.backend.CustomerViewRepository;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordershistory.webapi.CustomerView;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordershistoryviewservice.domain.CustomerViewRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class CustomerViewRepositoryIntegrationTest {
     String customerName = "Fred";
 
     customerViewRepository.addCustomer(customerId, customerName, creditLimit);
-    CustomerView customerView = customerViewRepository.findOne(customerId);
+    CustomerView customerView = customerViewRepository.findById(customerId).get();
 
     assertEquals(customerId, customerView.getId());
     assertEquals(customerName, customerView.getName());

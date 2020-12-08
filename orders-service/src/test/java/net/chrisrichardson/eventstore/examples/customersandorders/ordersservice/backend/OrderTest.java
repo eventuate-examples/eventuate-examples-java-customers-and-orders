@@ -4,10 +4,14 @@ package net.chrisrichardson.eventstore.examples.customersandorders.ordersservice
 import io.eventuate.Event;
 import io.eventuate.EventUtil;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.Money;
-import net.chrisrichardson.eventstore.examples.customersandorders.common.order.OrderApprovedEvent;
-import net.chrisrichardson.eventstore.examples.customersandorders.common.order.OrderCreatedEvent;
-import net.chrisrichardson.eventstore.examples.customersandorders.common.order.OrderRejectedEvent;
-import net.chrisrichardson.eventstore.examples.customersandorders.common.order.OrderState;
+import net.chrisrichardson.eventstore.examples.customersandorders.orders.events.OrderApprovedEvent;
+import net.chrisrichardson.eventstore.examples.customersandorders.orders.events.OrderCreatedEvent;
+import net.chrisrichardson.eventstore.examples.customersandorders.orders.events.OrderRejectedEvent;
+import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.OrderState;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.domain.ApproveOrderCommand;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.domain.CreateOrderCommand;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.domain.Order;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.service.RejectOrderCommand;
 import org.junit.Test;
 
 import java.util.List;
