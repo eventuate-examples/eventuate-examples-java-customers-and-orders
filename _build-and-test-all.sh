@@ -51,20 +51,21 @@ set -e
 
 ./wait-for-services.sh ${DOCKER_HOST_IP:-localhost} readers/${READER}/finished 8099
 
-migration_file="migration_scripts/${database}/migration.sql"
+get_db_id_migration_file () {
+  search="${database}DbIdMigrationFile="
+  path_line="$(grep $search ./gradle.properties)"
+  path=${path_line#$search}
+  echo $path
+}
 
-rm -f $migration_file
 if [ "${database}" == "mysql" ]; then
-  curl https://raw.githubusercontent.com/eventuate-foundation/eventuate-common/wip-db-id-gen/mysql/4.initialize-database-db-id.sql --output $migration_file --create-dirs
-  cat $migration_file | ./mysql-cli.sh -i
+  curl -s $(get_db_id_migration_file) &> /dev/stdout | ./mysql-cli.sh -i
 elif [ "${database}" == "postgres" ]; then
-  curl https://raw.githubusercontent.com/eventuate-foundation/eventuate-common/wip-db-id-gen/postgres/5.initialize-database-db-id.sql --output $migration_file --create-dirs
-  cat $migration_file | ./postgres-cli.sh -i
+  curl -s $(get_db_id_migration_file) &> /dev/stdout | ./postgres-cli.sh -i
 else
   echo "Unknown Database"
   exit 99
 fi
-rm -f $migration_file
 
 ${docker}Up -P envFile=docker-compose-env-files/db-id-gen.env
 

@@ -1,4 +1,8 @@
 dependencies {
+    testCompile project(":customers-service-api-messaging")
+    testCompile project(":orders-service-api-messaging")
+
+
     testCompile "org.springframework.boot:spring-boot-starter-jdbc:${springBootVersion}"
     testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
 

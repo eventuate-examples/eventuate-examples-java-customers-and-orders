@@ -1,6 +1,14 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.migration;
 
+import io.eventuate.Event;
+import net.chrisrichardson.eventstore.examples.customersandorders.customers.events.CustomerCreatedEvent;
+import net.chrisrichardson.eventstore.examples.customersandorders.customers.events.CustomerCreditLimitExceededEvent;
+import net.chrisrichardson.eventstore.examples.customersandorders.customers.events.CustomerCreditReservedEvent;
+import net.chrisrichardson.eventstore.examples.customersandorders.orders.events.OrderApprovedEvent;
+import net.chrisrichardson.eventstore.examples.customersandorders.orders.events.OrderCreatedEvent;
+import net.chrisrichardson.eventstore.examples.customersandorders.orders.events.OrderRejectedEvent;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +22,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = DbIdMigrationVerificationTest.Config.class)
@@ -26,6 +33,8 @@ public class DbIdMigrationVerificationTest {
 
   @Autowired
   private JdbcTemplate jdbcTemplate;
+
+  private final Map<String, List<String>> eventTypeRequiredFields = new HashMap<>();
 
   @Test
   //after first call of e2e tests (before migration), events should have ids, after second call (after migration) don't
@@ -39,46 +48,36 @@ public class DbIdMigrationVerificationTest {
     Assert.assertTrue(eventsWithEmptyId.size() > 0);
     Assert.assertEquals(eventsWithEmptyId.size(), eventsWithNotEmptyId.size());
 
-    verifyEvents(eventsWithEmptyId);
-    verifyEvents(eventsWithNotEmptyId);
+    assertEventsHaveRequiredFields(eventsWithEmptyId);
+    assertEventsHaveRequiredFields(eventsWithNotEmptyId);
   }
 
-  private void verifyEvents(List<Map<String, Object>> events) {
-    final Map<String, List<String>> eventTypeRequiredFields = new HashMap<>();
-
-    eventTypeRequiredFields.put("net.chrisrichardson.eventstore.examples.customersandorders.customers.events.CustomerCreatedEvent", Arrays.asList("name", "creditLimit"));
-    eventTypeRequiredFields.put("net.chrisrichardson.eventstore.examples.customersandorders.orders.events.OrderCreatedEvent", Arrays.asList("orderTotal", "customerId"));
-    eventTypeRequiredFields.put("net.chrisrichardson.eventstore.examples.customersandorders.customers.events.CustomerCreditReservedEvent", Arrays.asList("orderTotal", "orderId"));
-    eventTypeRequiredFields.put("net.chrisrichardson.eventstore.examples.customersandorders.orders.events.OrderApprovedEvent", Arrays.asList("customerId"));
-    eventTypeRequiredFields.put("net.chrisrichardson.eventstore.examples.customersandorders.orders.events.OrderRejectedEvent", Arrays.asList("customerId"));
-    eventTypeRequiredFields.put("net.chrisrichardson.eventstore.examples.customersandorders.customers.events.CustomerCreditLimitExceededEvent", Arrays.asList("orderId"));
-
-    eventTypeRequiredFields.forEach((event, fields) -> verifyEvent(events, event, fields));
+  @Before
+  public void initializeEventTypeRequiredFields() {
+    addEventFieldsToEventTypeRequiredFields(CustomerCreatedEvent.class, "name", "creditLimit");
+    addEventFieldsToEventTypeRequiredFields(CustomerCreditReservedEvent.class, "orderId", "orderTotal");
+    addEventFieldsToEventTypeRequiredFields(CustomerCreditLimitExceededEvent.class, "orderId");
+    addEventFieldsToEventTypeRequiredFields(OrderCreatedEvent.class, "orderTotal", "customerId");
+    addEventFieldsToEventTypeRequiredFields(OrderApprovedEvent.class, "customerId");
+    addEventFieldsToEventTypeRequiredFields(OrderRejectedEvent.class, "customerId");
   }
 
-  private void verifyEvent(List<Map<String, Object>> events, String eventType, List<String> requiredFields) {
-    List<Map<String, Object>> targetEvents = findEventOfType(events, eventType);
+  private void addEventFieldsToEventTypeRequiredFields(Class<? extends Event> eventClass, String... fields) {
+    eventTypeRequiredFields.put(eventClass.getName(), Arrays.asList(fields));
+  }
 
-    Assert.assertTrue(String.format("event of type %s should be present", eventType), targetEvents.size() > 0);
-
-    for (Map<String, Object> event : targetEvents) {
+  private void assertEventsHaveRequiredFields(List<Map<String, Object>> events) {
+    events.forEach(event -> {
+      String eventType = (String)event.get("event_type");
+      List<String> requiredFields = eventTypeRequiredFields.get(eventType);
       String eventData = (String)event.get("event_data");
 
-      checkThatRequiredFieldsArePresent(eventData, eventType, requiredFields);
-    }
-  }
+      String assertMessageTemplate = "event data \"%s\" of event type \"%s\" should contain \"%s\" field";
 
-  private List<Map<String, Object>> findEventOfType(List<Map<String, Object>> events, String eventType) {
-    return events
-            .stream()
-            .filter(event -> eventType.equals(event.get("event_type")))
-            .collect(Collectors.toList());
-  }
-
-  private void checkThatRequiredFieldsArePresent(String eventData, String eventType, List<String> requiredFields) {
-    requiredFields
-            .forEach(field ->
-                    Assert.assertTrue(String.format("event data \"%s\" of event type \"%s\" should contain \"%s\" field", eventData, eventType, field),
-                            eventData.contains(field)));
+      requiredFields
+              .forEach(field ->
+                      Assert.assertTrue(String.format(assertMessageTemplate, eventData, eventType, field),
+                              eventData.contains(field)));
+    });
   }
 }
