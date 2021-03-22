@@ -3,7 +3,7 @@
 export EVENTUATE_LOCAL=yes
 export READER=MySqlReader
 
-export database=mysql
-export mode=binlog
+export DATABASE=mysql
+export MODE=binlog
 
 ./_build-and-test-all.sh

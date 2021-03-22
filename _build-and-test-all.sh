@@ -4,7 +4,7 @@ set -e
 
 export COMPOSE_HTTP_TIMEOUT=240
 
-docker="./gradlew ${database}${mode}Compose"
+docker="./gradlew ${DATABASE}${MODE}Compose"
 
 if [ -z "$SPRING_DATA_MONGODB_URI" ] ; then
   export SPRING_DATA_MONGODB_URI=mongodb://${DOCKER_HOST_IP:-localhost}/customers_orders
@@ -33,9 +33,9 @@ fi
 ${docker}Up
 
 #Testing db cli
-if [ "${database}" == "mysql" ]; then
+if [ "${DATABASE}" == "mysql" ]; then
   echo 'show databases;' | ./mysql-cli.sh -i
-elif [ "${database}" == "postgres" ]; then
+elif [ "${DATABASE}" == "postgres" ]; then
   echo '\l' | ./postgres-cli.sh -i
 else
   echo "Unknown Database"
@@ -51,21 +51,8 @@ set -e
 
 ./wait-for-services.sh ${DOCKER_HOST_IP:-localhost} readers/${READER}/finished 8099
 
-get_db_id_migration_file () {
-  search="${database}DbIdMigrationFile="
-  path_line="$(grep $search ./gradle.properties)"
-  path=${path_line#$search}
-  echo $path
-}
-
-if [ "${database}" == "mysql" ]; then
-  curl -s $(get_db_id_migration_file) &> /dev/stdout | ./mysql-cli.sh -i
-elif [ "${database}" == "postgres" ]; then
-  curl -s $(get_db_id_migration_file) &> /dev/stdout | ./postgres-cli.sh -i
-else
-  echo "Unknown Database"
-  exit 99
-fi
+export db_id_migration_repository=https://raw.githubusercontent.com/eventuate-foundation/eventuate-common
+curl -s https://raw.githubusercontent.com/eventuate-foundation/eventuate-common/master/migration/db-id/mssql/migration.sh &> /dev/stdout | bash
 
 ${docker}Up -P envFile=docker-compose-env-files/db-id-gen.env
 
