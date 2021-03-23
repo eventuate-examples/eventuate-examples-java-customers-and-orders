@@ -9,7 +9,7 @@ services:
       KAFKA_HEAP_OPTS: -Xmx64m
 
   kafka:
-    image: "confluentinc/cp-enterprise-kafka:5.2.4"
+    image: "confluentinc/cp-kafka:5.2.4"
     ports:
       - 9092:9092
     depends_on:
@@ -52,6 +52,7 @@ services:
       SPRING_PROFILES_ACTIVE: PostgresWal
       EVENTUATELOCAL_CDC_READER_NAME: PostgresWalReader
       EVENTUATE_CDC_TYPE: "EventuateLocal"
+      EVENTUATE_OUTBOX_ID: 1
       JAVA_OPTS: -Xmx64m
 
   mongodb:
@@ -61,8 +62,14 @@ services:
     ports:
       - "27017:27017"
 
-  customercommandside:
-    build: ./customers-service/
+  customers-service:
+    env_file:
+      - ${ENV_FILE:-docker-compose-env-files/empty.env}
+    build:
+      context: ./customers-service/
+      args:
+        baseImageVersion: ${EVENTUATE_JAVA_BASE_IMAGE_VERSION}
+    image: eventuateexamples/eventuate-examples-java-customers-and-orders-customer-service
     ports:
       - "8081:8080"
     depends_on:
@@ -76,10 +83,15 @@ services:
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
       EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
       EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
-      JAVA_OPTS: -Xmx64m
 
-  orderhistoryqueryside:
-    build: ./orders-history-view-service/
+  orders-history-view-service:
+    env_file:
+      - ${ENV_FILE:-docker-compose-env-files/empty.env}
+    build:
+      context: ./orders-history-view-service/
+      args:
+        baseImageVersion: ${EVENTUATE_JAVA_BASE_IMAGE_VERSION}
+    image: eventuateexamples/eventuate-examples-java-customers-and-orders-order-history-service
     ports:
       - "8082:8080"
     depends_on:
@@ -91,19 +103,24 @@ services:
       SPRING_DATA_MONGODB_URI: mongodb://mongodb/customers_and_orders
       EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
       EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
-      JAVA_OPTS: -Xmx64m
 
-  ordercommandside:
-    build: ./orders-service/
+  orders-service:
+    env_file:
+      - ${ENV_FILE:-docker-compose-env-files/empty.env}
+    build:
+      context: ./orders-service/
+      args:
+        baseImageVersion: ${EVENTUATE_JAVA_BASE_IMAGE_VERSION}
+    image: eventuateexamples/eventuate-examples-java-customers-and-orders-order-service
     ports:
       - "8083:8080"
     depends_on:
       - postgres
       - kafka
       - zookeeper
-      - customercommandside
+      - customers-service
     environment:
-      CUSTOMER_SERVICE_URL: http://customercommandside:8080/customers/{customerId}
+      CUSTOMER_SERVICE_URL: http://customers-service:8080/customers/{customerId}
       ENDPOINTS_SENSITIVE: "false"
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres/eventuate
       SPRING_DATASOURCE_USERNAME: eventuate
@@ -111,4 +128,3 @@ services:
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
       EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
       EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
-      JAVA_OPTS: -Xmx64m

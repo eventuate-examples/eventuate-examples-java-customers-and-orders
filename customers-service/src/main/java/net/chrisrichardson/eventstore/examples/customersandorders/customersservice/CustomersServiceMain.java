@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import({CustomerWebConfiguration.class, CommonSwaggerConfiguration.class})
+@Import({CustomerConfiguration.class, CustomerWebConfiguration.class, CommonSwaggerConfiguration.class})
 @EnableAutoConfiguration
 @ComponentScan
 public class CustomersServiceMain {

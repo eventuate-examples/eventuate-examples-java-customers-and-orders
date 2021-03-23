@@ -9,7 +9,7 @@ services:
       KAFKA_HEAP_OPTS: -Xmx64m
 
   kafka:
-    image: "confluentinc/cp-enterprise-kafka:5.2.4"
+    image: "confluentinc/cp-kafka:5.2.4"
     ports:
       - 9092:9092
     depends_on:
@@ -53,6 +53,7 @@ services:
       EVENTUATELOCAL_CDC_OFFSET_STORE_KEY: MySqlBinlog
       EVENTUATELOCAL_CDC_MYSQL_BINLOG_CLIENT_UNIQUE_ID: 1234567890
       EVENTUATELOCAL_CDC_READ_OLD_DEBEZIUM_DB_OFFSET_STORAGE_TOPIC: "false"
+      EVENTUATE_OUTBOX_ID: 1
       EVENTUATE_CDC_TYPE: "EventuateLocal"
       JAVA_OPTS: -Xmx64m
 
@@ -63,9 +64,13 @@ services:
     ports:
       - "27017:27017"
 
-  customercommandside:
+  customers-service:
+    env_file:
+      - ${ENV_FILE:-docker-compose-env-files/empty.env}
     build:
       context: ./customers-service/
+      args:
+        baseImageVersion: ${EVENTUATE_JAVA_BASE_IMAGE_VERSION}
     image: eventuateexamples/eventuate-examples-java-customers-and-orders-customer-service
     ports:
       - "8081:8080"
@@ -80,11 +85,14 @@ services:
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.jdbc.Driver
       EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
       EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
-      JAVA_OPTS: -Xmx64m
 
-  orderhistoryqueryside:
+  orders-history-view-service:
+    env_file:
+      - ${ENV_FILE:-docker-compose-env-files/empty.env}
     build:
-      ./orders-history-view-service/
+      context: ./orders-history-view-service/
+      args:
+        baseImageVersion: ${EVENTUATE_JAVA_BASE_IMAGE_VERSION}
     image: eventuateexamples/eventuate-examples-java-customers-and-orders-order-history-service
     ports:
       - "8082:8080"
@@ -94,15 +102,17 @@ services:
       - kafka
       - zookeeper
     environment:
-
       SPRING_DATA_MONGODB_URI: mongodb://mongodb/customers_and_orders
       EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
       EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
-      JAVA_OPTS: -Xmx64m
 
-  ordercommandside:
+  orders-service:
+    env_file:
+      - ${ENV_FILE:-docker-compose-env-files/empty.env}
     build:
-      ./orders-service/
+      context: ./orders-service/
+      args:
+        baseImageVersion: ${EVENTUATE_JAVA_BASE_IMAGE_VERSION}
     image: eventuateexamples/eventuate-examples-java-customers-and-orders-order-service
     ports:
       - "8083:8080"
@@ -110,9 +120,9 @@ services:
       - mysql
       - kafka
       - zookeeper
-      - customercommandside
+      - customers-service
     environment:
-      CUSTOMER_SERVICE_URL: http://customercommandside:8080/customers/{customerId}
+      CUSTOMER_SERVICE_URL: http://customers-service:8080/customers/{customerId}
       ENDPOINTS_SENSITIVE: "false"
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql/eventuate
       SPRING_DATASOURCE_USERNAME: mysqluser
@@ -120,4 +130,3 @@ services:
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.jdbc.Driver
       EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
       EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
-      JAVA_OPTS: -Xmx64m

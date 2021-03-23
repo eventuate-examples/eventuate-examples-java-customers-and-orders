@@ -22,7 +22,11 @@ dockerCompose {
 }
 
 dependencies {
-    compile project(":orders-history-common")
+    compile project(":orders-history-view-service-api-web")
+
+    compile project(":orders-service-api-messaging")
+    compile project(":customers-service-api-messaging")
+
     compile project(":common-swagger")
 
     compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"

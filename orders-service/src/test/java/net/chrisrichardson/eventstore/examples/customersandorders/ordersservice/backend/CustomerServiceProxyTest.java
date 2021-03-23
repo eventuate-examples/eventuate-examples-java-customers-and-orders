@@ -1,5 +1,8 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.backend;
 
+import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.domain.Customer;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.service.CustomerNotFoundException;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.service.CustomerServiceProxy;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
@@ -32,7 +35,7 @@ public class CustomerServiceProxyTest {
     verify(restTemplate).getForEntity(CUSTOMER_SERVICE_URL, Customer.class, CUSTOMER_ID);
   }
 
-  @Test(expected=CustomerNotFoundException.class)
+  @Test(expected= CustomerNotFoundException.class)
   public void shouldNotFindCustomer() {
     when(restTemplate.getForEntity(CUSTOMER_SERVICE_URL, Customer.class, CUSTOMER_ID))
             .thenReturn(new ResponseEntity<>(HttpStatus.NOT_FOUND));

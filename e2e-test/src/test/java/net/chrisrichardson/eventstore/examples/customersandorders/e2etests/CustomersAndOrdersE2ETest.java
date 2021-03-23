@@ -1,14 +1,13 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.e2etests;
 
-import io.eventuate.CompletableFutureUtil;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.Money;
 import net.chrisrichardson.eventstore.examples.customersandorders.commontest.AbstractCustomerAndOrdersIntegrationTest;
-import net.chrisrichardson.eventstore.examples.customersandorders.customerscommon.CreateCustomerRequest;
-import net.chrisrichardson.eventstore.examples.customersandorders.customerscommon.CreateCustomerResponse;
-import net.chrisrichardson.eventstore.examples.customersandorders.orderscommmon.CreateOrderRequest;
-import net.chrisrichardson.eventstore.examples.customersandorders.orderscommmon.CreateOrderResponse;
-import net.chrisrichardson.eventstore.examples.customersandorders.ordershistorycommon.CustomerView;
-import net.chrisrichardson.eventstore.examples.customersandorders.ordershistorycommon.OrderView;
+import net.chrisrichardson.eventstore.examples.customersandorders.customers.webapi.CreateCustomerRequest;
+import net.chrisrichardson.eventstore.examples.customersandorders.customers.webapi.CreateCustomerResponse;
+import net.chrisrichardson.eventstore.examples.customersandorders.orders.webapi.CreateOrderRequest;
+import net.chrisrichardson.eventstore.examples.customersandorders.orders.webapi.CreateOrderResponse;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordershistory.webapi.CustomerView;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordershistory.webapi.OrderView;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,8 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.concurrent.CompletableFuture;
 
 import static org.junit.Assert.assertEquals;
 

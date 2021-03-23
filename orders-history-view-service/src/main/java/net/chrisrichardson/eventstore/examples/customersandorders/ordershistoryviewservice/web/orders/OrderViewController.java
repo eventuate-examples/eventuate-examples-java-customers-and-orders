@@ -1,7 +1,7 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.ordershistoryviewservice.web.orders;
 
-import net.chrisrichardson.eventstore.examples.customersandorders.ordershistorycommon.OrderView;
-import net.chrisrichardson.eventstore.examples.customersandorders.ordershistoryviewservice.backend.OrderViewRepository;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordershistory.webapi.OrderView;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordershistoryviewservice.domain.OrderViewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,14 +23,9 @@ public class OrderViewController {
 
   @RequestMapping(value="/orders/{orderId}", method= RequestMethod.GET)
   public ResponseEntity<OrderView> getOrder(@PathVariable String orderId) {
-
-    OrderView ov = orderViewRepository.findOne(orderId);
-    if (ov == null) {
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    } else {
-      return new ResponseEntity<>(ov, HttpStatus.OK);
-    }
+    return orderViewRepository
+            .findById(orderId)
+            .map(order -> new ResponseEntity<>(order, HttpStatus.OK))
+            .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }
-
-
 }

@@ -1,12 +1,13 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.views.orderhistory;
 
-import net.chrisrichardson.eventstore.examples.customersandorders.ordershistoryviewservice.backend.OrderHistoryViewMongoConfiguration;
+import io.eventuate.util.spring.swagger.CommonSwaggerConfiguration;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordershistoryviewservice.domain.OrderHistoryViewMongoConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@EnableAutoConfiguration
+@EnableAutoConfiguration(exclude = CommonSwaggerConfiguration.class)
 @Import(OrderHistoryViewMongoConfiguration.class)
 public class OrderHistoryViewServiceTestConfiguration {
 }

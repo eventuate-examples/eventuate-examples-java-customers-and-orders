@@ -3,11 +3,11 @@ package net.chrisrichardson.eventstore.examples.customersandorders.customersserv
 import io.eventuate.EntityNotFoundException;
 import io.eventuate.EntityWithIdAndVersion;
 import io.eventuate.EntityWithMetadata;
-import net.chrisrichardson.eventstore.examples.customersandorders.customerscommon.CreateCustomerRequest;
-import net.chrisrichardson.eventstore.examples.customersandorders.customerscommon.CreateCustomerResponse;
-import net.chrisrichardson.eventstore.examples.customersandorders.customerscommon.GetCustomerResponse;
-import net.chrisrichardson.eventstore.examples.customersandorders.customersservice.backend.Customer;
-import net.chrisrichardson.eventstore.examples.customersandorders.customersservice.backend.CustomerService;
+import net.chrisrichardson.eventstore.examples.customersandorders.customers.webapi.CreateCustomerRequest;
+import net.chrisrichardson.eventstore.examples.customersandorders.customers.webapi.CreateCustomerResponse;
+import net.chrisrichardson.eventstore.examples.customersandorders.customers.webapi.GetCustomerResponse;
+import net.chrisrichardson.eventstore.examples.customersandorders.customersservice.domain.Customer;
+import net.chrisrichardson.eventstore.examples.customersandorders.customersservice.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,8 +1,11 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.backend;
 
 import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.Money;
-import net.chrisrichardson.eventstore.examples.customersandorders.customerscommon.CreateCustomerRequest;
-import net.chrisrichardson.eventstore.examples.customersandorders.customerscommon.CreateCustomerResponse;
+import net.chrisrichardson.eventstore.examples.customersandorders.customers.webapi.CreateCustomerRequest;
+import net.chrisrichardson.eventstore.examples.customersandorders.customers.webapi.CreateCustomerResponse;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.service.CustomerNotFoundException;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.service.CustomerServiceProxy;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
@@ -24,14 +28,17 @@ import static org.junit.Assert.assertEquals;
 @DirtiesContext
 public class CustomerServiceProxyIntegrationTest {
 
+  @Value("http://${DOCKER_HOST_IP:localhost}:8081/customers")
+  private String customerServiceRootUrl;
+
   @Autowired
   private CustomerServiceProxy customerServiceProxy;
 
   @Autowired
   private RestTemplate restTemplate;
 
-  @Value("http://${DOCKER_HOST_IP:localhost}:8081/customers")
-  private String customerServiceRootUrl;
+  @Autowired
+  private JdbcTemplate jdbcTemplate;
 
   @Test
   public void shouldVerifyExistingCustomer() {
@@ -46,4 +53,8 @@ public class CustomerServiceProxyIntegrationTest {
     customerServiceProxy.verifyCustomerCustomerId("1223232-none");
   }
 
+  @After
+  public void cleanUp() {
+    jdbcTemplate.execute("delete from eventuate.events");
+  }
 }

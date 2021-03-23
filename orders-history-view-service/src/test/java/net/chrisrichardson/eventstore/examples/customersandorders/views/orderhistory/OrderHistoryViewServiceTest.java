@@ -1,12 +1,12 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.views.orderhistory;
 
 import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.Money;
-import net.chrisrichardson.eventstore.examples.customersandorders.common.order.OrderState;
-import net.chrisrichardson.eventstore.examples.customersandorders.ordershistorycommon.CustomerView;
-import net.chrisrichardson.eventstore.examples.customersandorders.ordershistorycommon.OrderView;
-import net.chrisrichardson.eventstore.examples.customersandorders.ordershistoryviewservice.backend.CustomerViewRepository;
-import net.chrisrichardson.eventstore.examples.customersandorders.ordershistoryviewservice.backend.OrderHistoryViewService;
-import net.chrisrichardson.eventstore.examples.customersandorders.ordershistoryviewservice.backend.OrderViewRepository;
+import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.OrderState;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordershistory.webapi.CustomerView;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordershistory.webapi.OrderView;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordershistoryviewservice.domain.CustomerViewRepository;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordershistoryviewservice.service.OrderHistoryViewService;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordershistoryviewservice.domain.OrderViewRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +49,7 @@ public class OrderHistoryViewServiceTest {
     orderHistoryViewService.addOrder(customerId, orderId2, orderTotal2);
     orderHistoryViewService.rejectOrder(customerId, orderId2);
 
-    CustomerView customerView = customerViewRepository.findOne(customerId);
+    CustomerView customerView = customerViewRepository.findById(customerId).get();
 
 
     assertEquals(2, customerView.getOrders().size());
@@ -62,11 +62,11 @@ public class OrderHistoryViewServiceTest {
     assertEquals(orderTotal2, customerView.getOrders().get(orderId2).getOrderTotal());
     assertEquals(OrderState.REJECTED, customerView.getOrders().get(orderId2).getState());
 
-    OrderView orderView1 = orderViewRepository.findOne(orderId1);
+    OrderView orderView1 = orderViewRepository.findById(orderId1).get();
     assertEquals(orderTotal1, orderView1.getOrderTotal());
     assertEquals(OrderState.APPROVED, orderView1.getState());
 
-    OrderView orderView2 = orderViewRepository.findOne(orderId2);
+    OrderView orderView2 = orderViewRepository.findById(orderId2).get();
     assertEquals(orderTotal2, orderView2.getOrderTotal());
     assertEquals(OrderState.REJECTED, orderView2.getState());
   }

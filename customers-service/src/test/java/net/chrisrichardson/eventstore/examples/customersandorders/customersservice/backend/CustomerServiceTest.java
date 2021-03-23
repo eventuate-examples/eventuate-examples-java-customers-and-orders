@@ -2,6 +2,11 @@ package net.chrisrichardson.eventstore.examples.customersandorders.customersserv
 
 import io.eventuate.EntityWithIdAndVersion;
 import io.eventuate.sync.AggregateRepository;
+import net.chrisrichardson.eventstore.examples.customersandorders.customersservice.domain.CreateCustomerCommand;
+import net.chrisrichardson.eventstore.examples.customersandorders.customersservice.domain.Customer;
+import net.chrisrichardson.eventstore.examples.customersandorders.customersservice.domain.CustomerCommand;
+import net.chrisrichardson.eventstore.examples.customersandorders.customersservice.service.CustomerService;
+import net.chrisrichardson.eventstore.examples.customersandorders.customersservice.service.CustomerServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;

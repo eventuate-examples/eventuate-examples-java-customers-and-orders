@@ -2,13 +2,22 @@
 
 done=false
 
-host=$1
+echo waiting for: $*
+
+host=${1?}
+shift
+health_url=${1?}
 shift
 ports=$*
 
+if [ -z "$ports" ] ; then
+	echo no ports
+	exit 99
+fi
+
 while [[ "$done" = false ]]; do
 	for port in $ports; do
-		curl -q http://${host}:${port}/health >& /dev/null
+		curl --fail http://${host}:${port}/${health_url} >& /dev/null
 		if [[ "$?" -eq "0" ]]; then
 			done=true
 		else
@@ -20,7 +29,6 @@ while [[ "$done" = false ]]; do
 		echo connected
 		break;
   fi
-	#curl -q http://${1?}:8080/health >& /dev/null && curl -q http://${1?}:8081/health >& /dev/null && curl -q http://${1?}:8082/health >& /dev/null
 	echo -n .
 	sleep 1
 done

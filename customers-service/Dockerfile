@@ -1,3 +1,3 @@
-FROM openjdk:8u252-slim-buster
-CMD java ${JAVA_OPTS} -jar customers-service.jar
-COPY build/libs/customers-service.jar .
+ARG baseImageVersion
+FROM eventuateio/eventuate-examples-docker-images-java-example-base-image:$baseImageVersion
+COPY build/libs/customers-service.jar service.jar

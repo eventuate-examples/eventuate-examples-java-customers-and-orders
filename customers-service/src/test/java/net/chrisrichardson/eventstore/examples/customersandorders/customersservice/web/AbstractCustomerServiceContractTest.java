@@ -7,10 +7,10 @@ import io.eventuate.EntityIdAndVersion;
 import io.eventuate.EntityNotFoundException;
 import io.eventuate.EntityWithMetadata;
 import io.eventuate.common.id.Int128;
-import net.chrisrichardson.eventstore.examples.customersandorders.common.customer.CustomerCreatedEvent;
+import net.chrisrichardson.eventstore.examples.customersandorders.customers.events.CustomerCreatedEvent;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.Money;
-import net.chrisrichardson.eventstore.examples.customersandorders.customersservice.backend.Customer;
-import net.chrisrichardson.eventstore.examples.customersandorders.customersservice.backend.CustomerService;
+import net.chrisrichardson.eventstore.examples.customersandorders.customersservice.domain.Customer;
+import net.chrisrichardson.eventstore.examples.customersandorders.customersservice.service.CustomerService;
 import org.junit.Before;
 
 import java.util.Collections;

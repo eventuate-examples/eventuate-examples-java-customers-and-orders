@@ -1,7 +1,7 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.customersservice.backend;
 
 import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.Money;
-import net.chrisrichardson.eventstore.examples.customersandorders.customerscommon.CreateCustomerRequest;
+import net.chrisrichardson.eventstore.examples.customersandorders.customers.webapi.CreateCustomerRequest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;

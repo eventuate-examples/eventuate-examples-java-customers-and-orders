@@ -4,7 +4,7 @@ import io.eventuate.EntityIdAndVersion;
 import io.eventuate.EntityWithIdAndVersion;
 import io.eventuate.common.id.Int128;
 import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.Money;
-import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.backend.Order;
+import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.domain.Order;
 import org.springframework.http.MediaType;
 
 public class OrderMother {
