@@ -38,7 +38,7 @@ dockerCompose {
         useComposeFiles = ['../docker-compose-eventuate-local-postgres-polling.yml']
     else if ("postgres,PostgresWal".equals(System.getenv("SPRING_PROFILES_ACTIVE")))
         useComposeFiles = ['../docker-compose-eventuate-local-postgres-wal.yml']
-    else useComposeFiles = ['../docker-compose-eventuate-local-mysql.yml']
+    else useComposeFiles = ['../docker-compose-eventuate-local-mysql-binlog.yml']
 
     startedServices = ['customers-service']
 }
