@@ -51,7 +51,11 @@ set -e
 
 ./wait-for-services.sh ${DOCKER_HOST_IP:-localhost} readers/${READER}/finished 8099
 
+compose="docker-compose -f docker-compose-eventuate-local-${DATABASE}-${MODE}.yml "
+
+$compose stop cdc-service
 curl -s https://raw.githubusercontent.com/eventuate-foundation/eventuate-common/master/migration/db-id/migration.sh &> /dev/stdout | bash
+$compose start cdc-service
 
 ${docker}Up -P envFile=docker-compose-env-files/db-id-gen.env
 

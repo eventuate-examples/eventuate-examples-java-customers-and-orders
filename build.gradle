@@ -45,7 +45,7 @@ dockerCompose {
 
     mysqlbinlog {
         projectName = null
-        useComposeFiles = ["docker-compose-eventuate-local-mysql.yml"]
+        useComposeFiles = ["docker-compose-eventuate-local-mysql-binlog.yml"]
     }
 
     postgrespolling {
