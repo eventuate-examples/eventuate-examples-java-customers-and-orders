@@ -56,7 +56,7 @@ services:
       JAVA_OPTS: -Xmx64m
 
   mongodb:
-    image: mongo:3.0.4
+    image: mongo:3.6
     hostname: mongodb
     command: mongod --smallfiles
     ports:
