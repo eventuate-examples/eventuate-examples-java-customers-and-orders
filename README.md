@@ -46,9 +46,9 @@ Where `database-mode` is one of:
 
 Finally, you can use the Swagger UI provided by the services to create customers and orders, and view the order history:
 
-* `http://localhost:8081/swagger-ui.html` - Create a customer
-* `http://localhost:8083/swagger-ui.html` - Create an order
-* `http://localhost:8082/swagger-ui.html` - View the customer and the order
+* `http://localhost:8081/swagger-ui/index.html` - Create a customer
+* `http://localhost:8083/swagger-ui/index.html` - Create an order
+* `http://localhost:8082/swagger-ui/index.html` - View the customer and the order
 
 (Hint: best to open these URLs in separate tabs)
 

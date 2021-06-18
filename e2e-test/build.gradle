@@ -6,6 +6,8 @@ dependencies {
     testCompile "junit:junit:4.12"
     testCompile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
     testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+
+    testCompile "io.eventuate.util:eventuate-util-test:$eventuateUtilVersion"
 }
 
 test {
