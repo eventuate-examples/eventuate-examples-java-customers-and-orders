@@ -1,51 +1,21 @@
-version: 2
+version: 2.1
+setup: true
+orbs:
+  eventuate-gradle-build-and-test: "eventuate_io/eventuate-gradle-build-and-test@0.1.0"
+  continuation: circleci/continuation@0.1.2
 jobs:
-  build:
-    machine: true
-    working_directory: ~/eventuate-examples-java-customers-and-orders
+  setup:
+    executor: continuation/default
     steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - eventuate-examples-java-customers-and-orders-{{ checksum "gradle.properties" }}
-            - eventuate-examples-java-customers-and-orders-
-      - run:
+      - checkout # checkout code
+      - run: # run a command
+          name: Generate config
           command: |
-            export TERM=dumb
-            cd common-contracts
-            ./mvnw install
-            cd ..
-            ./gradlew testClasses
-      - save_cache:
-          paths:
-            - ~/.gradle
-            - ~/.m2
-          key: eventuate-examples-java-customers-and-orders-{{ checksum "gradle.properties" }}
-      - run:
-          command: |
-            ./.circleci/upgrade-docker-compose.sh
-            . ./.circleci/setenv-circle-ci.sh
-            ./build-and-test-all-eventuate-local-mysql.sh
-      - run:
-          command: |
-            . ./.circleci/setenv-circle-ci.sh
-            ./build-and-test-all-eventuate-local-postgres-polling.sh
-      - run:
-          command: |
-            . ./.circleci/setenv-circle-ci.sh
-            ./build-and-test-all-eventuate-local-postgres-wal.sh
-      - run:
-          name: Save test results
-          command: |
-            mkdir -p ~/junit/
-            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/junit/ \;
-          when: always
-      - store_test_results:
-          path: ~/junit
-      - store_artifacts:
-          path: ~/junit
+            ./.circleci/generate-config.sh > generated_config.yml
+      - continuation/continue:
+          configuration_path: generated_config.yml
+
 workflows:
-  version: 2
-  build-test-and-deploy:
+  setup:
     jobs:
-      - build
+      - setup
