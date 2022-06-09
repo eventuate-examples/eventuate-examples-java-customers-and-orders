@@ -2,7 +2,6 @@ package net.chrisrichardson.eventstore.examples.customersandorders.ordersservice
 
 import io.eventuate.javaclient.spring.jdbc.EmbeddedTestAggregateStoreConfiguration;
 import io.eventuate.local.java.spring.autoconfigure.EventuateDriverAutoConfiguration;
-import io.eventuate.util.spring.swagger.CommonSwaggerConfiguration;
 import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.OrderConfiguration;
 import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.web.OrderWebConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -19,7 +18,7 @@ import static org.mockito.Mockito.mock;
         OrderWebConfiguration.class,
         EmbeddedTestAggregateStoreConfiguration.class
         })
-@EnableAutoConfiguration(exclude = {EventuateDriverAutoConfiguration.class, CommonSwaggerConfiguration.class})
+@EnableAutoConfiguration(exclude = {EventuateDriverAutoConfiguration.class})
 public class OrderServiceInProcessComponentTestConfiguration {
 
   @Bean
