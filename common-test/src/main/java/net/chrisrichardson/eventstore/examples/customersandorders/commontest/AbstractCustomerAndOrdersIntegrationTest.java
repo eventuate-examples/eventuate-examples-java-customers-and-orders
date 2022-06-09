@@ -43,17 +43,16 @@ public abstract class AbstractCustomerAndOrdersIntegrationTest {
                 assertEquals(OrderState.APPROVED, o.getState());
         });
 
-        CustomerView customerView = eventuallyReturning(() -> {
+        eventually(() -> {
           CustomerView cv = getCustomerView(customerId);
           assertNotNull(cv);
           OrderInfo orderInfo = cv.getOrders().get(orderId);
           assertNotNull(orderInfo);
           assertEquals(OrderState.APPROVED, orderInfo.getState());
-          return cv;
+          assertEquals(creditLimit, cv.getCreditLimit());
+          assertEquals(orderTotal, cv.getOrders().get(orderId).getOrderTotal());
         });
 
-        assertEquals(creditLimit, customerView.getCreditLimit());
-        assertEquals(orderTotal, customerView.getOrders().get(orderId).getOrderTotal());
 
     }
 
@@ -72,17 +71,16 @@ public abstract class AbstractCustomerAndOrdersIntegrationTest {
           assertEquals(OrderState.REJECTED, o.getState());
         });
 
-        CustomerView customerView = eventuallyReturning(() -> {
+        eventually(() -> {
           CustomerView cv = getCustomerView(customerId);
           assertNotNull(cv);
           OrderInfo orderInfo = cv.getOrders().get(orderId);
           assertNotNull(orderInfo);
           assertEquals(OrderState.REJECTED, orderInfo.getState());
-          return cv;
+          assertEquals(creditLimit, cv.getCreditLimit());
+          assertEquals(orderTotal, cv.getOrders().get(orderId).getOrderTotal());
         });
 
-        assertEquals(creditLimit, customerView.getCreditLimit());
-        assertEquals(orderTotal, customerView.getOrders().get(orderId).getOrderTotal());
 
     }
 
