@@ -1,6 +1,5 @@
 package net.chrisrichardson.eventstore.examples.customersandorders.ordershistoryviewservice;
 
-import net.chrisrichardson.eventstore.examples.customersandorders.commonswagger.CommonSwaggerConfiguration;
 import net.chrisrichardson.eventstore.examples.customersandorders.ordershistoryviewservice.web.OrderHistoryViewWebConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -9,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import({OrderHistoryViewConfiguration.class, OrderHistoryViewWebConfiguration.class, CommonSwaggerConfiguration.class})
+@Import({OrderHistoryViewConfiguration.class, OrderHistoryViewWebConfiguration.class, })
 @EnableAutoConfiguration
 @ComponentScan
 public class OrderHistoryViewServiceMain {

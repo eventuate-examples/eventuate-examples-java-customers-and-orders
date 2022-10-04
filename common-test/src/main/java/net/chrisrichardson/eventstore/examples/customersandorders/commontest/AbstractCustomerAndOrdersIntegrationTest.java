@@ -12,10 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.TimeUnit;
 
 import static io.eventuate.util.test.async.Eventually.eventually;
-import static io.eventuate.util.test.async.Eventually.eventuallyReturning;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public abstract class AbstractCustomerAndOrdersIntegrationTest {
     protected Logger logger = LoggerFactory.getLogger(getClass());
@@ -37,7 +34,7 @@ public abstract class AbstractCustomerAndOrdersIntegrationTest {
 
         String orderId = createOrder(customerId, orderTotal);
 
-        eventually(40, 500, TimeUnit.MILLISECONDS, () -> {
+        eventually(80, 500, TimeUnit.MILLISECONDS, () -> {
                 OrderView o = getOrderView(orderId);
                 assertNotNull(o);
                 assertEquals(OrderState.APPROVED, o.getState());

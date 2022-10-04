@@ -28,6 +28,9 @@ subprojects {
 
     dependencies {
         implementation(platform("io.eventuate.platform:eventuate-platform-dependencies:$eventuateBomVersion"))
+
+        testImplementation "junit:junit:4.12"
+
     }
 }
 
