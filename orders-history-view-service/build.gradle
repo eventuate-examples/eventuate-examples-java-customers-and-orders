@@ -30,6 +30,7 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
     compile "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
     compile "org.springframework.boot:spring-boot-starter-data-mongodb:$springBootVersion"
+    compile "org.springframework.retry:spring-retry:$springRetryVersion"
 
     compile "io.eventuate.local.java:eventuate-local-java-spring-events-starter"
 
