@@ -27,10 +27,10 @@ dependencies {
 
     api project(":common-swagger")
 
-    compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
-    compile "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
-    compile "org.springframework.boot:spring-boot-starter-data-mongodb:$springBootVersion"
-    compile "org.springframework.retry:spring-retry:$springRetryVersion"
+    api "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+    api "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
+    api "org.springframework.boot:spring-boot-starter-data-mongodb:$springBootVersion"
+    api "org.springframework.retry:spring-retry:$springRetryVersion"
 
     api "io.eventuate.local.java:eventuate-local-java-spring-events-starter"
 
