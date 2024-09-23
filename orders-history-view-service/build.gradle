@@ -20,19 +20,19 @@ dockerCompose {
 }
 
 dependencies {
-    compile project(":orders-history-view-service-api-web")
+    api project(":orders-history-view-service-api-web")
 
-    compile project(":orders-service-api-messaging")
-    compile project(":customers-service-api-messaging")
+    api project(":orders-service-api-messaging")
+    api project(":customers-service-api-messaging")
 
-    compile project(":common-swagger")
+    api project(":common-swagger")
 
-    compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
-    compile "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
-    compile "org.springframework.boot:spring-boot-starter-data-mongodb:$springBootVersion"
+    api "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+    api "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
+    api "org.springframework.boot:spring-boot-starter-data-mongodb:$springBootVersion"
 
-    compile "io.eventuate.local.java:eventuate-local-java-spring-events-starter"
+    api "io.eventuate.local.java:eventuate-local-java-spring-events-starter"
 
-    testCompile "junit:junit:4.12"
-    testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+    testImplementation "junit:junit:4.12"
+    testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
 }

@@ -43,26 +43,26 @@ dockerCompose {
 }
 
 dependencies {
-    compile project(":orders-service-api-web")
-    compile project(":customers-service-api-messaging")
-    compile project(":orders-service-api-messaging")
-    compile project(":common-swagger")
+    api project(":orders-service-api-web")
+    api project(":customers-service-api-messaging")
+    api project(":orders-service-api-messaging")
+    api project(":common-swagger")
 
-    compile "org.springframework.boot:spring-boot-starter:$springBootVersion"
-    compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
-    compile "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
-    compile "io.eventuate.local.java:eventuate-local-java-spring-jdbc-starter"
+    api "org.springframework.boot:spring-boot-starter:$springBootVersion"
+    api "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+    api "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
+    api "io.eventuate.local.java:eventuate-local-java-spring-jdbc-starter"
 
 
-    testCompile "net.chrisrichardson.eventstore.examples.customersandorders:common-contracts:1.0-SNAPSHOT:stubs"
+    testImplementation "net.chrisrichardson.eventstore.examples.customersandorders:common-contracts:1.0-SNAPSHOT:stubs"
 
-    testCompile "io.eventuate.local.java:eventuate-client-java-spring-jdbc"
-    testCompile project(":customers-service-api-web")
-    testCompile "org.springframework.cloud:spring-cloud-contract-wiremock"
-    testCompile "org.springframework.cloud:spring-cloud-starter-contract-stub-runner"
-    testCompile "junit:junit:4.12"
-    testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
-    testCompile "io.eventuate.local.java:eventuate-client-java-spring-jdbc"
-    testCompile 'com.jayway.restassured:rest-assured:2.3.0'
-    testCompile "com.jayway.jsonpath:json-path:2.3.0"
+    testImplementation "io.eventuate.local.java:eventuate-client-java-spring-jdbc"
+    testImplementation project(":customers-service-api-web")
+    testImplementation "org.springframework.cloud:spring-cloud-contract-wiremock"
+    testImplementation "org.springframework.cloud:spring-cloud-starter-contract-stub-runner"
+    testImplementation "junit:junit:4.12"
+    testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+    testImplementation "io.eventuate.local.java:eventuate-client-java-spring-jdbc"
+    testImplementation 'com.jayway.restassured:rest-assured:2.3.0'
+    testImplementation "com.jayway.jsonpath:json-path:2.3.0"
 }

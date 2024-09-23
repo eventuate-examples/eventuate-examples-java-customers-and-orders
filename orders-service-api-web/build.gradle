@@ -1,5 +1,5 @@
 dependencies {
-    compile project(":common")
+    api project(":common")
 
-    testCompile "junit:junit:4.12"
+    testImplementation "junit:junit:4.12"
 }

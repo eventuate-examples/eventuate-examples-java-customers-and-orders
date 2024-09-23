@@ -1,10 +1,10 @@
 dependencies {
-    compile project(":common")
-    compile project(":orders-history-view-service-api-web")
+    api project(":common")
+    api project(":orders-history-view-service-api-web")
 
-    compile "io.reactivex:rxjava:1.1.5"
-    compile "junit:junit:4.12"
+    api "io.reactivex:rxjava:1.1.5"
+    api "junit:junit:4.12"
 
-    compile "io.eventuate.util:eventuate-util-test:$eventuateUtilVersion"
+    api "io.eventuate.util:eventuate-util-test:$eventuateUtilVersion"
 
 }

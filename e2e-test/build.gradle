@@ -1,11 +1,11 @@
 dependencies {
-    testCompile project(":common-test")
-    testCompile project(":customers-service-api-web")
-    testCompile project(":orders-service-api-web")
+    testImplementation project(":common-test")
+    testImplementation project(":customers-service-api-web")
+    testImplementation project(":orders-service-api-web")
 
-    testCompile "junit:junit:4.12"
-    testCompile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
-    testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+    testImplementation "junit:junit:4.12"
+    testImplementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+    testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
 }
 
 test {
