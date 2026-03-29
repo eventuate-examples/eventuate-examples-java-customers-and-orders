@@ -7,13 +7,10 @@ import net.chrisrichardson.eventstore.examples.customersandorders.customersservi
 import net.chrisrichardson.eventstore.examples.customersandorders.customersservice.domain.Customer;
 import net.chrisrichardson.eventstore.examples.customersandorders.customersservice.domain.CustomerCommand;
 import net.chrisrichardson.eventstore.examples.customersandorders.customersservice.domain.ReserveCreditCommand;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes= CustomerServiceInProcessComponentTestConfiguration.class,
         webEnvironment= SpringBootTest.WebEnvironment.NONE)
 public class CustomerPersistenceTest {

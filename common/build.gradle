@@ -5,7 +5,8 @@ dependencies {
 
     testImplementation 'com.pholser:junit-quickcheck-core:0.7'
     testImplementation 'com.pholser:junit-quickcheck-generators:0.7'
-    testImplementation "junit:junit:4.12"
-    testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+    testImplementation "junit:junit:4.13.2"
+    testRuntimeOnly "org.junit.vintage:junit-vintage-engine"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation "io.eventuate.local.java:eventuate-client-java-spring-jdbc"
 }

@@ -1,4 +1,4 @@
 dependencies {
 
-    implementation "org.springdoc:springdoc-openapi-ui:$springDocOpenApiUiVersion"
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:$springDocOpenApiUiVersion"
 }

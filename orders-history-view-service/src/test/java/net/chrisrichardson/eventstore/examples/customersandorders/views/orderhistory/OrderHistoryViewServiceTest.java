@@ -7,18 +7,15 @@ import net.chrisrichardson.eventstore.examples.customersandorders.ordershistory.
 import net.chrisrichardson.eventstore.examples.customersandorders.ordershistoryviewservice.domain.CustomerViewRepository;
 import net.chrisrichardson.eventstore.examples.customersandorders.ordershistoryviewservice.service.OrderHistoryViewService;
 import net.chrisrichardson.eventstore.examples.customersandorders.ordershistoryviewservice.domain.OrderViewRepository;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OrderHistoryViewServiceTestConfiguration.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class OrderHistoryViewServiceTest {
 

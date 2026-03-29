@@ -1,3 +1,3 @@
-FROM openjdk:8u252-slim-buster
-CMD java ${JAVA_OPTS} -jar orders-history-view-service.jar
-COPY build/libs/orders-history-view-service.jar .
+ARG baseImageVersion
+FROM eventuateio/eventuate-examples-docker-images-spring-example-base-image:$baseImageVersion
+COPY build/libs/orders-history-view-service.jar service.jar

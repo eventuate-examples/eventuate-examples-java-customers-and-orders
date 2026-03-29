@@ -5,22 +5,19 @@ import io.eventuate.sync.EventuateAggregateStore;
 import net.chrisrichardson.eventstore.examples.customersandorders.orders.webapi.CreateOrderRequest;
 import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.domain.Customer;
 import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.domain.Order;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
-import static com.jayway.restassured.RestAssured.given;
-import static junit.framework.TestCase.assertNotNull;
+import static io.restassured.RestAssured.given;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes= OrderServiceInProcessComponentTestConfiguration.class,
         webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT,
       properties = {"customer.service.url=http://${DOCKER_HOST_IP:localhost}:8888/customers/{customerId}",

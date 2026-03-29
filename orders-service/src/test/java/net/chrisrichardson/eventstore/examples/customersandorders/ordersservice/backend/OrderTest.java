@@ -12,11 +12,11 @@ import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.
 import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.domain.CreateOrderCommand;
 import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.domain.Order;
 import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.service.RejectOrderCommand;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class OrderTest {
 

@@ -3,9 +3,8 @@ dependencies {
     testImplementation project(":customers-service-api-web")
     testImplementation project(":orders-service-api-web")
 
-    testImplementation "junit:junit:4.12"
-    testImplementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
-    testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+    testImplementation "org.springframework.boot:spring-boot-starter-web"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
 }
 
 test {

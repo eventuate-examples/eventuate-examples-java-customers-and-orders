@@ -1,15 +1,4 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
-    }
-}
-
 apply plugin: VerifyMongoDBConfigurationPlugin
-
-apply plugin: 'org.springframework.boot'
 
 apply plugin: 'docker-compose'
 
@@ -27,13 +16,12 @@ dependencies {
 
     api project(":common-swagger")
 
-    api "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
-    api "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
-    api "org.springframework.boot:spring-boot-starter-data-mongodb:$springBootVersion"
+    api "org.springframework.boot:spring-boot-starter-web"
+    api "org.springframework.boot:spring-boot-starter-actuator"
+    api "org.springframework.boot:spring-boot-starter-data-mongodb"
     api "org.springframework.retry:spring-retry:$springRetryVersion"
 
     api "io.eventuate.local.java:eventuate-local-java-spring-events-starter"
 
-    testImplementation "junit:junit:4.12"
-    testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
 }

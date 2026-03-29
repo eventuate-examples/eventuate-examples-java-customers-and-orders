@@ -7,23 +7,22 @@ import net.chrisrichardson.eventstore.examples.customersandorders.customers.even
 import net.chrisrichardson.eventstore.examples.customersandorders.orders.events.OrderApprovedEvent;
 import net.chrisrichardson.eventstore.examples.customersandorders.orders.events.OrderCreatedEvent;
 import net.chrisrichardson.eventstore.examples.customersandorders.orders.events.OrderRejectedEvent;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 @SpringBootTest(classes = DbIdMigrationVerificationTest.Config.class)
 public class DbIdMigrationVerificationTest {
 
@@ -45,14 +44,14 @@ public class DbIdMigrationVerificationTest {
     List<Map<String, Object>> eventsWithNotEmptyId =
             jdbcTemplate.queryForList("select * from eventuate.events where event_type <> 'CDC-IGNORED' and event_id <> ''");
 
-    Assert.assertTrue(eventsWithEmptyId.size() > 0);
-    Assert.assertEquals(eventsWithEmptyId.size(), eventsWithNotEmptyId.size());
+    assertTrue(eventsWithEmptyId.size() > 0);
+    assertEquals(eventsWithEmptyId.size(), eventsWithNotEmptyId.size());
 
     assertEventsHaveRequiredFields(eventsWithEmptyId);
     assertEventsHaveRequiredFields(eventsWithNotEmptyId);
   }
 
-  @Before
+  @BeforeEach
   public void initializeEventTypeRequiredFields() {
     addEventFieldsToEventTypeRequiredFields(CustomerCreatedEvent.class, "name", "creditLimit");
     addEventFieldsToEventTypeRequiredFields(CustomerCreditReservedEvent.class, "orderId", "orderTotal");
@@ -76,8 +75,8 @@ public class DbIdMigrationVerificationTest {
 
       requiredFields
               .forEach(field ->
-                      Assert.assertTrue(String.format(assertMessageTemplate, eventData, eventType, field),
-                              eventData.contains(field)));
+                      assertTrue(eventData.contains(field),
+                              String.format(assertMessageTemplate, eventData, eventType, field)));
     });
   }
 }

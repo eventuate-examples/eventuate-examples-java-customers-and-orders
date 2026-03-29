@@ -8,19 +8,16 @@ import net.chrisrichardson.eventstore.examples.customersandorders.orders.webapi.
 import net.chrisrichardson.eventstore.examples.customersandorders.orders.webapi.CreateOrderResponse;
 import net.chrisrichardson.eventstore.examples.customersandorders.ordershistory.webapi.CustomerView;
 import net.chrisrichardson.eventstore.examples.customersandorders.ordershistory.webapi.OrderView;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = CustomersAndOrdersE2ETestConfiguration.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class CustomersAndOrdersE2ETest extends AbstractCustomerAndOrdersIntegrationTest {
 
@@ -86,12 +83,10 @@ public class CustomersAndOrdersE2ETest extends AbstractCustomerAndOrdersIntegrat
       assertEquals(HttpStatus.OK, orderResponse.getStatusCode());
       return orderResponse.getBody().getOrderId();
     } catch (HttpClientErrorException e) {
-      switch (e.getStatusCode()) {
-        case BAD_REQUEST:
-          throw new IntegrationTestCustomerNotFoundException(e);
-        default:
-          throw e;
+      if (e.getStatusCode() == HttpStatus.BAD_REQUEST) {
+        throw new IntegrationTestCustomerNotFoundException(e);
       }
+      throw e;
     }
   }
 

@@ -5,14 +5,14 @@ import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.
 import net.chrisrichardson.eventstore.examples.customersandorders.ordershistory.webapi.CustomerView;
 import net.chrisrichardson.eventstore.examples.customersandorders.ordershistory.webapi.OrderInfo;
 import net.chrisrichardson.eventstore.examples.customersandorders.ordershistory.webapi.OrderView;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
 import static io.eventuate.util.test.async.Eventually.eventually;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class AbstractCustomerAndOrdersIntegrationTest {
     protected Logger logger = LoggerFactory.getLogger(getClass());

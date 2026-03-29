@@ -2,17 +2,14 @@ package net.chrisrichardson.eventstore.examples.customersandorders.customersserv
 
 import net.chrisrichardson.eventstore.examples.customersandorders.common.domain.Money;
 import net.chrisrichardson.eventstore.examples.customersandorders.customers.webapi.CreateCustomerRequest;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import static com.jayway.restassured.RestAssured.given;
-import static junit.framework.TestCase.assertNotNull;
-import static org.junit.Assert.assertEquals;
+import static io.restassured.RestAssured.given;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes= CustomerServiceInProcessComponentTestConfiguration.class,
         webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CustomerServiceInProcessComponentTest {

@@ -3,8 +3,8 @@ package net.chrisrichardson.eventstore.examples.customersandorders.ordersservice
 import io.eventuate.common.json.mapper.JSonMapper;
 import net.chrisrichardson.eventstore.examples.customersandorders.orders.webapi.CreateOrderRequest;
 import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.service.OrderService;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -28,7 +28,7 @@ public class OrderControllerTest {
   private OrderController orderController;
   private MockMvc mockMvc;
 
-  @Before
+  @BeforeEach
   public void setup() {
     this.orderService = mock(OrderService.class);
     this.orderController = new OrderController(orderService);

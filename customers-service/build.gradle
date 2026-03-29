@@ -1,53 +1,21 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "io.spring.gradle:dependency-management-plugin:0.6.0.RELEASE"
-        // if using Stub Runner (consumer side) only remove this dependency
-        classpath "org.springframework.cloud:spring-cloud-contract-gradle-plugin:1.1.1.RELEASE"
-    }
-}
-
-apply plugin: "io.spring.dependency-management"
-apply plugin: 'spring-cloud-contract'
-
-dependencyManagement {
-    imports {
-        mavenBom 'org.springframework.cloud:spring-cloud-contract-dependencies:1.1.1.RELEASE'
-    }
-}
-
-dependencies {
-    testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
-}
-
-contracts {
-    contractsDslDir = new File("../common-contracts/src/main/resources/contracts")
-    baseClassForTests = 'net.chrisrichardson.eventstore.examples.customersandorders.customersservice.web.AbstractCustomerServiceContractTest'
-}
-
-
-apply plugin: 'org.springframework.boot'
-
 dependencies {
     api project(":customers-service-api-web")
     api project(":customers-service-api-messaging")
     api project(":orders-service-api-messaging")
     api project(":common-swagger")
 
-    testImplementation 'com.jayway.restassured:rest-assured:2.9.0'
-    testImplementation 'com.jayway.restassured:spring-mock-mvc:2.9.0'
+    testImplementation 'io.rest-assured:rest-assured'
+    testImplementation 'io.rest-assured:spring-mock-mvc'
 
-    api "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
-    api "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
+    api "org.springframework.boot:spring-boot-starter-web"
+    api "org.springframework.boot:spring-boot-starter-actuator"
     api "io.eventuate.local.java:eventuate-local-java-spring-jdbc-starter"
 
-    testImplementation "net.chrisrichardson.eventstore.examples.customersandorders:common-contracts:1.0-SNAPSHOT"
     testImplementation 'com.pholser:junit-quickcheck-core:0.7'
     testImplementation 'com.pholser:junit-quickcheck-generators:0.7'
-    testImplementation "junit:junit:4.12"
-    testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+    testImplementation "junit:junit:4.13.2"
+    testRuntimeOnly "org.junit.vintage:junit-vintage-engine"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation "io.eventuate.local.java:eventuate-client-java-spring-jdbc"
 
 }

@@ -1,3 +1,4 @@
+**/.hitl
 *.iml
 *.ipr
 *.iws
@@ -19,4 +20,4 @@ npm-debug.log
 target
 out
 *.IGNORE
-tmp-migration
+tmp-migrationlogs/

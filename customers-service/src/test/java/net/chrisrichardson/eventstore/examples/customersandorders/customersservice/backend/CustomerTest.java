@@ -10,20 +10,20 @@ import net.chrisrichardson.eventstore.examples.customersandorders.customersservi
 import net.chrisrichardson.eventstore.examples.customersandorders.customersservice.domain.Customer;
 import net.chrisrichardson.eventstore.examples.customersandorders.customersservice.domain.CustomerCommand;
 import net.chrisrichardson.eventstore.examples.customersandorders.customersservice.domain.ReserveCreditCommand;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static io.eventuate.EventUtil.events;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CustomerTest {
 
   private Customer customer;
   private List<Event> events;
 
-  @Before
+  @BeforeEach
   public void createEmptyCustomer() {
     customer = new Customer();
   }

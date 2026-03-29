@@ -5,6 +5,7 @@ import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.
 import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.service.CustomerService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.client.HttpClientErrorException;
@@ -32,26 +33,19 @@ public class CustomerServiceProxy implements CustomerService {
     try {
       result = restTemplate.getForEntity(customerServiceUrl, Customer.class, customerId);
     } catch (HttpClientErrorException e) {
-      switch (e.getStatusCode()) {
-        case NOT_FOUND:
-          throw new CustomerNotFoundException();
-        default:
-          unrecognizedStatusCode(customerId, e.getStatusCode());
-      }
-    }
-    switch (result.getStatusCode()) {
-      case OK:
-        return;
-      case NOT_FOUND:
+      if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
         throw new CustomerNotFoundException();
-      default:
-        unrecognizedStatusCode(customerId, result.getStatusCode());
+      }
+      throw new RuntimeException(String.format("Unrecognized status code %s when fetching customerId %s",
+              e.getStatusCode(), customerId));
     }
-  }
-
-  private void unrecognizedStatusCode(String customerId, HttpStatus statusCode) {
+    if (result.getStatusCode() == HttpStatus.OK) {
+      return;
+    } else if (result.getStatusCode() == HttpStatus.NOT_FOUND) {
+      throw new CustomerNotFoundException();
+    }
     throw new RuntimeException(String.format("Unrecognized status code %s when fetching customerId %s",
-            statusCode, customerId));
+            result.getStatusCode(), customerId));
   }
 
 }

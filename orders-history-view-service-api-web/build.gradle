@@ -1,6 +1,4 @@
 dependencies {
     api project(":common")
-    api "org.springframework.boot:spring-boot-starter-data-mongodb:$springBootVersion"
-
-    testImplementation "junit:junit:4.12"
+    api "org.springframework.boot:spring-boot-starter-data-mongodb"
 }

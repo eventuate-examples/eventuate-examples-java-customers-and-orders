@@ -25,8 +25,6 @@ if [ "$1" = "--no-rm" ] ; then
   shift
 fi
 
-./compile-contracts.sh
-
 ./gradlew --stacktrace $BUILD_AND_TEST_ALL_EXTRA_GRADLE_ARGS $* testClasses
 ./gradlew --stacktrace $BUILD_AND_TEST_ALL_EXTRA_GRADLE_ARGS $* build -x :e2e-test:test
 

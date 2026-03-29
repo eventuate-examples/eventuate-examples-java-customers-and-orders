@@ -2,15 +2,14 @@ dependencies {
     testImplementation project(":customers-service-api-messaging")
     testImplementation project(":orders-service-api-messaging")
 
+    testImplementation "org.springframework.boot:spring-boot-starter-jdbc"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
 
-    testImplementation "org.springframework.boot:spring-boot-starter-jdbc:${springBootVersion}"
-    testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
-
-    testRuntimeOnly 'mysql:mysql-connector-java:8.0.21'
-    testRuntimeOnly ('org.postgresql:postgresql:9.4-1200-jdbc41') {
+    testRuntimeOnly 'com.mysql:mysql-connector-j'
+    testRuntimeOnly ('org.postgresql:postgresql') {
         exclude group: "org.slf4j", module: "slf4j-simple"
     }
-    testRuntimeOnly 'com.microsoft.sqlserver:mssql-jdbc:7.2.1.jre8'
+    testRuntimeOnly 'com.microsoft.sqlserver:mssql-jdbc'
 }
 
 test {

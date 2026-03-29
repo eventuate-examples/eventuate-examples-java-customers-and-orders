@@ -5,9 +5,8 @@ import net.chrisrichardson.eventstore.examples.customersandorders.customers.weba
 import net.chrisrichardson.eventstore.examples.customersandorders.customers.webapi.CreateCustomerResponse;
 import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.service.CustomerNotFoundException;
 import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.service.CustomerServiceProxy;
-import org.junit.After;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,12 +14,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes=CustomerServiceProxyIntegrationTestConfiguration.class,
         webEnvironment= SpringBootTest.WebEnvironment.NONE,
         properties={"customer.service.url=http://${DOCKER_HOST_IP:localhost}:8081/customers/{customerId}"}
@@ -48,12 +46,12 @@ public class CustomerServiceProxyIntegrationTest {
     customerServiceProxy.verifyCustomerCustomerId(response.getBody().getCustomerId());
   }
 
-  @Test(expected = CustomerNotFoundException.class)
+  @Test
   public void shouldRejectNonExistentCustomer() {
-    customerServiceProxy.verifyCustomerCustomerId("1223232-none");
+    assertThrows(CustomerNotFoundException.class, () -> customerServiceProxy.verifyCustomerCustomerId("1223232-none"));
   }
 
-  @After
+  @AfterEach
   public void cleanUp() {
     jdbcTemplate.execute("delete from eventuate.events");
   }

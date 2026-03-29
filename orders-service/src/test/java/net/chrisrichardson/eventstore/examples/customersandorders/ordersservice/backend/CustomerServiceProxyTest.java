@@ -3,12 +3,13 @@ package net.chrisrichardson.eventstore.examples.customersandorders.ordersservice
 import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.domain.Customer;
 import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.service.CustomerNotFoundException;
 import net.chrisrichardson.eventstore.examples.customersandorders.ordersservice.service.CustomerServiceProxy;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -20,7 +21,7 @@ public class CustomerServiceProxyTest {
   private RestTemplate restTemplate;
   private CustomerServiceProxy proxy;
 
-  @Before
+  @BeforeEach
   public void setUp() {
     restTemplate = mock(RestTemplate.class);
     proxy = new CustomerServiceProxy(restTemplate);
@@ -35,10 +36,10 @@ public class CustomerServiceProxyTest {
     verify(restTemplate).getForEntity(CUSTOMER_SERVICE_URL, Customer.class, CUSTOMER_ID);
   }
 
-  @Test(expected= CustomerNotFoundException.class)
+  @Test
   public void shouldNotFindCustomer() {
     when(restTemplate.getForEntity(CUSTOMER_SERVICE_URL, Customer.class, CUSTOMER_ID))
             .thenReturn(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    proxy.verifyCustomerCustomerId(CUSTOMER_ID);
+    assertThrows(CustomerNotFoundException.class, () -> proxy.verifyCustomerCustomerId(CUSTOMER_ID));
   }
 }
