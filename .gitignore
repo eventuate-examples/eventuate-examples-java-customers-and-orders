@@ -21,3 +21,4 @@ target
 out
 *.IGNORE
 tmp-migrationlogs/
+logs

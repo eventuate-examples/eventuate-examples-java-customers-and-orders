@@ -15,7 +15,7 @@ cat >> generated_config.yml <<END
       - eventuate-gradle-build-and-test/build-and-test:
           name: $build_script
           script: ./$build_script
-          maven_cache_command: ./compile-contracts.sh
-          checksum_files: 'gradle.properties gradle/wrapper/gradle-wrapper.properties ./common-contracts/pom.xml'
+          machine_image: ubuntu-2204:2024.01.1
+          java_version_to_install: '17'
 END
 done
