@@ -6,9 +6,9 @@ export COMPOSE_HTTP_TIMEOUT=240
 
 docker="./gradlew ${DATABASE}${MODE}Compose"
 
-if [ -z "$SPRING_DATA_MONGODB_URI" ] ; then
-  export SPRING_DATA_MONGODB_URI=mongodb://${DOCKER_HOST_IP:-localhost}/customers_orders
-  echo Set SPRING_DATA_MONGODB_URI $SPRING_DATA_MONGODB_URI
+if [ -z "$SPRING_MONGODB_URI" ] ; then
+  export SPRING_MONGODB_URI=mongodb://${DOCKER_HOST_IP:-localhost}/customers_orders
+  echo Set SPRING_MONGODB_URI $SPRING_MONGODB_URI
 fi
 
 

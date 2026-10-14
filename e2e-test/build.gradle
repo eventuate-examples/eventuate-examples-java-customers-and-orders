@@ -3,7 +3,7 @@ dependencies {
     testImplementation project(":customers-service-api-web")
     testImplementation project(":orders-service-api-web")
 
-    testImplementation "org.springframework.boot:spring-boot-starter-web"
+    testImplementation "org.springframework.boot:spring-boot-starter-webmvc"
     testImplementation "org.springframework.boot:spring-boot-starter-test"
 }
 

@@ -99,7 +99,7 @@ services:
       - kafka
       - zookeeper
     environment:
-      SPRING_DATA_MONGODB_URI: mongodb://mongodb/customers_and_orders
+      SPRING_MONGODB_URI: mongodb://mongodb/customers_and_orders
       EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
       EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
 

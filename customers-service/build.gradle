@@ -4,10 +4,10 @@ dependencies {
     api project(":orders-service-api-messaging")
     api project(":common-swagger")
 
-    testImplementation 'io.rest-assured:rest-assured'
-    testImplementation 'io.rest-assured:spring-mock-mvc'
+    testImplementation "io.rest-assured:rest-assured:$restAssuredVersion"
+    testImplementation "io.rest-assured:spring-mock-mvc:$restAssuredVersion"
 
-    api "org.springframework.boot:spring-boot-starter-web"
+    api "org.springframework.boot:spring-boot-starter-webmvc"
     api "org.springframework.boot:spring-boot-starter-actuator"
     api "io.eventuate.local.java:eventuate-local-java-spring-jdbc-starter"
 
