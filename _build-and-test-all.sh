@@ -52,7 +52,7 @@ set -e
 compose="docker-compose -f docker-compose-eventuate-local-${DATABASE}-${MODE}.yml "
 
 $compose stop cdc-service
-curl -s https://raw.githubusercontent.com/eventuate-foundation/eventuate-common/master/migration/db-id/migration.sh &> /dev/stdout | bash
+curl -s https://raw.githubusercontent.com/eventuate-foundation/eventuate-common-database/master/migration/db-id/migration.sh &> /dev/stdout | bash
 $compose start cdc-service
 
 ${docker}Up -P envFile=docker-compose-env-files/db-id-gen.env
